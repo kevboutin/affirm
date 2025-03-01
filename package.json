@@ -1,0 +1,32 @@
+{
+  "name": "affirm",
+  "version": "0.0.1",
+  "description": "Centralized authentication/authorization services",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevboutin/affirm.git"
+  },
+  "keywords": [
+    "affirm",
+    "authentication",
+    "authorization",
+    "auth",
+    "hono",
+    "api",
+    "rest",
+    "service",
+    "node",
+    "javascript",
+    "typescript"
+  ],
+  "author": "Kevin Boutin (me@kevinboutin.me)",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/kevboutin/affirm/issues"
+  },
+  "homepage": "https://github.com/kevboutin/affirm#readme"
+}
