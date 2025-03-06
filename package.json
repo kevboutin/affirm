@@ -6,7 +6,7 @@
         "audit": "npm audit fix",
         "build": "tsc && tsc-alias",
         "commit-msg": "commitlint --config commitlint.config.js --edit $1",
-        "dev": "NODE_ENV=development tsx watch dist/index.js",
+        "dev": "NODE_ENV=development tsx watch src/index.ts",
         "pre-commit": "npm run lint && npm run test:lint",
         "prepare": "git config --local core.hooksPath .githooks",
         "lint": "npx prettier -c **/*.*js",

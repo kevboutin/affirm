@@ -4,6 +4,7 @@ export interface UserDocument extends Document {
     _id: mongoose.Types.ObjectId;
     username: string;
     email: string;
+    phone?: string;
     locale?: string;
     timezone?: string;
     roles?: Array<mongoose.Types.ObjectId>;
@@ -16,6 +17,7 @@ export interface UserUpdateDocument extends Document {
     _id: mongoose.Types.ObjectId;
     username: string;
     email: string;
+    phone?: string;
     locale?: string;
     timezone?: string;
     roles?: Array<string>;
@@ -28,6 +30,7 @@ const UserSchema = new Schema(
     {
         email: { type: String, required: true, unique: true },
         username: { type: String, required: true, unique: true },
+        phone: { type: String, required: false },
         roles: { type: Array, required: false },
         locale: { type: String, required: false },
         timezone: { type: String, required: false },
