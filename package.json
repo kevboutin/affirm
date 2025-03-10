@@ -38,7 +38,7 @@
     ],
     "dependencies": {
         "@hono/node-server": "^1.13.8",
-        "@hono/zod-openapi": "^0.19.0",
+        "@hono/zod-openapi": "^0.19.2",
         "@scalar/hono-api-reference": "^0.5.177",
         "dotenv": "^16.4.7",
         "dotenv-expand": "^12.0.1",
