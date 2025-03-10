@@ -62,7 +62,7 @@
         "tsc-alias": "^1.8.11",
         "tsx": "^4.7.1",
         "typescript": "^5.8.2",
-        "vitest": "^3.0.7",
+        "vitest": "^3.0.8",
         "zod": "^3.24.2"
     },
     "author": "Kevin Boutin (me@kevinboutin.me)",
