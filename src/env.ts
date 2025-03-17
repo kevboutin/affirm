@@ -17,7 +17,10 @@ const ReadPreferenceSchema = z
 const EnvSchema = z
     .object({
         NODE_ENV: z.string().default("development"),
+        PROTOCOL: z.string().default("http"),
+        HOST: z.string().default("localhost"),
         PORT: z.coerce.number().default(3000),
+        AUTHORIZATION_ENDPOINT_PATH: z.string().default("/authorize"),
         CORS_ORIGIN: z.string().optional(),
         DB_URL: z.string().url(),
         DB_AUTH_TOKEN: z.string().optional(),
@@ -29,6 +32,7 @@ const EnvSchema = z
         DB_NAME: z.string(),
         DB_READ_PREF: ReadPreferenceSchema,
         DB_SOCKET_TIMEOUT: z.coerce.number().optional(),
+        INTROSPECTION_ENDPOINT_PATH: z.string().default("/authorize"),
         LOG_LEVEL: z.enum([
             "fatal",
             "error",
@@ -38,6 +42,16 @@ const EnvSchema = z
             "trace",
             "silent",
         ]),
+        JWT_PRIVATE_KEY: z.string(),
+        JWT_PUBLIC_KEY: z.string(),
+        REGISTRATION_ENDPOINT_PATH: z.string().default("/user"),
+        SERVICE_DOCUMENTATION_ENDPOINT_PATH: z.string().default("/reference"),
+        TOKEN_ALGORITHM: z.enum(["RS256", "HS256"]).default("RS256"),
+        TOKEN_AUDIENCE: z.string().default("affirm"),
+        TOKEN_ENDPOINT_PATH: z.string().default("/token"),
+        TOKEN_EXPIRATION_IN_SECONDS: z.coerce.number().default(3600),
+        TOKEN_ISSUER: z.string().default("https://auth.affirm.com"),
+        USERINFO_ENDPOINT_PATH: z.string().default("/userinfo"),
     })
     .superRefine((input, ctx) => {
         if (input.NODE_ENV === "production" && !input.CORS_ORIGIN) {

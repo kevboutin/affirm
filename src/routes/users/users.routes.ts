@@ -3,6 +3,7 @@ import * as HttpStatusCodes from "../../httpStatusCodes";
 import {
     insertUserSchema,
     selectUserSchema,
+    selectSingleUserSchema,
     patchUserSchema,
 } from "../../db/schema.js";
 import { jsonContent, jsonContentRequired } from "../../openapi/helpers/index";
@@ -63,7 +64,7 @@ export const create = createRoute({
             "The request is not authorized",
         ),
         [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
-            createErrorSchema(insertUserSchema),
+            createErrorSchema(selectUserSchema),
             "The validation error(s)",
         ),
         [HttpStatusCodes.TOO_MANY_REQUESTS]: jsonContent(
@@ -90,7 +91,7 @@ export const getOne = createRoute({
     tags,
     responses: {
         [HttpStatusCodes.OK]: jsonContent(
-            selectUserSchema,
+            selectSingleUserSchema,
             "The requested user",
         ),
         [HttpStatusCodes.BAD_REQUEST]: jsonContent(
@@ -133,7 +134,10 @@ export const patch = createRoute({
     },
     tags,
     responses: {
-        [HttpStatusCodes.OK]: jsonContent(selectUserSchema, "The updated user"),
+        [HttpStatusCodes.OK]: jsonContent(
+            selectSingleUserSchema,
+            "The updated user",
+        ),
         [HttpStatusCodes.BAD_REQUEST]: jsonContent(
             badRequestSchema,
             "The request is not valid",

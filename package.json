@@ -2,19 +2,28 @@
     "name": "affirm",
     "version": "0.0.1",
     "description": "Centralized authentication/authorization services",
+    "author": "Kevin Boutin (me@kevinboutin.me)",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/kevboutin/affirm/issues"
+    },
+    "type": "module",
+    "homepage": "https://github.com/kevboutin/affirm#readme",
     "scripts": {
         "audit": "npm audit fix",
         "build": "tsc && tsc-alias",
         "commit-msg": "commitlint --config commitlint.config.js --edit $1",
         "dev": "NODE_ENV=development tsx watch src/index.ts",
+        "generate:key-pair": "node generateKeyPair.js",
         "pre-commit": "npm run lint && npm run test:lint",
         "prepare": "git config --local core.hooksPath .githooks",
         "lint": "npx prettier -c **/*.*js",
         "lint:fix": "npx prettier --write **/*.*js",
+        "seed:roles": "node seedRoles.js",
         "start": "node ./dist/src/index.js",
         "test": "npm run test:lint && npm run test:unit",
         "test:lint": "npx lint-staged",
-        "test:unit": "npx cross-env NODE_ENV=test LOG_LEVEL=silent vitest run --testTimeout=11000 --silent --coverage",
+        "test:unit": "npx cross-env NODE_ENV=test vitest run --testTimeout=11000 --coverage",
         "typecheck": "tsc --noEmit"
     },
     "repository": {
@@ -38,38 +47,34 @@
     ],
     "dependencies": {
         "@hono/node-server": "^1.13.8",
-        "@hono/zod-openapi": "^0.19.0",
+        "@hono/zod-openapi": "^0.19.2",
         "@scalar/hono-api-reference": "^0.5.177",
+        "bcrypt": "^5.1.1",
         "dotenv": "^16.4.7",
         "dotenv-expand": "^12.0.1",
-        "hono": "^4.7.2",
+        "hono": "^4.7.4",
         "hono-pino": "^0.7.2",
         "hono-rate-limiter": "^0.4.2",
-        "mongoose": "^8.11.0",
+        "jose": "^6.0.10",
+        "mongoose": "^8.12.1",
         "pino": "^9.6.0",
         "pino-pretty": "^13.0.0",
         "zod": "^3.24.2"
     },
     "devDependencies": {
-        "@commitlint/cli": "^19.7.1",
-        "@commitlint/config-conventional": "^19.7.1",
+        "@commitlint/cli": "^19.8.0",
+        "@commitlint/config-conventional": "^19.8.0",
+        "@types/bcrypt": "^5.0.2",
         "@types/node": "^20.11.17",
-        "@vitest/coverage-v8": "^3.0.7",
+        "@vitest/coverage-v8": "^3.0.8",
         "cross-env": "^7.0.3",
-        "lint-staged": "^15.4.3",
+        "lint-staged": "^15.5.0",
         "mongodb-memory-server": "^10.1.4",
-        "prettier": "^3.5.2",
+        "prettier": "^3.5.3",
         "tsc-alias": "^1.8.11",
-        "tsx": "^4.7.1",
+        "tsx": "^4.19.3",
         "typescript": "^5.8.2",
-        "vitest": "^3.0.7",
+        "vitest": "^3.0.8",
         "zod": "^3.24.2"
-    },
-    "author": "Kevin Boutin (me@kevinboutin.me)",
-    "license": "Apache-2.0",
-    "bugs": {
-        "url": "https://github.com/kevboutin/affirm/issues"
-    },
-    "type": "module",
-    "homepage": "https://github.com/kevboutin/affirm#readme"
+    }
 }

@@ -13,7 +13,8 @@ import type {
     PatchRoute,
     RemoveRoute,
 } from "./users.routes.js";
-import type { UserDocument } from "src/db/models/user";
+import type { RedactedUserDocument } from "src/db/models/user";
+import bcrypt from "bcrypt";
 
 const db = new DatabaseService({
     dbUri: env!.DB_URL,
@@ -33,7 +34,7 @@ const userRepository = new UserRepository(User);
 
 export const list: AppRouteHandler<ListRoute> = async (c) => {
     try {
-        const result: { count: number; rows: UserDocument[] } =
+        const result: { count: number; rows: RedactedUserDocument[] } =
             await Promise.resolve(userRepository.findAndCountAll({}));
         const { count, rows } = result;
         c.var.logger.info(`list: Found ${count} users.`);
@@ -51,8 +52,25 @@ export const list: AppRouteHandler<ListRoute> = async (c) => {
 };
 
 export const create: AppRouteHandler<CreateRoute> = async (c) => {
-    const user = c.req.valid("json");
+    const user = c.req.valid("json") as {
+        username: string;
+        email: string;
+        password?: string;
+        locale?: string;
+        timezone?: string;
+        idpClient?: string;
+        idpMetadata?: string;
+        idpSub?: string;
+        roles?: string[];
+        verifiedEmail?: boolean;
+        verifiedPhone?: boolean;
+        authType?: string;
+    };
     try {
+        if (user.password) {
+            const saltRounds = 10;
+            user.password = await bcrypt.hash(user.password, saltRounds);
+        }
         const inserted = await userRepository.create(user, {
             _id: "fakeid",
             username: "dummy",
@@ -61,7 +79,11 @@ export const create: AppRouteHandler<CreateRoute> = async (c) => {
         c.var.logger.info(
             `create: Created user with username=${user.username}.`,
         );
-        return c.json(inserted, HttpStatusCodes.CREATED);
+        const redactedUser = {
+            ...inserted,
+            password: undefined,
+        };
+        return c.json(redactedUser, HttpStatusCodes.CREATED);
     } catch (error) {
         console.error(`create: Unable to create user.`, error);
         return c.json(
@@ -100,8 +122,13 @@ export const getOne: AppRouteHandler<GetOneRoute> = async (c) => {
                 HttpStatusCodes.NOT_FOUND,
             );
         }
+        const plainUser = user.toObject();
         c.var.logger.info(`getOne: Found user with identifier=${id}.`);
-        return c.json(user, HttpStatusCodes.OK);
+        const redactedUser = {
+            ...plainUser,
+            password: undefined,
+        };
+        return c.json(redactedUser, HttpStatusCodes.OK);
     } catch (error) {
         c.var.logger.error(`getOne: Unable to query successfully.`, error);
         return c.json(
@@ -165,7 +192,11 @@ export const patch: AppRouteHandler<PatchRoute> = async (c) => {
             );
         }
         c.var.logger.info(`patch: Updated user with identifier=${id}.`);
-        return c.json(user, HttpStatusCodes.OK);
+        const redactedUser = {
+            ...user,
+            password: undefined,
+        };
+        return c.json(redactedUser, HttpStatusCodes.OK);
     } catch (error) {
         c.var.logger.error(`patch: Unable to update successfully.`, error);
         return c.json(

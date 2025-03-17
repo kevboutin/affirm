@@ -43,10 +43,12 @@ describe("UserRepository", () => {
             _id: "user123",
             username: "Test User",
             email: "testuser@somewhere.com",
+            authType: "oauth",
             roles: [],
             locale: "en_us",
             timezone: "America/Los_Angeles",
             verifiedEmail: true,
+            verifiedPhone: false,
         };
         userRepository = new UserRepository(mockModel as unknown as Model<any>);
         // Mock AuditLogRepository
@@ -60,11 +62,14 @@ describe("UserRepository", () => {
         it("should create a user and log the action", async () => {
             const userData = {
                 username: "Test User",
+                password: "someTestPassword!",
                 email: "testuser@somewhere.com",
                 timezone: "America/Los_Angeles",
                 roles: [],
                 locale: "en_us",
                 verifiedEmail: false,
+                verifiedPhone: false,
+                authType: "oauth",
             };
             const createdUser = { _id: "user123", ...userData };
 
@@ -141,6 +146,8 @@ describe("UserRepository", () => {
                     roles: [],
                     locale: "en_us",
                     verifiedEmail: false,
+                    verifiedPhone: false,
+                    authType: "oauth",
                 },
                 {
                     _id: "user456",
@@ -150,6 +157,8 @@ describe("UserRepository", () => {
                     roles: [],
                     locale: "en_us",
                     verifiedEmail: true,
+                    verifiedPhone: false,
+                    authType: "oauth",
                 },
             ];
 

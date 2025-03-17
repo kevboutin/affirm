@@ -7,7 +7,13 @@ import type {
     CurrentUser,
     FindAndCountAllUsersResult,
 } from "./types";
-import type { UserDocument, UserUpdateDocument } from "../models/user";
+import type {
+    RedactedUserDocument,
+    RedactedUserDocumentWithRoles,
+    UserDocument,
+    UserDocumentWithRoles,
+    UserUpdateDocument,
+} from "../models/user";
 
 /**
  * @class UserRepository
@@ -32,12 +38,12 @@ class UserRepository {
      *
      * @param {Partial<UserUpdateDocument>} data The document.
      * @param {CurrentUser} currentUser The current user.
-     * @returns {Promise<UserDocument>} The newly created document.
+     * @returns {Promise<RedactedUserDocument>} The newly created document.
      */
     async create(
         data: Partial<UserUpdateDocument>,
         currentUser: CurrentUser,
-    ): Promise<UserDocument> {
+    ): Promise<RedactedUserDocument> {
         await this.model.createCollection();
         const [record] = await this.model.create([
             {
@@ -64,13 +70,13 @@ class UserRepository {
      * @param {string} id The identifier.
      * @param {Partial<UserUpdateDocument>} data The updated attributes with their values.
      * @param {CurrentUser} currentUser The current user.
-     * @returns {Promise<UserDocument | null>} The updated document.
+     * @returns {Promise<RedactedUserDocumentWithRoles | null>} The updated document.
      */
     async update(
         id: string,
         data: Partial<UserUpdateDocument>,
         currentUser: CurrentUser,
-    ): Promise<UserDocument | null> {
+    ): Promise<RedactedUserDocumentWithRoles | null> {
         await this.model
             .updateOne(
                 { _id: id },
@@ -126,10 +132,11 @@ class UserRepository {
      * Find a specific document.
      *
      * @param {string} id The identifier.
-     * @returns {Promise<UserDocument>} A Promise to return a user document.
+     * @returns {Promise<UserDocumentWithRoles>} A Promise to return a user document.
      */
-    async findById(id: string): Promise<UserDocument | null> {
-        return await this.model.findById(id);
+    async findById(id: string): Promise<UserDocumentWithRoles | null> {
+        const user = await this.model.findById(id).populate("roles");
+        return user as unknown as UserDocumentWithRoles | null;
     }
 
     /**
@@ -208,7 +215,12 @@ class UserRepository {
             this.model.countDocuments(query.criteria).exec(),
         ]);
 
-        return { count, rows };
+        const redactedRows = rows.map((row) => ({
+            ...row,
+            password: undefined,
+        })) as unknown as RedactedUserDocument[];
+
+        return { count, rows: redactedRows };
     }
 
     /**

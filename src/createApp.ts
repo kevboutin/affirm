@@ -1,6 +1,7 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { compress } from "hono/compress";
 import { cors } from "hono/cors";
+import { jwk } from "hono/jwk";
 import { rateLimiter } from "hono-rate-limiter";
 import { secureHeaders } from "hono/secure-headers";
 import { timeout } from "hono/timeout";
@@ -12,6 +13,34 @@ import * as HttpStatusCodes from "./httpStatusCodes";
 import * as HttpStatusPhrases from "./httpStatusPhrases";
 import defaultHook from "./openapi/defaultHook";
 import type { AppBindings, AppOpenAPI } from "./types";
+import type { Context } from "hono";
+import { HonoJsonWebKey } from "hono/utils/jwt/jws";
+
+const keyMap: Map<string, any> = new Map<string, any>();
+
+async function getJwks(): Promise<HonoJsonWebKey[]> {
+    const jKey = "jwks";
+    const jUrlKey = "jwks_url";
+    const jwksUrl = `${env!.PROTOCOL}://${env!.HOST}:${env!.PORT}/.well-known/jwks.json`;
+    const existingUrl = keyMap.get(jUrlKey); // could be c.env.get(jUrlKey)
+    let jwks = existingUrl === jwksUrl ? keyMap.get(jKey) : null;
+    if (!jwks) {
+        console.info(`getJwks: Fetching JWKS from ${jwksUrl}`);
+        const response = await fetch(jwksUrl);
+        if (!response.ok) {
+            throw new Error(
+                `Failed to fetch JWKS from ${jwksUrl}. error: ${response.statusText}`,
+            );
+        }
+        const responseText = await response.text();
+        jwks = JSON.parse(responseText);
+        keyMap.set(jKey, jwks); // could be c.env.put(jKey)
+        keyMap.set(jUrlKey, jwksUrl); // could be c.env.put(jUrlKey)
+    }
+    const keys = jwks.keys;
+    console.info(`getJwks: keys: ${JSON.stringify(keys)}`);
+    return keys;
+}
 
 export function createRouter() {
     return new OpenAPIHono<AppBindings>({ strict: false, defaultHook });
@@ -23,11 +52,39 @@ export default function createApp() {
     app.use(compress());
     app.use(secureHeaders());
     app.use(
+        "/roles",
+        jwk({
+            keys: getJwks,
+        }),
+    );
+    app.use(
+        "/roles/*",
+        jwk({
+            keys: getJwks,
+        }),
+    );
+    app.use(
+        "/users/*",
+        jwk({
+            keys: getJwks,
+        }),
+    );
+    app.use(
+        "/userinfo",
+        jwk({
+            keys: getJwks,
+        }),
+    );
+    app.use(
         rateLimiter({
             windowMs: 15 * 60 * 1000, // 15 minutes
             limit: 100, // Limit each IP address to 100 requests per `window` (here, per 15 minutes).
             standardHeaders: "draft-6", // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
-            keyGenerator: (_) => "3dfe321eraff06d1", // Method to generate custom identifiers for clients. TODO: Probably want the username here once JWTs are in use.
+            // This will generate a custom identifier for the client based on the username in the JWT payload.
+            keyGenerator: (c: Context<AppBindings>) => {
+                const payload = c.get("jwtPayload");
+                return payload?.username ?? "anonymous";
+            },
             handler: (c) => {
                 const responseMessage = {
                     message: HttpStatusPhrases.TOO_MANY_REQUESTS,
