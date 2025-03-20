@@ -1,0 +1,17 @@
+.editorconfig
+.githooks
+.github
+.gitignore
+.env
+.env.example
+.env.development
+.env.test
+.env.production
+*.pem
+*.config.js
+generateKeyPair.js
+node_modules
+prettierrc.json
+LICENSE
+README.md
+seedRoles.js

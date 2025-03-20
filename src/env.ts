@@ -88,6 +88,8 @@ export type env = z.infer<typeof EnvSchema>;
 expand(
     config({
         path: path.resolve(
+            //__dirname, // Use __dirname instead of process.cwd()
+            //"..", // Go up one directory since __dirname is in src/
             process.cwd(),
             process.env.NODE_ENV === "test" ? ".env.test" : ".env",
         ),
@@ -97,7 +99,7 @@ expand(
 const { data: env, error } = EnvSchema.safeParse(process.env);
 
 if (error) {
-    console.error("❌ Invalid env:");
+    console.error("❌ Invalid env and running from:", process.cwd());
     console.error(JSON.stringify(error.flatten().fieldErrors, null, 4));
     process.exit(1);
 }

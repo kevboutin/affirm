@@ -29,11 +29,24 @@ Copy `.env.example` to `.env` and change the values to suit your environment.
 
 ```env
 NODE_ENV=development
+HOST=localhost
 PORT=3000
+PROTOCOL=http
+AUTHORIZATION_ENDPOINT_PATH=/authorize
 DB_NAME=affirm
 DB_URL=mongodb://127.0.0.1:27017/
 LOG_LEVEL=info
-CORS_ORIGIN=*
+CORS_ORIGIN=http://example.com
+INTROSPECTION_ENDPOINT_PATH=/authorize
+JWT_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----"
+JWT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----"
+SERVICE_DOCUMENTATION_ENDPOINT_PATH=/reference
+TOKEN_ALGORITHM=RS256
+TOKEN_AUDIENCE=affirm
+TOKEN_ENDPOINT_PATH=/token
+TOKEN_EXPIRATION_IN_SECONDS=3600
+TOKEN_ISSUER=https://auth.affirm.com
+USERINFO_ENDPOINT_PATH=/userinfo
 ```
 
 ## TO-DO
@@ -48,6 +61,17 @@ CORS_ORIGIN=*
 - [x] Add sub, authType, idpClient (client identifier) and idpMetadata (authorization server metadata URL) to user
 - [x] Add metadata endpoint "/.well-known/oauth-authorization-server"
 - [x] Add token and authorization endpoints
+- [ ] Use hono/cookie to set the token to an http-only session cookie https://www.youtube.com/watch?v=uI5JgY7QaaQ @ 52:31
+
+## Setting up for container usage
+
+The following commands should suffice. There is also a docker-compose.yml file if your preference is to use that.
+
+```shell
+docker pull node:lts-alpine
+docker build -t affirm .
+docker run -p 3000:3000 affirm
+```
 
 ## OAuth
 
