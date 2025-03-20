@@ -3,12 +3,14 @@ FROM node:lts-alpine AS builder
 
 WORKDIR /app
 
+# Install build dependencies
+RUN apk add --no-cache g++ gcc make python3
+
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies with specific version
-RUN npm ci --ignore-scripts && \
-    npm install @scalar/hono-api-reference@0.7.2 --ignore-scripts
+# Install dependencies
+RUN npm ci --ignore-scripts
 
 # Copy source code
 COPY . .
@@ -21,12 +23,17 @@ FROM node:lts-alpine
 
 WORKDIR /app
 
+# Install build dependencies
+RUN apk add --no-cache g++ gcc make python3
+
 # Copy package files
 COPY package*.json ./
 
-# Install git and production dependencies with specific version
+# Install git and production dependencies
 RUN npm install --omit=dev --ignore-scripts && \
-    npm install @scalar/hono-api-reference@0.7.2 --ignore-scripts
+    npm rebuild bcrypt --build-from-source && \
+    # Keep the build dependencies for bcrypt runtime
+    apk add --no-cache g++ gcc make python3
 
 # Copy built files from builder stage
 COPY --from=builder /app/dist ./dist

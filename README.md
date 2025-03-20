@@ -65,12 +65,13 @@ USERINFO_ENDPOINT_PATH=/userinfo
 
 ## Setting up for container usage
 
-The following commands should suffice. There is also a docker-compose.yml file if your preference is to use that.
+The following commands should suffice.
 
 ```shell
 docker pull node:lts-alpine
 docker build -t affirm .
-docker run -p 3000:3000 affirm
+#docker run -p 3000:3000 affirm
+docker compose up
 ```
 
 ## OAuth
