@@ -210,7 +210,28 @@ export const authorize: AppRouteHandler<AuthorizeRoute> = async (c) => {
         };
         return c.json(response, HttpStatusCodes.OK);
     } catch (error) {
-        c.var.logger.error(`authorize: Unable to verify JWT token.`, error);
+        c.var.logger.error(
+            `authorize: Unable to verify JWT token. Error: ${JSON.stringify(error)}`,
+        );
+        if (
+            (error instanceof Error &&
+                (error as any).code ===
+                    "ERR_JWS_SIGNATURE_VERIFICATION_FAILED") ||
+            (error as any).code === "ERR_JWT_EXPIRED" ||
+            (error as any).code === "ERR_JWT_INVALID" ||
+            (error as any).code === "ERR_JWT_UNSUPPORTED_ALGORITHM" ||
+            (error as any).code === "ERR_JWT_INVALID_AUDIENCE" ||
+            (error as any).code === "ERR_JWT_INVALID_ISSUER" ||
+            (error as any).code === "ERR_JWS_INVALID"
+        ) {
+            return c.json(
+                {
+                    message: HttpStatusPhrases.UNAUTHORIZED,
+                    statusCode: HttpStatusCodes.UNAUTHORIZED,
+                },
+                HttpStatusCodes.UNAUTHORIZED,
+            );
+        }
         return c.json(
             {
                 message: HttpStatusPhrases.INTERNAL_SERVER_ERROR,

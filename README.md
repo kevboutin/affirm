@@ -61,6 +61,8 @@ USERINFO_ENDPOINT_PATH=/userinfo
 - [x] Add sub, authType, idpClient (client identifier) and idpMetadata (authorization server metadata URL) to user
 - [x] Add metadata endpoint "/.well-known/oauth-authorization-server"
 - [x] Add token and authorization endpoints
+- [x] Fix unit tests for auth
+- [ ] Fix unit tests for roles and users (this is FGA getting in the way)
 - [ ] Use hono/cookie to set the token to an http-only session cookie https://www.youtube.com/watch?v=uI5JgY7QaaQ @ 52:31
 
 ## Setting up for container usage
@@ -80,19 +82,19 @@ There are four distinct roles defined in the [OAuth 2.1 specification](https://d
 
 ### resource owner:
 
-    An entity capable of granting access to a protected resource. When the resource owner is a person, it is referred to as an end user. This is sometimes abbreviated as "RO".
+An entity capable of granting access to a protected resource. When the resource owner is a person, it is referred to as an end user. This is sometimes abbreviated as "RO".
 
 ### resource server:
 
-    The server hosting the protected resources, capable of accepting and responding to protected resource requests using access tokens. The resource server is often accessible via an API. This is sometimes abbreviated as "RS".
+The server hosting the protected resources, capable of accepting and responding to protected resource requests using access tokens. The resource server is often accessible via an API. This is sometimes abbreviated as "RS".
 
 ### client:
 
-    An application making protected resource requests on behalf of the resource owner and with its authorization. The term "client" does not imply any particular implementation characteristics (e.g., whether the application executes on a server, a desktop, or other devices).
+An application making protected resource requests on behalf of the resource owner and with its authorization. The term "client" does not imply any particular implementation characteristics (e.g., whether the application executes on a server, a desktop, or other devices).
 
 ### authorization server:
 
-    The server issuing access tokens to the client after successfully authenticating the resource owner and obtaining authorization. This is sometimes abbreviated as "AS".
+The server issuing access tokens to the client after successfully authenticating the resource owner and obtaining authorization. This is sometimes abbreviated as "AS".
 
 Most of this specification defines the interaction between the client and the authorization server, as well as between the client and resource server.
 
@@ -166,13 +168,13 @@ Interoperability is handled by using an authorization server metadata describing
 
 ### Obtaining Authorization Server Metadata
 
-Authorization servers supporting metadata MUST make a JSON document containing metadata as specified in Section 2 available at a path formed by inserting a well-known URI string into the authorization server's issuer identifier between the host component and the path component, if any. By default, the well-known URI string used is "/.well-known/oauth-authorization-server". This path MUST use the "https" scheme. The syntax and semantics of ".well-known" are defined in [RFC5785](https://www.rfc-editor.org/rfc/rfc5785.txt). The well-known URI suffix used MUST be registered in the IANA "Well-Known URIs" registry.
+Authorization servers supporting metadata MUST make a JSON document containing metadata available at a path formed by inserting a well-known URI string into the authorization server's issuer identifier between the host component and the path component, if any. By default, the well-known URI string used is "/.well-known/oauth-authorization-server". This path MUST use the "https" scheme. The syntax and semantics of ".well-known" are defined in [RFC5785](https://www.rfc-editor.org/rfc/rfc5785.txt). The well-known URI suffix used MUST be registered in the IANA "Well-Known URIs" registry.
 
 Different applications utilizing OAuth authorization servers in application-specific ways may define and register different well-known URI suffixes used to publish authorization server metadata as used by those applications. For instance, if the example application uses an OAuth authorization server in an example-specific way, and there are example-specific metadata values that it needs to publish, then it might register and use the "example-configuration" URI suffix and publish the metadata document at the path formed by inserting "/.well-known/example-configuration" between the host and path components of the authorization server's issuer identifier. Alternatively, many such applications will use the default well-known URI string "/.well-known/oauth-authorization-server", which is the right choice for general-purpose OAuth authorization servers, and not register an application-specific one.
 
 An OAuth 2 application using this specification MUST specify what well-known URI suffix it will use for this purpose. The same authorization server MAY choose to publish its metadata at multiple well-known locations derived from its issuer identifier, for example, publishing metadata at both "/.well-known/example-configuration" and "/.well-known/oauth-authorization-server".
 
-Some OAuth applications will choose to use the well-known URI suffix "openid-configuration". As described in Section 5, despite the identifier "/.well-known/openid-configuration", appearing to be OpenID specific, its usage in the specification is actually referring to a general OAuth 2 feature that is not specific to OpenID Connect.
+Some OAuth applications will choose to use the well-known URI suffix "openid-configuration". Despite the identifier "/.well-known/openid-configuration", appearing to be OpenID specific, its usage in the specification is actually referring to a general OAuth 2 feature that is not specific to OpenID Connect.
 
 ## Client Types
 
@@ -220,7 +222,7 @@ To support clients in possession of a client secret, the authorization server MU
 
 ### client_id:
 
-    REQUIRED. The client identifier issued to the client during the registration process described by Section 2.2.
+    REQUIRED. The client identifier issued to the client during the registration process.
 
 ### client_secret:
 
@@ -230,11 +232,13 @@ The parameters can only be transmitted in the request content and MUST NOT be in
 
 For example, a request to authenticate using the content parameters (with extra line breaks for display purposes only):
 
+```shell
 POST /token HTTP/1.1
 Host: server.example.com
 Content-Type: application/x-www-form-urlencoded
 
 grant_type=client_credentials&client_id=s6BhdRkqt3&client_secret=7Fjfp0ZBr1KtDRbnfVdmIw
+```
 
 The authorization server MAY support the HTTP Basic authentication scheme for authenticating clients that were issued a client secret.
 
@@ -294,12 +298,14 @@ The client makes a request to the token endpoint by sending the following parame
 
 For example, the client makes the following HTTP request:
 
+```shell
 POST /token HTTP/1.1
 Host: server.example.com
 Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
 Content-Type: application/x-www-form-urlencoded
 
 grant_type=client_credentials
+```
 
 ## Token response
 
@@ -333,15 +339,17 @@ The authorization server MUST include the HTTP Cache-Control response header fie
 
 For example:
 
+```shell
 HTTP/1.1 200 OK
 Content-Type: application/json
 Cache-Control: no-store
 
 {
-"access_token": "2YotnFZFEjr1zCsicMWpAA",
-"token_type": "Bearer",
-"expires_in": 3600
+    "access_token": "2YotnFZFEjr1zCsicMWpAA",
+    "token_type": "Bearer",
+    "expires_in": 3600
 }
+```
 
 ## Error Response
 
@@ -389,6 +397,7 @@ The parameters are included in the content of the HTTP response using the applic
 
 For example:
 
+```shell
 HTTP/1.1 400 Bad Request
 Content-Type: application/json
 Cache-Control: no-store
@@ -396,6 +405,7 @@ Cache-Control: no-store
 {
 "error": "invalid_request"
 }
+```
 
 ## Client Credentials Grant
 
@@ -429,9 +439,11 @@ When sending the access token in the Authorization request header field defined 
 
 For example:
 
+```shell
 GET /resource HTTP/1.1
 Host: server.example.com
 Authorization: Bearer mF_9.B5f-4.1JqM
+```
 
 As described in Section 11.1 of [RFC9110](https://www.rfc-editor.org/info/rfc9110), the string bearer is case-insensitive. This means all of the following are valid uses of the Authorization header:
 
@@ -459,11 +471,13 @@ The HTTP request method is one for which the content has defined semantics. In p
 
 For example, the client makes the following HTTP request using transport-layer security:
 
+```shell
 POST /resource HTTP/1.1
 Host: server.example.com
 Content-Type: application/x-www-form-urlencoded
 
 access_token=mF_9.B5f-4.1JqM
+```
 
 ## Access Token Validation
 
