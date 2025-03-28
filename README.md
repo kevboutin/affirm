@@ -53,17 +53,11 @@ USERINFO_ENDPOINT_PATH=/userinfo
 
 - [x] Add roles like user:read, user:modify, user:delete, role:modify, role:read, role:delete, etc. These are permission actions comprised of entityModel:action. https://www.youtube.com/watch?v=6IaEhu8epnA OR https://www.youtube.com/watch?v=wnSArmbI6qw
 - [x] Add new seed script for roles (viewer, editor, admin)
-- [x] Create public and private asymetric keys
 - [x] Add Hono jwk auth middleware https://github.com/honojs/hono/pull/3826 or https://hono.dev/docs/middleware/builtin/jwk
 - [ ] Implement SSO auth
 - [x] Implement non-SSO auth (oauth2.1) https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1-12
-- [x] Add userinfo endpoint
-- [x] Add sub, authType, idpClient (client identifier) and idpMetadata (authorization server metadata URL) to user
-- [x] Add metadata endpoint "/.well-known/oauth-authorization-server"
-- [x] Add token and authorization endpoints
-- [x] Fix unit tests for auth
-- [x] Fix unit tests for roles and users
-- [ ] Use hono/cookie to set the token to an http-only session cookie https://www.youtube.com/watch?v=uI5JgY7QaaQ @ 52:31
+- [ ] Use hono/cookie to set the token to an http-only session cookie https://www.youtube.com/watch?v=uI5JgY7QaaQ @ 52:31 setSignedCookie, getSignedCookie, deleteCookie from hono/cookie (http-only secure cookies)
+- [ ] Once cookies are used, we need to provide a logout endpoint (revoke using POST with an empty 200 result status whether it was successful or even if the token provided is not valid) to destroy cookies potentially https://tools.ietf.org/html/rfc7009
 
 Add these flags on vitest for logging: --printConsoleTrace=true --silent=false
 
