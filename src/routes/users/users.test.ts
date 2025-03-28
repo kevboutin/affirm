@@ -58,7 +58,6 @@ describe("users routes", () => {
         expect(response.status).toBe(201);
         if (response.status === 201) {
             const json = await response.json();
-            console.log(`KEVIN: created user`, json);
             expect(json?.username).toBe(username);
             newId = json?._id;
         }
@@ -110,7 +109,6 @@ describe("users routes", () => {
         expect(response.status).toBe(200);
         if (response.status === 200) {
             const json = await response.json();
-            console.log(`KEVIN: single user ${JSON.stringify(json, null, 2)}`);
             expect(json?._id).toBe(newId);
         }
     });

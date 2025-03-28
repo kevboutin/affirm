@@ -62,8 +62,10 @@ USERINFO_ENDPOINT_PATH=/userinfo
 - [x] Add metadata endpoint "/.well-known/oauth-authorization-server"
 - [x] Add token and authorization endpoints
 - [x] Fix unit tests for auth
-- [ ] Fix unit tests for roles and users (this is FGA getting in the way)
+- [x] Fix unit tests for roles and users
 - [ ] Use hono/cookie to set the token to an http-only session cookie https://www.youtube.com/watch?v=uI5JgY7QaaQ @ 52:31
+
+Add these flags on vitest for logging: --printConsoleTrace=true --silent=false
 
 ## Setting up for container usage
 

@@ -22,7 +22,7 @@ async function getJwks(): Promise<HonoJsonWebKey[]> {
     const jKey = "jwks";
     const jUrlKey = "jwks_url";
     const jwksUrl = `${env!.PROTOCOL}://${env!.HOST}:${env!.PORT}/.well-known/jwks.json`;
-    const existingUrl = keyMap.get(jUrlKey); // could be c.env.get(jUrlKey)
+    const existingUrl = keyMap.get(jUrlKey);
     let jwks = existingUrl === jwksUrl ? keyMap.get(jKey) : null;
     if (!jwks) {
         console.info(`getJwks: Fetching JWKS from ${jwksUrl}`);
@@ -34,8 +34,8 @@ async function getJwks(): Promise<HonoJsonWebKey[]> {
         }
         const responseText = await response.text();
         jwks = JSON.parse(responseText);
-        keyMap.set(jKey, jwks); // could be c.env.put(jKey)
-        keyMap.set(jUrlKey, jwksUrl); // could be c.env.put(jUrlKey)
+        keyMap.set(jKey, jwks);
+        keyMap.set(jUrlKey, jwksUrl);
     }
     const keys = jwks.keys;
     console.info(`getJwks: keys: ${JSON.stringify(keys)}`);
@@ -51,24 +51,27 @@ export default function createApp() {
     app.use("*", timeout(5000));
     app.use(compress());
     app.use(secureHeaders());
-    app.use(
-        "/roles",
-        jwk({
-            keys: getJwks,
-        }),
-    );
-    app.use(
-        "/roles/*",
-        jwk({
-            keys: getJwks,
-        }),
-    );
-    app.use(
-        "/users/*",
-        jwk({
-            keys: getJwks,
-        }),
-    );
+    // Only apply JWT middleware if not in test environment
+    if (env!.NODE_ENV !== "test") {
+        app.use(
+            "/roles",
+            jwk({
+                keys: getJwks,
+            }),
+        );
+        app.use(
+            "/roles/*",
+            jwk({
+                keys: getJwks,
+            }),
+        );
+        app.use(
+            "/users/*",
+            jwk({
+                keys: getJwks,
+            }),
+        );
+    }
     app.use(
         "/userinfo",
         jwk({

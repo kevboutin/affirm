@@ -30,7 +30,7 @@ const db = new DatabaseService({
     },
 });
 const _ = await db.createConnection();
-const userRepository = new UserRepository(User);
+const userRepository = new UserRepository(User as any);
 
 const validatePassword = async (password: string, hashedPassword: string) => {
     return await bcrypt.compare(password, hashedPassword);
@@ -58,8 +58,13 @@ export const authenticate: AppRouteHandler<AuthenticateRoute> = async (c) => {
             `authenticate: Grant type is not supported.`,
             grantType,
         );
+        c.header(
+            "WWW-Authenticate",
+            `Bearer realm="${env!.TOKEN_ISSUER}", error="unsupported_grant_type", error_description="The provided grant_type is not supported"`,
+        );
         return c.json(
             {
+                error: "unsupported_grant_type" as const,
                 message: "The provided grant_type is not supported.",
                 statusCode: 401,
             },
@@ -72,8 +77,16 @@ export const authenticate: AppRouteHandler<AuthenticateRoute> = async (c) => {
             c.var.logger.info(
                 `authenticate: Unable to find user successfully for client ${clientId}.`,
             );
+            c.header(
+                "WWW-Authenticate",
+                `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_client", error_description="Credentials are not valid"`,
+            );
             return c.json(
-                { message: "Credentials are not valid.", statusCode: 401 },
+                {
+                    error: "invalid_client" as const,
+                    message: "Credentials are not valid.",
+                    statusCode: 401,
+                },
                 HttpStatusCodes.UNAUTHORIZED,
             );
         }
@@ -87,8 +100,16 @@ export const authenticate: AppRouteHandler<AuthenticateRoute> = async (c) => {
                 c.var.logger.info(
                     `authenticate: Unable to validate password for client ${clientId}.`,
                 );
+                c.header(
+                    "WWW-Authenticate",
+                    `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_client", error_description="Credentials are not valid"`,
+                );
                 return c.json(
-                    { message: "Credentials are not valid.", statusCode: 401 },
+                    {
+                        error: "invalid_client" as const,
+                        message: "Credentials are not valid.",
+                        statusCode: 401,
+                    },
                     HttpStatusCodes.UNAUTHORIZED,
                 );
             }
@@ -148,8 +169,13 @@ export const authenticate: AppRouteHandler<AuthenticateRoute> = async (c) => {
             `authenticate: Unable to query successfully with client ${clientId}.`,
             error,
         );
+        c.header(
+            "WWW-Authenticate",
+            `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_request"`,
+        );
         return c.json(
             {
+                error: "invalid_request" as const,
                 message: HttpStatusPhrases.INTERNAL_SERVER_ERROR,
                 statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
             },
@@ -161,8 +187,13 @@ export const authenticate: AppRouteHandler<AuthenticateRoute> = async (c) => {
 export const authorize: AppRouteHandler<AuthorizeRoute> = async (c) => {
     const header = c.req.header("Authorization");
     if (!header) {
+        c.header(
+            "WWW-Authenticate",
+            `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_request", error_description="Authorization header is missing"`,
+        );
         return c.json(
             {
+                error: "invalid_request" as const,
                 message: "Authorization header is missing.",
                 statusCode: HttpStatusCodes.UNAUTHORIZED,
             },
@@ -171,8 +202,13 @@ export const authorize: AppRouteHandler<AuthorizeRoute> = async (c) => {
     }
     const bearerToken = header.split(" ")[1];
     if (!bearerToken) {
+        c.header(
+            "WWW-Authenticate",
+            `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_request", error_description="Bearer token is missing"`,
+        );
         return c.json(
             {
+                error: "invalid_request" as const,
                 message: "Bearer token is missing.",
                 statusCode: HttpStatusCodes.UNAUTHORIZED,
             },
@@ -224,16 +260,26 @@ export const authorize: AppRouteHandler<AuthorizeRoute> = async (c) => {
             (error as any).code === "ERR_JWT_INVALID_ISSUER" ||
             (error as any).code === "ERR_JWS_INVALID"
         ) {
+            c.header(
+                "WWW-Authenticate",
+                `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_request"`,
+            );
             return c.json(
                 {
+                    error: "invalid_request" as const,
                     message: HttpStatusPhrases.UNAUTHORIZED,
                     statusCode: HttpStatusCodes.UNAUTHORIZED,
                 },
                 HttpStatusCodes.UNAUTHORIZED,
             );
         }
+        c.header(
+            "WWW-Authenticate",
+            `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_request"`,
+        );
         return c.json(
             {
+                error: "invalid_request" as const,
                 message: HttpStatusPhrases.INTERNAL_SERVER_ERROR,
                 statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
             },
@@ -266,8 +312,13 @@ export const jwks: AppRouteHandler<JWKSRoute> = async (c) => {
         );
     } catch (error) {
         c.var.logger.error(`jwks: Unable to export JWK.`, error);
+        c.header(
+            "WWW-Authenticate",
+            `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_request"`,
+        );
         return c.json(
             {
+                error: "invalid_request" as const,
                 message: HttpStatusPhrases.INTERNAL_SERVER_ERROR,
                 statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
             },
@@ -327,8 +378,13 @@ export const userinfo: AppRouteHandler<UserinfoRoute> = async (c) => {
         return c.json(redactedUser, HttpStatusCodes.OK);
     } catch (error) {
         c.var.logger.error(`userinfo: Unable to query successfully.`, error);
+        c.header(
+            "WWW-Authenticate",
+            `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_request"`,
+        );
         return c.json(
             {
+                error: "invalid_request" as const,
                 message: HttpStatusPhrases.INTERNAL_SERVER_ERROR,
                 statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
             },

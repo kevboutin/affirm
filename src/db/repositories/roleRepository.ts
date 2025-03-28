@@ -1,28 +1,28 @@
 import type { Model } from "mongoose";
 import MongooseQuery from "../mongooseQuery";
 import AuditLogRepository from "./auditLogRepository";
-import { AuditLog } from "../models/index";
+import { AuditLog, Role } from "../models/index";
+import type { RoleDocument } from "../models/role";
 import type {
     AutocompleteResult,
     CurrentUser,
     FindAndCountAllRolesResult,
 } from "./types";
-import type { RoleDocument } from "../models/role";
 
 /**
  * @class RoleRepository
  */
 class RoleRepository {
-    model: Model<RoleDocument>;
+    model: Model<Role>;
     auditLogRepository: AuditLogRepository;
 
     /**
      * Creates a role repository.
      *
      * @constructor
-     * @param {Model<RoleDocument>} model The database model.
+     * @param {Model<Role>} model The database model.
      */
-    constructor(model: Model<RoleDocument>) {
+    constructor(model: Model<Role>) {
         this.model = model;
         this.auditLogRepository = new AuditLogRepository(AuditLog);
     }
@@ -30,12 +30,12 @@ class RoleRepository {
     /**
      * Create a new role.
      *
-     * @param {Partial<RoleDocument>} data The document.
+     * @param {Partial<Role>} data The document.
      * @param {CurrentUser} currentUser The current user.
-     * @returns {Promise<Object>} The newly created document.
+     * @returns {Promise<RoleDocument>} The newly created document.
      */
     async create(
-        data: Partial<RoleDocument>,
+        data: Partial<Role>,
         currentUser: CurrentUser,
     ): Promise<RoleDocument> {
         await this.model.createCollection();
@@ -56,13 +56,13 @@ class RoleRepository {
      * Update the document matching the identifer.
      *
      * @param {string} id The identifier.
-     * @param {Object} data The updated attributes with their values.
+     * @param {Partial<Role>} data The updated attributes with their values.
      * @param {CurrentUser} currentUser The current user.
      * @returns {Promise<RoleDocument | null>} The updated document.
      */
     async update(
         id: string,
-        data: Object,
+        data: Partial<Role>,
         currentUser: CurrentUser,
     ): Promise<RoleDocument | null> {
         await this.model
@@ -120,7 +120,7 @@ class RoleRepository {
      * Find a specific document.
      *
      * @param {string} id The identifier.
-     * @returns {Promise<Object>} A Promise to return a role document.
+     * @returns {Promise<RoleDocument | null>} A Promise to return a role document.
      */
     async findById(id: string): Promise<RoleDocument | null> {
         return await this.model.findById(id);

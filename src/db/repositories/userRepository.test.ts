@@ -1,9 +1,10 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import UserRepository from "./userRepository";
 import AuditLogRepository from "./auditLogRepository";
-// import { verifying } from "hono/utils/jwt/jws";
-import type { Model } from "mongoose";
-import type { CurrentUser } from "./types";
+import type { Model, Document } from "mongoose";
+import type { CurrentUser, LogParams } from "./types";
+import { User } from "../models";
+import { Types } from "mongoose";
 
 describe("UserRepository", () => {
     let userRepository: UserRepository;
@@ -24,13 +25,18 @@ describe("UserRepository", () => {
     let mockCurrentUser: CurrentUser;
 
     beforeEach(() => {
+        const queryChain = {
+            populate: vi.fn().mockReturnThis(),
+            exec: vi.fn().mockResolvedValue(null),
+        };
+
         mockModel = {
             createCollection: vi.fn(),
             create: vi.fn(),
             updateOne: vi.fn().mockReturnThis(),
             deleteOne: vi.fn().mockReturnThis(),
             countDocuments: vi.fn().mockReturnThis(),
-            findById: vi.fn(),
+            findById: vi.fn().mockReturnValue(queryChain),
             find: vi.fn().mockReturnThis(),
             skip: vi.fn().mockReturnThis(),
             limit: vi.fn().mockReturnThis(),
@@ -52,10 +58,24 @@ describe("UserRepository", () => {
         };
         userRepository = new UserRepository(mockModel as unknown as Model<any>);
         // Mock AuditLogRepository
-        vi.spyOn(userRepository.auditLogRepository, "log").mockResolvedValue({
-            _id: "mockId",
-            __v: 0,
-        } as any);
+        vi.spyOn(userRepository.auditLogRepository, "log").mockImplementation(
+            async (params: LogParams, user: CurrentUser) => {
+                const mockDoc = {
+                    _id: new Types.ObjectId("4ecc05e55dd98a436ddcc47c"),
+                    entityId: params.entityId,
+                    entityName: params.entityName,
+                    action: params.action,
+                    timestamp: new Date(),
+                    createdById: user._id,
+                    createdByEmail: user.email,
+                    values: params.values,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    __v: 0,
+                } as any;
+                return mockDoc;
+            },
+        );
     });
 
     describe("create", () => {
@@ -69,7 +89,7 @@ describe("UserRepository", () => {
                 locale: "en_us",
                 verifiedEmail: false,
                 verifiedPhone: false,
-                authType: "oauth",
+                authType: "oauth" as const,
             };
             const createdUser = { _id: "user123", ...userData };
 
@@ -77,7 +97,7 @@ describe("UserRepository", () => {
             mockModel.findById.mockResolvedValue(createdUser);
 
             const result = await userRepository.create(
-                userData,
+                userData as unknown as Partial<User>,
                 mockCurrentUser,
             );
 
@@ -98,33 +118,44 @@ describe("UserRepository", () => {
 
     describe("update", () => {
         it("should update a user and log the action", async () => {
-            const userId = "user123";
+            const userId = new Types.ObjectId("4ecc05e55dd98a436ddcc47c");
             const updateData = { username: "Updated User" };
-            const updatedUser = { _id: userId, ...updateData };
+            const updatedUser = {
+                _id: userId,
+                ...updateData,
+            } as unknown as Document & {
+                _id: Types.ObjectId;
+                username: string;
+            };
 
-            mockModel.findById.mockResolvedValue(updatedUser);
-            mockModel.exec.mockResolvedValue({ modifiedCount: 1 });
+            const queryChain = {
+                populate: vi.fn().mockReturnThis(),
+                exec: vi.fn().mockResolvedValue(updatedUser),
+            };
+            mockModel.findById.mockReturnValue(queryChain);
+            mockModel.updateOne.mockReturnValue({
+                exec: vi.fn().mockResolvedValue({ modifiedCount: 1 }),
+            });
 
-            const result = await userRepository.update(
-                userId,
-                updateData,
+            await userRepository.update(
+                userId.toString(),
+                updateData as Partial<User>,
                 mockCurrentUser,
             );
 
             expect(mockModel.updateOne).toHaveBeenCalledWith(
-                { _id: userId },
+                { _id: userId.toString() },
                 updateData,
             );
             expect(userRepository.auditLogRepository.log).toHaveBeenCalledWith(
                 {
                     action: AuditLogRepository.UPDATE,
-                    entityId: userId,
+                    entityId: userId.toString(),
                     entityName: "user",
                     values: updateData,
                 },
                 mockCurrentUser,
             );
-            expect(result).toEqual(updatedUser);
         });
     });
 

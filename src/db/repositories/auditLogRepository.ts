@@ -5,20 +5,20 @@ import type {
     FindAndCountAllAuditLogsResult,
     LogParams,
 } from "./types";
-import type { AuditLogDocument } from "../models/auditLog";
+import AuditLog from "../models/auditLog";
 
 /**
  * @class AuditLogRepository
  */
 class AuditLogRepository {
-    model: Model<AuditLogDocument>;
+    model: Model<AuditLog>;
 
     /**
      * Creates the repository for auditLog.
      *
-     * @param {Model<AuditLogDocument>} model The database model.
+     * @param {Model<AuditLog>} model The database model.
      */
-    constructor(model: Model<AuditLogDocument>) {
+    constructor(model: Model<AuditLog>) {
         this.model = model;
     }
 

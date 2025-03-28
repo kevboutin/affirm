@@ -1,15 +1,15 @@
-import mongoose, { Schema, Document } from "mongoose";
+import { InferSchemaType, Schema, Document, Types, model } from "mongoose";
 import { RoleDocument } from "./role";
 
 export interface UserDocument extends Document {
-    _id: mongoose.Types.ObjectId;
+    _id: Types.ObjectId;
     username: string;
     password?: string;
     email: string;
     phone?: string;
     locale?: string;
     timezone?: string;
-    roles?: Array<mongoose.Types.ObjectId>;
+    roles?: Array<Types.ObjectId>;
     verifiedEmail: boolean;
     verifiedPhone: boolean;
     authType: string;
@@ -21,7 +21,7 @@ export interface UserDocument extends Document {
 }
 
 export interface UserDocumentWithRoles extends Document {
-    _id: mongoose.Types.ObjectId;
+    _id: Types.ObjectId;
     username: string;
     password?: string;
     email: string;
@@ -40,25 +40,25 @@ export interface UserDocumentWithRoles extends Document {
 }
 
 export interface RedactedUserDocument extends Document {
-    _id: mongoose.Types.ObjectId;
+    _id: Types.ObjectId;
     username: string;
     email: string;
-    phone?: string;
-    locale?: string;
-    timezone?: string;
-    roles?: Array<mongoose.Types.ObjectId>;
+    phone?: string | null;
+    locale?: string | null;
+    timezone?: string | null;
+    roles?: Array<Types.ObjectId> | null;
     verifiedEmail: boolean;
     verifiedPhone: boolean;
     authType: string;
-    idpClient?: string;
-    idpMetadata?: string;
-    idpSub?: string;
+    idpClient?: string | null;
+    idpMetadata?: string | null;
+    idpSub?: string | null;
     createdAt?: Date;
     updatedAt?: Date;
 }
 
 export interface RedactedUserDocumentWithRoles extends Document {
-    _id: mongoose.Types.ObjectId;
+    _id: Types.ObjectId;
     username: string;
     email: string;
     phone?: string;
@@ -75,8 +75,26 @@ export interface RedactedUserDocumentWithRoles extends Document {
     updatedAt?: Date;
 }
 
+export interface UserCreateDocument extends Document {
+    username: string;
+    password?: string;
+    email: string;
+    phone?: string;
+    locale?: string;
+    timezone?: string;
+    roles?: Array<string>;
+    verifiedEmail?: boolean;
+    verifiedPhone?: boolean;
+    authType?: "oidc" | "oauth";
+    idpClient?: string;
+    idpMetadata?: string;
+    idpSub?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
 export interface UserUpdateDocument extends Document {
-    _id: mongoose.Types.ObjectId;
+    _id: Types.ObjectId;
     username: string;
     password?: string;
     email: string;
@@ -109,7 +127,7 @@ const UserSchema = new Schema(
         password: { type: String, required: false },
         phone: { type: String, required: false },
         roles: {
-            type: [Schema.ObjectId],
+            type: [Types.ObjectId],
             required: false,
             ref: "Role",
         },
@@ -121,5 +139,6 @@ const UserSchema = new Schema(
     { timestamps: true, collection: "users" },
 );
 
-const User = mongoose.model<UserDocument>("User", UserSchema);
+type User = InferSchemaType<typeof UserSchema>;
+const User = model<User>("User", UserSchema);
 export default User;

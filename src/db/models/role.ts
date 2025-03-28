@@ -1,9 +1,9 @@
-import mongoose, { Schema, Document } from "mongoose";
+import { InferSchemaType, Schema, Document, model, Types } from "mongoose";
 
 export interface RoleDocument extends Document {
-    _id: mongoose.Types.ObjectId;
+    _id: Types.ObjectId;
     name: string;
-    description?: string;
+    description?: string | null;
     createdAt?: Date;
     updatedAt?: Date;
 }
@@ -16,5 +16,6 @@ const RoleSchema = new Schema(
     { timestamps: true, collection: "roles" },
 );
 
-const Role = mongoose.model<RoleDocument>("Role", RoleSchema);
+type Role = InferSchemaType<typeof RoleSchema>;
+const Role = model<Role>("Role", RoleSchema);
 export default Role;

@@ -6,6 +6,7 @@ import type { AppRouteHandler } from "../../types";
 import { Role } from "../../db/models/index";
 import RoleRepository from "../../db/repositories/roleRepository";
 import { ZOD_ERROR_CODES, ZOD_ERROR_MESSAGES } from "../../constants";
+import { Types } from "mongoose";
 import type {
     CreateRoute,
     GetOneRoute,
@@ -13,7 +14,6 @@ import type {
     PatchRoute,
     RemoveRoute,
 } from "./roles.routes.js";
-import type { RoleDocument } from "src/db/models/role";
 
 const db = new DatabaseService({
     dbUri: env!.DB_URL,
@@ -31,10 +31,17 @@ const db = new DatabaseService({
 const _ = await db.createConnection();
 const roleRepository = new RoleRepository(Role);
 
+const isValidObjectId = (id: string) => {
+    if (Types.ObjectId.isValid(id)) {
+        if (String(new Types.ObjectId(id)) === id) return true;
+        return false;
+    }
+    return false;
+};
+
 export const list: AppRouteHandler<ListRoute> = async (c) => {
     try {
-        const result: { count: number; rows: RoleDocument[] } =
-            await roleRepository.findAndCountAll({});
+        const result = await roleRepository.findAndCountAll({});
         const { count, rows } = result;
         c.var.logger.info(`list: Found ${count} role(s).`);
         return c.json({ count, rows }, HttpStatusCodes.OK);
@@ -73,18 +80,18 @@ export const create: AppRouteHandler<CreateRoute> = async (c) => {
 };
 
 export const getOne: AppRouteHandler<GetOneRoute> = async (c) => {
-    const { id } = c.req.valid("param");
-    if (id.length !== 24) {
-        c.var.logger.info(`getOne: Identifier ${id} is not a valid value.`);
-        return c.json(
-            {
-                message: HttpStatusPhrases.BAD_REQUEST,
-                statusCode: HttpStatusCodes.BAD_REQUEST,
-            },
-            HttpStatusCodes.BAD_REQUEST,
-        );
-    }
     try {
+        const { id } = c.req.valid("param");
+        if (!isValidObjectId(id)) {
+            c.var.logger.info(`getOne: Identifier ${id} is not a valid value.`);
+            return c.json(
+                {
+                    message: HttpStatusPhrases.BAD_REQUEST,
+                    statusCode: HttpStatusCodes.BAD_REQUEST,
+                },
+                HttpStatusCodes.BAD_REQUEST,
+            );
+        }
         const role = await roleRepository.findById(id);
         if (!role) {
             c.var.logger.info(
@@ -114,7 +121,7 @@ export const getOne: AppRouteHandler<GetOneRoute> = async (c) => {
 
 export const patch: AppRouteHandler<PatchRoute> = async (c) => {
     const { id } = c.req.valid("param");
-    if (id.length !== 24) {
+    if (!isValidObjectId(id)) {
         c.var.logger.info(`patch: Identifier ${id} is not a valid value.`);
         return c.json(
             {
@@ -178,7 +185,7 @@ export const patch: AppRouteHandler<PatchRoute> = async (c) => {
 
 export const remove: AppRouteHandler<RemoveRoute> = async (c) => {
     const { id } = c.req.valid("param");
-    if (id.length !== 24) {
+    if (!isValidObjectId(id)) {
         c.var.logger.info(`remove: Identifier ${id} is not a valid value.`);
         return c.json(
             {

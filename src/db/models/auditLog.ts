@@ -1,12 +1,12 @@
-import mongoose, { Schema, Document } from "mongoose";
+import { InferSchemaType, Schema, Document, model } from "mongoose";
 
 export interface AuditLogDocument extends Document {
     entityId: string;
     entityName: string;
     action: string;
     timestamp: Date;
-    createdById: string;
-    createdByEmail: string;
+    createdById?: string | null;
+    createdByEmail?: string | null;
     createdAt?: Date;
     updatedAt?: Date;
 }
@@ -26,5 +26,6 @@ const AuditLogSchema = new Schema(
 
 AuditLogSchema.index({ entityName: 1, action: 1 });
 
-const AuditLog = mongoose.model<AuditLogDocument>("AuditLog", AuditLogSchema);
+type AuditLog = InferSchemaType<typeof AuditLogSchema>;
+const AuditLog = model<AuditLog>("AuditLog", AuditLogSchema);
 export default AuditLog;

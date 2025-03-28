@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import * as HttpStatusCodes from "../../httpStatusCodes";
 import * as HttpStatusPhrases from "../../httpStatusPhrases";
 import DatabaseService from "../../db/index";
@@ -32,6 +33,14 @@ const db = new DatabaseService({
 const _ = await db.createConnection();
 const userRepository = new UserRepository(User);
 
+const isValidObjectId = (id: string) => {
+    if (Types.ObjectId.isValid(id)) {
+        if (String(new Types.ObjectId(id)) === id) return true;
+        return false;
+    }
+    return false;
+};
+
 export const list: AppRouteHandler<ListRoute> = async (c) => {
     try {
         const result: { count: number; rows: RedactedUserDocument[] } =
@@ -52,21 +61,17 @@ export const list: AppRouteHandler<ListRoute> = async (c) => {
 };
 
 export const create: AppRouteHandler<CreateRoute> = async (c) => {
-    const user = c.req.valid("json") as {
-        username: string;
-        email: string;
-        password?: string;
-        locale?: string;
-        timezone?: string;
-        idpClient?: string;
-        idpMetadata?: string;
-        idpSub?: string;
-        roles?: string[];
-        verifiedEmail?: boolean;
-        verifiedPhone?: boolean;
-        authType?: string;
+    const user = c.req.valid("json") as Partial<User> & {
+        authType?: "oidc" | "oauth";
     };
     try {
+        if (user.roles) {
+            user.roles = user.roles
+                .filter((id) => isValidObjectId(id as unknown as string))
+                .map(
+                    (id) => new Types.ObjectId(id as unknown as string),
+                ) as unknown as Types.DocumentArray<Types.ObjectId>;
+        }
         if (user.password) {
             const saltRounds = 10;
             user.password = await bcrypt.hash(user.password, saltRounds);
@@ -80,8 +85,18 @@ export const create: AppRouteHandler<CreateRoute> = async (c) => {
             `create: Created user with username=${user.username}.`,
         );
         const redactedUser = {
-            ...inserted,
-            password: undefined,
+            _id: inserted._id,
+            username: inserted.username,
+            email: inserted.email,
+            authType: inserted.authType,
+            verifiedEmail: inserted.verifiedEmail,
+            verifiedPhone: inserted.verifiedPhone,
+            roles: inserted.roles ?? undefined,
+            locale: inserted.locale ?? undefined,
+            timezone: inserted.timezone ?? undefined,
+            idpClient: inserted.idpClient ?? undefined,
+            idpMetadata: inserted.idpMetadata ?? undefined,
+            idpSub: inserted.idpSub ?? undefined,
         };
         return c.json(redactedUser, HttpStatusCodes.CREATED);
     } catch (error) {
@@ -98,7 +113,7 @@ export const create: AppRouteHandler<CreateRoute> = async (c) => {
 
 export const getOne: AppRouteHandler<GetOneRoute> = async (c) => {
     const { id } = c.req.valid("param");
-    if (id.length !== 24) {
+    if (!isValidObjectId(id)) {
         c.var.logger.info(`getOne: Identifier ${id} is not a valid value.`);
         return c.json(
             {
@@ -143,7 +158,7 @@ export const getOne: AppRouteHandler<GetOneRoute> = async (c) => {
 
 export const patch: AppRouteHandler<PatchRoute> = async (c) => {
     const { id } = c.req.valid("param");
-    if (id.length !== 24) {
+    if (!isValidObjectId(id)) {
         c.var.logger.info(`patch: Identifier ${id} is not a valid value.`);
         return c.json(
             {
@@ -153,7 +168,9 @@ export const patch: AppRouteHandler<PatchRoute> = async (c) => {
             HttpStatusCodes.BAD_REQUEST,
         );
     }
-    const updates = c.req.valid("json");
+    const updates = c.req.valid("json") as Partial<User> & {
+        authType?: "oidc" | "oauth";
+    };
     if (Object.keys(updates).length === 0) {
         return c.json(
             {
@@ -191,9 +208,10 @@ export const patch: AppRouteHandler<PatchRoute> = async (c) => {
                 HttpStatusCodes.NOT_FOUND,
             );
         }
+        const plainUser = user.toObject();
         c.var.logger.info(`patch: Updated user with identifier=${id}.`);
         const redactedUser = {
-            ...user,
+            ...plainUser,
             password: undefined,
         };
         return c.json(redactedUser, HttpStatusCodes.OK);
@@ -211,7 +229,7 @@ export const patch: AppRouteHandler<PatchRoute> = async (c) => {
 
 export const remove: AppRouteHandler<RemoveRoute> = async (c) => {
     const { id } = c.req.valid("param");
-    if (id.length !== 24) {
+    if (!isValidObjectId(id)) {
         c.var.logger.info(`remove: Identifier ${id} is not a valid value.`);
         return c.json(
             {

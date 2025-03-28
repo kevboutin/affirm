@@ -1,6 +1,9 @@
 import * as HttpStatusPhrases from "./httpStatusPhrases";
 import * as HttpStatusCodes from "./httpStatusCodes";
-import { createMessageObjectSchema } from "./openapi/schemas/index";
+import {
+    createAuthErrorObjectSchema,
+    createMessageObjectSchema,
+} from "./openapi/schemas/index";
 
 export const ZOD_ERROR_MESSAGES = {
     REQUIRED: "Required",
@@ -18,7 +21,14 @@ export const badRequestSchema = createMessageObjectSchema(
     HttpStatusCodes.BAD_REQUEST,
 );
 
-export const unauthorizedSchema = createMessageObjectSchema(
+export const unsupportedGrantTypeSchema = createAuthErrorObjectSchema(
+    "unsupported_grant_type",
+    "The provided grant_type is not supported.",
+    HttpStatusCodes.UNAUTHORIZED,
+);
+
+export const unauthorizedSchema = createAuthErrorObjectSchema(
+    "invalid_client",
     HttpStatusPhrases.UNAUTHORIZED,
     HttpStatusCodes.UNAUTHORIZED,
 );
@@ -34,6 +44,12 @@ export const tooManyRequestsSchema = createMessageObjectSchema(
 );
 
 export const serverErrorSchema = createMessageObjectSchema(
+    HttpStatusPhrases.INTERNAL_SERVER_ERROR,
+    HttpStatusCodes.INTERNAL_SERVER_ERROR,
+);
+
+export const serverAuthErrorSchema = createAuthErrorObjectSchema(
+    "invalid_request",
     HttpStatusPhrases.INTERNAL_SERVER_ERROR,
     HttpStatusCodes.INTERNAL_SERVER_ERROR,
 );

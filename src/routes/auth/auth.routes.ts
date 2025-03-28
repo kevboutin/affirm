@@ -11,7 +11,7 @@ import {
 import { formContent, jsonContent } from "../../openapi/helpers/index";
 import {
     notFoundSchema,
-    serverErrorSchema,
+    serverAuthErrorSchema,
     timeoutErrorSchema,
     tooManyRequestsSchema,
     unauthorizedSchema,
@@ -40,7 +40,7 @@ export const authenticate = createRoute({
             "Too many requests",
         ),
         [HttpStatusCodes.INTERNAL_SERVER_ERROR]: jsonContent(
-            serverErrorSchema,
+            serverAuthErrorSchema,
             "There was a server error",
         ),
         [HttpStatusCodes.GATEWAY_TIMEOUT]: jsonContent(
@@ -68,7 +68,7 @@ export const authorize = createRoute({
             "Too many requests",
         ),
         [HttpStatusCodes.INTERNAL_SERVER_ERROR]: jsonContent(
-            serverErrorSchema,
+            serverAuthErrorSchema,
             "There was a server error",
         ),
         [HttpStatusCodes.GATEWAY_TIMEOUT]: jsonContent(
@@ -92,7 +92,7 @@ export const jwks = createRoute({
             "Too many requests",
         ),
         [HttpStatusCodes.INTERNAL_SERVER_ERROR]: jsonContent(
-            serverErrorSchema,
+            serverAuthErrorSchema,
             "There was a server error",
         ),
         [HttpStatusCodes.GATEWAY_TIMEOUT]: jsonContent(
@@ -116,7 +116,7 @@ export const metadata = createRoute({
             "Too many requests",
         ),
         [HttpStatusCodes.INTERNAL_SERVER_ERROR]: jsonContent(
-            serverErrorSchema,
+            serverAuthErrorSchema,
             "There was a server error",
         ),
         [HttpStatusCodes.GATEWAY_TIMEOUT]: jsonContent(
@@ -145,7 +145,7 @@ export const userinfo = createRoute({
             "Too many requests",
         ),
         [HttpStatusCodes.INTERNAL_SERVER_ERROR]: jsonContent(
-            serverErrorSchema,
+            serverAuthErrorSchema,
             "There was a server error",
         ),
         [HttpStatusCodes.GATEWAY_TIMEOUT]: jsonContent(

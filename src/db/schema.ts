@@ -2,7 +2,9 @@ import mongoose from "mongoose";
 import { z } from "zod";
 
 export const authenticateSchema = z.object({
-    grant_type: z.enum(["client_credentials"]),
+    // We want to control the error for a bad grant_type with a 401 not 422.
+    // grant_type: z.enum(["client_credentials"]),
+    grant_type: z.string().optional(),
     client_id: z.string().optional(),
     client_secret: z.string().optional(),
 });
@@ -95,7 +97,7 @@ export const patchedUserSchema = z.object({
     timezone: z.string().optional(),
     verifiedEmail: z.boolean(),
     verifiedPhone: z.boolean(),
-    authType: z.string(),
+    authType: z.string().optional(),
     idpClient: z.string().optional(),
     idpMetadata: z.string().optional(),
     idpSub: z.string().optional(),
