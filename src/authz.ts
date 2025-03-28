@@ -15,6 +15,12 @@ type ProviderMetadata = {
     [key: string]: unknown;
 };
 
+type ProviderUserinfo = {
+    sub?: string;
+    oid?: string;
+    [key: string]: unknown;
+};
+
 const PERMISSIONS: ResourcePermissions = {
     logs: {
         viewer: ["view:logs"],
@@ -40,6 +46,13 @@ export class ProviderMetadataError extends Error {
     }
 }
 
+export class ProviderUserinfoError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = "ProviderUserinfoError";
+    }
+}
+
 export class ProviderUrlError extends Error {
     constructor(message: string) {
         super(message);
@@ -55,6 +68,13 @@ export class ProviderFetchError extends Error {
     ) {
         super(message);
         this.name = "ProviderFetchError";
+    }
+}
+
+export class ProviderUnauthorizedError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = "ProviderUnauthorizedError";
     }
 }
 
@@ -109,7 +129,7 @@ export namespace authz {
                     "Provider metadata URL must end with /.well-known/openid-configuration",
                 );
             }
-        } catch (e) {
+        } catch (error) {
             throw new ProviderUrlError("Invalid provider metadata URL");
         }
 
@@ -130,5 +150,58 @@ export namespace authz {
         }
 
         return metadata;
+    }
+
+    /**
+     * Get the provider userinfo from the provider userinfo URL.
+     * @param {string} url The provider userinfo URL.
+     * @param {string} token The provider token.
+     * @returns {Promise<ProviderUserinfo>} The provider userinfo.
+     */
+    export async function getProviderUserinfo(
+        url: string,
+        token: string,
+    ): Promise<ProviderUserinfo> {
+        if (!url) {
+            throw new ProviderUrlError("Provider userinfo URL is required");
+        }
+
+        try {
+            const parsedUrl = new URL(url);
+            if (!parsedUrl.protocol.startsWith("https")) {
+                throw new ProviderUrlError(
+                    "Provider userinfo URL must use HTTPS protocol",
+                );
+            }
+        } catch (error) {
+            throw new ProviderUrlError("Invalid provider userinfo URL");
+        }
+
+        const response = await fetch(url, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        if (!response.ok) {
+            if (response.status === 401) {
+                throw new ProviderUnauthorizedError(
+                    "Provider userinfo request is unauthorized",
+                );
+            }
+            throw new ProviderFetchError(
+                "Failed to fetch provider userinfo",
+                response.status,
+                response.statusText,
+            );
+        }
+
+        const userinfo = await response.json();
+        if (!userinfo.sub && !userinfo.oid) {
+            throw new ProviderUserinfoError(
+                "Provider userinfo missing required sub or oid",
+            );
+        }
+
+        return userinfo;
     }
 }

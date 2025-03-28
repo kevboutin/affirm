@@ -4,6 +4,7 @@ import {
     ProviderUrlError,
     ProviderFetchError,
     ProviderMetadataError,
+    ProviderUserinfoError,
 } from "./authz";
 import { AffirmTokenPayload } from "./jwt";
 import { RoleDocument } from "./db/models/role";
@@ -132,5 +133,97 @@ describe("authz.getProviderMetadata", () => {
         await expect(authz.getProviderMetadata(validUrl)).rejects.toThrowError(
             ProviderMetadataError,
         );
+    });
+});
+
+describe("authz.getProviderUserinfo", () => {
+    const validUrl = "https://example.com/userinfo";
+    const providerToken = "provider-token-dummy-value";
+    const mockUserinfoWithSub = {
+        sub: "user123",
+        email: "user@example.com",
+        name: "John Doe",
+    };
+
+    const mockUserinfoWithOid = {
+        oid: "user123",
+        email: "user@example.com",
+        name: "John Doe",
+    };
+
+    beforeEach(() => {
+        vi.stubGlobal("fetch", vi.fn());
+    });
+
+    test("should fetch and return valid userinfo with sub", async () => {
+        vi.mocked(fetch).mockResolvedValueOnce({
+            ok: true,
+            json: async () => mockUserinfoWithSub,
+        } as Response);
+
+        const result = await authz.getProviderUserinfo(validUrl, providerToken);
+        expect(result).toEqual(mockUserinfoWithSub);
+        expect(fetch).toHaveBeenCalledWith(validUrl, {
+            headers: {
+                Authorization: `Bearer ${providerToken}`,
+            },
+        });
+    });
+
+    test("should fetch and return valid userinfo with oid", async () => {
+        vi.mocked(fetch).mockResolvedValueOnce({
+            ok: true,
+            json: async () => mockUserinfoWithOid,
+        } as Response);
+
+        const result = await authz.getProviderUserinfo(validUrl, providerToken);
+        expect(result).toEqual(mockUserinfoWithOid);
+        expect(fetch).toHaveBeenCalledWith(validUrl, {
+            headers: {
+                Authorization: `Bearer ${providerToken}`,
+            },
+        });
+    });
+
+    test("should throw ProviderUrlError for empty URL", async () => {
+        await expect(
+            authz.getProviderUserinfo("", providerToken),
+        ).rejects.toThrowError(ProviderUrlError);
+    });
+
+    test("should throw ProviderUrlError for non-HTTPS URL", async () => {
+        await expect(
+            authz.getProviderUserinfo(
+                "http://example.com/userinfo",
+                providerToken,
+            ),
+        ).rejects.toThrowError(ProviderUrlError);
+    });
+
+    test("should throw ProviderFetchError for non-200 response", async () => {
+        vi.mocked(fetch).mockResolvedValueOnce({
+            ok: false,
+            status: 404,
+            statusText: "Not Found",
+        } as Response);
+
+        await expect(
+            authz.getProviderUserinfo(validUrl, providerToken),
+        ).rejects.toThrowError(ProviderFetchError);
+    });
+
+    test("should throw ProviderUserinfoError for missing sub and oid", async () => {
+        vi.mocked(fetch).mockResolvedValueOnce({
+            ok: true,
+            json: async () => ({
+                email: "user@example.com",
+                name: "John Doe",
+                // sub and oid are missing
+            }),
+        } as Response);
+
+        await expect(
+            authz.getProviderUserinfo(validUrl, providerToken),
+        ).rejects.toThrowError(ProviderUserinfoError);
     });
 });
