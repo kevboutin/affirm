@@ -155,7 +155,7 @@ export namespace authz {
     /**
      * Get the provider userinfo from the provider userinfo URL.
      * @param {string} url The provider userinfo URL.
-     * @param {string} token The provider token.
+     * @param {string} token The provider bearertoken.
      * @returns {Promise<ProviderUserinfo>} The provider userinfo.
      */
     export async function getProviderUserinfo(

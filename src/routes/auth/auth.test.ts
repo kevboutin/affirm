@@ -3,6 +3,7 @@ import * as HttpStatusPhrases from "../../httpStatusPhrases";
 import env from "../../env";
 import { createTestApp } from "../../createApp";
 import router from "./auth.index";
+import { authz } from "@/authz";
 
 if (env!.NODE_ENV !== "test") {
     throw new Error("NODE_ENV must be 'test'");
@@ -31,6 +32,38 @@ vi.mock("../../db/repositories/userRepository", () => {
                 }
                 return null;
             }),
+            findByIdpSub: vi.fn().mockImplementation((idpSub: string) => {
+                if (idpSub === "nonexistent-user") {
+                    return null; // User not found case
+                }
+                if (
+                    idpSub === "existing-user" ||
+                    idpSub === "67d3cc714ce136a7831483c7"
+                ) {
+                    return {
+                        _id: "67d3cc714ce136a7831483c7",
+                        username: "testuser",
+                        email: "test@example.com",
+                        roles: [],
+                        idpSub: idpSub,
+                        idpMetadataUrl:
+                            "https://example.com/.well-known/openid-configuration",
+                    };
+                }
+                return null;
+            }),
+            update: vi.fn().mockImplementation((id: string, updates: any) => {
+                if (
+                    id === "existing-user" ||
+                    id === "67d3cc714ce136a7831483c7"
+                ) {
+                    return {
+                        _id: id,
+                        ...updates,
+                    };
+                }
+                return null;
+            }),
         })),
     };
 });
@@ -40,6 +73,20 @@ vi.mock("bcrypt", () => ({
     default: {
         compare: vi.fn().mockImplementation((password, hash) => {
             return password === "testPassword!"; // Only return true for this specific password
+        }),
+    },
+}));
+
+// Mock @/authz
+vi.mock("@/authz", () => ({
+    authz: {
+        getProviderMetadata: vi.fn().mockResolvedValue({
+            userinfo_endpoint: "https://example.com/userinfo",
+        }),
+        getProviderUserinfo: vi.fn().mockResolvedValue({
+            sub: "67d3cc714ce136a7831483c7",
+            email: "test@example.com",
+            username: "testuser",
         }),
     },
 }));
@@ -255,5 +302,129 @@ describe("auth routes", () => {
             expect(json?.authorization_endpoint).toBeDefined();
             expect(json?.jwks_uri).toBeDefined();
         }
+    });
+
+    it("post /sso/authorize validates the authorization header", async () => {
+        const response = await createTestApp(router).request("/sso/authorize", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                metadataUrl:
+                    "https://example.com/.well-known/openid-configuration",
+            }),
+        });
+        const json = await response.json();
+        expect(response.status).toBe(401);
+        expect(json.error).toBe("invalid_request");
+        expect(json.message).toBe("Authorization header is missing.");
+        expect(json.statusCode).toBe(401);
+    });
+
+    it("post /sso/authorize validates the bearer token", async () => {
+        const response = await createTestApp(router).request("/sso/authorize", {
+            method: "POST",
+            headers: {
+                Authorization: "Bearer ",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                metadataUrl:
+                    "https://example.com/.well-known/openid-configuration",
+            }),
+        });
+        const json = await response.json();
+        expect(response.status).toBe(401);
+        expect(json.error).toBe("invalid_request");
+        expect(json.message).toBe("Bearer token is missing.");
+        expect(json.statusCode).toBe(401);
+    });
+
+    it("post /sso/authorize successfully authorizes with valid token", async () => {
+        // Override the default mock for this specific test
+        vi.mocked(authz.getProviderUserinfo).mockResolvedValueOnce({
+            sub: "existing-user", // Use "existing-user" which we know exists in our mock repository
+            email: "test@example.com",
+            username: "testuser",
+        });
+
+        const response = await createTestApp(router).request("/sso/authorize", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                metadataUrl:
+                    "https://example.com/.well-known/openid-configuration",
+            }),
+        });
+
+        const json = await response.json();
+        expect(response.status).toBe(200);
+        expect(json.token_type).toBe("Bearer");
+        expect(json.access_token).toBeDefined();
+        expect(json.expires_in).toBeDefined();
+    });
+
+    it("post /sso/authorize returns 500 when provider userinfo fails", async () => {
+        vi.mock("@/authz", () => ({
+            authz: {
+                getProviderMetadata: vi
+                    .fn()
+                    .mockRejectedValue(new Error("Provider error")),
+            },
+        }));
+
+        const response = await createTestApp(router).request("/sso/authorize", {
+            method: "POST",
+            headers: {
+                Authorization: "Bearer valid-token",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                metadataUrl:
+                    "https://example.com/.well-known/openid-configuration",
+            }),
+        });
+
+        expect(response.status).toBe(500);
+        const json = await response.json();
+        expect(json.error).toBe("invalid_request");
+        expect(json.message).toBe(HttpStatusPhrases.INTERNAL_SERVER_ERROR);
+        expect(json.statusCode).toBe(500);
+    });
+
+    it("post /sso/authorize returns 500 when user update fails", async () => {
+        vi.mock("@/authz", () => ({
+            authz: {
+                getProviderMetadata: vi.fn().mockResolvedValue({
+                    userinfo_endpoint: "https://example.com/userinfo",
+                }),
+                getProviderUserinfo: vi.fn().mockResolvedValue({
+                    sub: "nonexistent-user",
+                    email: "test@example.com",
+                }),
+            },
+        }));
+
+        const response = await createTestApp(router).request("/sso/authorize", {
+            method: "POST",
+            headers: {
+                Authorization: "Bearer valid-token",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                metadataUrl:
+                    "https://example.com/.well-known/openid-configuration",
+            }),
+        });
+
+        const json = await response.json();
+        expect(response.status).toBe(500);
+        expect(json.error).toBe("invalid_request");
+        expect(json.message).toBe(HttpStatusPhrases.INTERNAL_SERVER_ERROR);
+        expect(json.statusCode).toBe(500);
     });
 });

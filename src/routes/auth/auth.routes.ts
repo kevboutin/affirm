@@ -6,9 +6,14 @@ import {
     jwksResponseSchema,
     metadataResponseSchema,
     selectUserSchema,
+    ssoAuthorizeSchema,
     tokenResponseSchema,
 } from "../../db/schema";
-import { formContent, jsonContent } from "../../openapi/helpers/index";
+import {
+    formContent,
+    jsonContent,
+    jsonContentRequired,
+} from "../../openapi/helpers/index";
 import {
     notFoundSchema,
     serverAuthErrorSchema,
@@ -126,6 +131,40 @@ export const metadata = createRoute({
     },
 });
 
+export const ssoauthorize = createRoute({
+    path: "/sso/authorize",
+    method: "post",
+    request: {
+        body: jsonContentRequired(
+            ssoAuthorizeSchema,
+            "The identity provider's metadata URL",
+        ),
+    },
+    tags,
+    responses: {
+        [HttpStatusCodes.OK]: jsonContent(
+            tokenResponseSchema,
+            "Token response that includes an access token",
+        ),
+        [HttpStatusCodes.UNAUTHORIZED]: jsonContent(
+            unauthorizedSchema,
+            "The request is not authorized",
+        ),
+        [HttpStatusCodes.TOO_MANY_REQUESTS]: jsonContent(
+            tooManyRequestsSchema,
+            "Too many requests",
+        ),
+        [HttpStatusCodes.INTERNAL_SERVER_ERROR]: jsonContent(
+            serverAuthErrorSchema,
+            "There was a server error",
+        ),
+        [HttpStatusCodes.GATEWAY_TIMEOUT]: jsonContent(
+            timeoutErrorSchema,
+            "The request timed out",
+        ),
+    },
+});
+
 export const userinfo = createRoute({
     path: "/userinfo",
     method: "get",
@@ -159,4 +198,5 @@ export type AuthenticateRoute = typeof authenticate;
 export type AuthorizeRoute = typeof authorize;
 export type JWKSRoute = typeof jwks;
 export type MetadataRoute = typeof metadata;
+export type SsoAuthorizeRoute = typeof ssoauthorize;
 export type UserinfoRoute = typeof userinfo;

@@ -10,11 +10,14 @@ import type {
     AuthorizeRoute,
     JWKSRoute,
     MetadataRoute,
+    SsoAuthorizeRoute,
     UserinfoRoute,
 } from "./auth.routes.js";
 import { jwt } from "@/jwt";
 import { importPKCS8, importSPKI, exportJWK } from "jose";
 import bcrypt from "bcrypt";
+import { authz } from "@/authz";
+import { RedactedUserDocumentWithRoles } from "@/db/models/user";
 
 const db = new DatabaseService({
     dbUri: env!.DB_URL,
@@ -32,9 +35,48 @@ const db = new DatabaseService({
 const _ = await db.createConnection();
 const userRepository = new UserRepository(User as any);
 
-const validatePassword = async (password: string, hashedPassword: string) => {
+const validatePassword = async (
+    password: string,
+    hashedPassword: string,
+): Promise<boolean> => {
     return await bcrypt.compare(password, hashedPassword);
 };
+
+const getProviderUserinfo = async (
+    bearerToken: string,
+    metadataUrl: string,
+): Promise<{ userId: string; providerUserinfo: any }> => {
+    const providerMetadata = await authz.getProviderMetadata(metadataUrl);
+    const providerUserinfo = await authz.getProviderUserinfo(
+        providerMetadata.userinfo_endpoint,
+        bearerToken,
+    );
+    const userId = providerUserinfo.sub ?? providerUserinfo.oid;
+    if (!userId) {
+        throw new Error("Provider userinfo missing required identifier.");
+    }
+    return { userId, providerUserinfo };
+};
+
+const createUserUpdates = (
+    providerUserinfo: any,
+    metadataUrl: string,
+): Object => ({
+    authType: "oidc" as const,
+    verifiedEmail: true,
+    idpMetadataUrl: metadataUrl,
+    ...(providerUserinfo.username && {
+        username: providerUserinfo.username as string,
+    }),
+    ...(providerUserinfo.email && { email: providerUserinfo.email as string }),
+    ...(providerUserinfo.locale && {
+        locale: providerUserinfo.locale as string,
+    }),
+    ...(providerUserinfo.phone && { phone: providerUserinfo.phone as string }),
+    ...(providerUserinfo.timezone && {
+        timezone: providerUserinfo.timezone as string,
+    }),
+});
 
 export const authenticate: AppRouteHandler<AuthenticateRoute> = async (c) => {
     let clientId: string;
@@ -118,7 +160,7 @@ export const authenticate: AppRouteHandler<AuthenticateRoute> = async (c) => {
             );
         }
 
-        // Import the private key using jose
+        // Import the private key using jose.
         const privateKey = await importPKCS8(
             env!.JWT_PRIVATE_KEY,
             env!.TOKEN_ALGORITHM,
@@ -350,6 +392,133 @@ export const metadata: AppRouteHandler<MetadataRoute> = async (c) => {
         },
         HttpStatusCodes.OK,
     );
+};
+
+export const ssoauthorize: AppRouteHandler<SsoAuthorizeRoute> = async (c) => {
+    const header = c.req.header("Authorization");
+    if (!header) {
+        c.header(
+            "WWW-Authenticate",
+            `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_request", error_description="Authorization header is missing"`,
+        );
+        return c.json(
+            {
+                error: "invalid_request" as const,
+                message: "Authorization header is missing.",
+                statusCode: HttpStatusCodes.UNAUTHORIZED,
+            },
+            HttpStatusCodes.UNAUTHORIZED,
+        );
+    }
+    const bearerToken = header.split(" ")[1];
+    if (!bearerToken) {
+        c.header(
+            "WWW-Authenticate",
+            `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_request", error_description="Bearer token is missing"`,
+        );
+        return c.json(
+            {
+                error: "invalid_request" as const,
+                message: "Bearer token is missing.",
+                statusCode: HttpStatusCodes.UNAUTHORIZED,
+            },
+            HttpStatusCodes.UNAUTHORIZED,
+        );
+    }
+    const metadataUrl = c.req.valid("json") as unknown as string;
+    let updatedUser: RedactedUserDocumentWithRoles | null = null;
+    let subject: string;
+    try {
+        const { userId, providerUserinfo } = await getProviderUserinfo(
+            bearerToken,
+            metadataUrl,
+        );
+        subject = userId;
+        c.var.logger.info(
+            `ssoauthorize: Provider userinfo: ${JSON.stringify(providerUserinfo)}, ${JSON.stringify(userId)}`,
+        );
+        const updates = createUserUpdates(providerUserinfo, metadataUrl);
+        updatedUser = await userRepository.update(userId, updates, {
+            _id: "fakeid",
+            username: "dummy",
+            email: "dummy@gmail.com",
+        });
+        if (!updatedUser) {
+            c.var.logger.error(
+                `ssoauthorize: Unable to update user with provider userinfo.`,
+            );
+            throw new Error("Unable to update user.");
+        } else {
+            c.var.logger.info(
+                `ssoauthorize: Updated user with identifier=${updatedUser._id}.`,
+            );
+        }
+    } catch (error) {
+        c.var.logger.error(
+            `ssoauthorize: Unable to update user successfully with provider userinfo. ${JSON.stringify(error)}`,
+        );
+        c.header(
+            "WWW-Authenticate",
+            `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_request"`,
+        );
+        return c.json(
+            {
+                error: "invalid_request" as const,
+                message: HttpStatusPhrases.INTERNAL_SERVER_ERROR,
+                statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
+            },
+            HttpStatusCodes.INTERNAL_SERVER_ERROR,
+        );
+    }
+
+    try {
+        // Import the private key using jose
+        const privateKey = await importPKCS8(
+            env!.JWT_PRIVATE_KEY,
+            env!.TOKEN_ALGORITHM,
+        );
+        // Generate a JWT token.
+        const now = Math.floor(Date.now() / 1000);
+        const token = await jwt.create(
+            {
+                aud: env!.TOKEN_AUDIENCE,
+                exp: now + env!.TOKEN_EXPIRATION_IN_SECONDS,
+                iat: now,
+                iss: env!.TOKEN_ISSUER,
+                nbf: now,
+                sub: subject,
+                email: updatedUser?.email,
+                locale: updatedUser?.locale,
+                roles: updatedUser?.roles?.map((role) => role._id.toString()),
+                timezone: updatedUser?.timezone,
+                username: updatedUser?.username,
+            },
+            env!.TOKEN_ALGORITHM,
+            privateKey,
+        );
+        return c.json(
+            {
+                access_token: token,
+                expires_in: env!.TOKEN_EXPIRATION_IN_SECONDS,
+                token_type: "Bearer",
+            },
+            HttpStatusCodes.OK,
+        );
+    } catch (error) {
+        c.var.logger.error(`ssoauthorize: Error: ${JSON.stringify(error)}`);
+        c.header(
+            "WWW-Authenticate",
+            `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_request"`,
+        );
+        return c.json(
+            {
+                error: "invalid_request" as const,
+                message: HttpStatusPhrases.UNAUTHORIZED,
+                statusCode: HttpStatusCodes.UNAUTHORIZED,
+            },
+            HttpStatusCodes.UNAUTHORIZED,
+        );
+    }
 };
 
 export const userinfo: AppRouteHandler<UserinfoRoute> = async (c) => {

@@ -149,6 +149,16 @@ class UserRepository {
     }
 
     /**
+     * Find documents matching by identity provider (IdP) subject.
+     *
+     * @param {string} sub The subject from the provider.
+     * @returns {Promise<Array<User>>} A Promise to return an array of matching documents.
+     */
+    async findByIdpSub(sub: string): Promise<Array<User>> {
+        return await this.model.find({ idpSub: sub });
+    }
+
+    /**
      * Find documents matching by name and not by the identifier provided.
      *
      * @param {string} username The username.

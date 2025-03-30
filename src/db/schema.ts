@@ -9,6 +9,10 @@ export const authenticateSchema = z.object({
     client_secret: z.string().optional(),
 });
 
+export const ssoAuthorizeSchema = z.object({
+    metadataUrl: z.string().url(),
+});
+
 // https://www.rfc-editor.org/rfc/rfc7662.html
 export const introspectionResponseSchema = z.object({
     active: z.boolean(),

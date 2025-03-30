@@ -23,7 +23,7 @@
         "start": "node ./dist/src/index.js",
         "test": "npm run test:lint && npm run test:unit",
         "test:lint": "npx lint-staged",
-        "test:unit": "npx cross-env NODE_ENV=test vitest run --testTimeout=11000 --coverage --printConsoleTrace=true --silent=false",
+        "test:unit": "npx cross-env NODE_ENV=test vitest run --testTimeout=11000 --coverage",
         "typecheck": "tsc --noEmit"
     },
     "repository": {

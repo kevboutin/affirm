@@ -54,7 +54,7 @@ USERINFO_ENDPOINT_PATH=/userinfo
 - [x] Add roles like user:read, user:modify, user:delete, role:modify, role:read, role:delete, etc. These are permission actions comprised of entityModel:action. https://www.youtube.com/watch?v=6IaEhu8epnA OR https://www.youtube.com/watch?v=wnSArmbI6qw
 - [x] Add new seed script for roles (viewer, editor, admin)
 - [x] Add Hono jwk auth middleware https://github.com/honojs/hono/pull/3826 or https://hono.dev/docs/middleware/builtin/jwk
-- [ ] Implement SSO auth
+- [x] Implement SSO auth
 - [x] Implement non-SSO auth (oauth2.1) https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1-12
 - [ ] Use hono/cookie to set the token to an http-only session cookie https://www.youtube.com/watch?v=uI5JgY7QaaQ @ 52:31 setSignedCookie, getSignedCookie, deleteCookie from hono/cookie (http-only secure cookies)
 - [ ] Once cookies are used, we need to provide a logout endpoint (revoke using POST with an empty 200 result status whether it was successful or even if the token provided is not valid) to destroy cookies potentially https://tools.ietf.org/html/rfc7009
