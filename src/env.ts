@@ -34,7 +34,7 @@ const EnvSchema = z
         DB_NAME: z.string(),
         DB_READ_PREF: ReadPreferenceSchema,
         DB_SOCKET_TIMEOUT: z.coerce.number().optional(),
-        INTROSPECTION_ENDPOINT_PATH: z.string().default("/authorize"),
+        INTROSPECTION_ENDPOINT_PATH: z.string().default("/introspect"),
         LOG_LEVEL: z.enum([
             "fatal",
             "error",

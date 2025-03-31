@@ -8,6 +8,7 @@ import UserRepository from "../../db/repositories/userRepository";
 import type {
     AuthenticateRoute,
     AuthorizeRoute,
+    IntrospectRoute,
     JWKSRoute,
     MetadataRoute,
     RevocationRoute,
@@ -349,6 +350,95 @@ export const authorize: AppRouteHandler<AuthorizeRoute> = async (c) => {
     }
 };
 
+export const introspect: AppRouteHandler<IntrospectRoute> = async (c) => {
+    const form = await c.req.parseBody();
+    const token = form["token"] as string;
+    if (!token) {
+        c.header(
+            "WWW-Authenticate",
+            `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_request", error_description="Token is missing"`,
+        );
+        return c.json(
+            {
+                error: "invalid_request" as const,
+                message: "Token is missing.",
+                statusCode: HttpStatusCodes.BAD_REQUEST,
+            },
+            HttpStatusCodes.BAD_REQUEST,
+        );
+    }
+    try {
+        // Import the public key using jose
+        const publicKey = await importSPKI(
+            env!.JWT_PUBLIC_KEY,
+            env!.TOKEN_ALGORITHM,
+        );
+        // Verify the JWT token.
+        const { payload } = await jwt.verify(
+            token,
+            publicKey,
+            [env!.TOKEN_ALGORITHM],
+            env!.TOKEN_ISSUER,
+            env!.TOKEN_AUDIENCE,
+        );
+        c.var.logger.info(`authorize: Verified JWT token.`);
+        const response = {
+            active: true,
+            aud: payload.aud,
+            email: payload.email,
+            exp: payload.exp,
+            iat: payload.iat,
+            iss: payload.iss,
+            nbf: payload.nbf,
+            roles: payload.roles,
+            sub: payload.sub,
+            token_type: "Bearer",
+            username: payload.username,
+        };
+        return c.json(response, HttpStatusCodes.OK);
+    } catch (error) {
+        c.var.logger.error(
+            `authorize: Unable to verify JWT token. Error: ${JSON.stringify(error)}`,
+        );
+        if (
+            (error instanceof Error &&
+                (error as any).code ===
+                    "ERR_JWS_SIGNATURE_VERIFICATION_FAILED") ||
+            (error as any).code === "ERR_JWT_EXPIRED" ||
+            (error as any).code === "ERR_JWT_INVALID" ||
+            (error as any).code === "ERR_JWT_UNSUPPORTED_ALGORITHM" ||
+            (error as any).code === "ERR_JWT_INVALID_AUDIENCE" ||
+            (error as any).code === "ERR_JWT_INVALID_ISSUER" ||
+            (error as any).code === "ERR_JWS_INVALID"
+        ) {
+            c.header(
+                "WWW-Authenticate",
+                `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_request"`,
+            );
+            return c.json(
+                {
+                    error: "invalid_request" as const,
+                    message: HttpStatusPhrases.UNAUTHORIZED,
+                    statusCode: HttpStatusCodes.UNAUTHORIZED,
+                },
+                HttpStatusCodes.UNAUTHORIZED,
+            );
+        }
+        c.header(
+            "WWW-Authenticate",
+            `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_request"`,
+        );
+        return c.json(
+            {
+                error: "invalid_request" as const,
+                message: HttpStatusPhrases.INTERNAL_SERVER_ERROR,
+                statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
+            },
+            HttpStatusCodes.INTERNAL_SERVER_ERROR,
+        );
+    }
+};
+
 export const jwks: AppRouteHandler<JWKSRoute> = async (c) => {
     try {
         const publicKey = await importSPKI(
@@ -431,8 +521,33 @@ export const revocation: AppRouteHandler<RevocationRoute> = async (c) => {
             HttpStatusCodes.BAD_REQUEST,
         );
     }
-    deleteCookie(c, "access_token");
-    return c.json({}, HttpStatusCodes.OK);
+    try {
+        // Validate the token.
+        const publicKey = await importSPKI(
+            env!.JWT_PUBLIC_KEY,
+            env!.TOKEN_ALGORITHM,
+        );
+        await jwt.verify(
+            token,
+            publicKey,
+            [env!.TOKEN_ALGORITHM],
+            env!.TOKEN_ISSUER,
+            env!.TOKEN_AUDIENCE,
+        );
+        // Delete the cookie.
+        deleteCookie(c, "access_token");
+        return c.json({}, HttpStatusCodes.OK);
+    } catch (error) {
+        c.var.logger.error(`revocation: Unable to verify JWT token.`, error);
+        return c.json(
+            {
+                error: "invalid_request" as const,
+                message: HttpStatusPhrases.UNAUTHORIZED,
+                statusCode: HttpStatusCodes.UNAUTHORIZED,
+            },
+            HttpStatusCodes.UNAUTHORIZED,
+        );
+    }
 };
 
 export const ssoauthorize: AppRouteHandler<SsoAuthorizeRoute> = async (c) => {

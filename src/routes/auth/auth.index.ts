@@ -7,6 +7,7 @@ import * as routes from "./auth.routes";
 const router = createRouter()
     .openapi(routes.authenticate, handlers.authenticate)
     .openapi(routes.authorize, handlers.authorize)
+    .openapi(routes.introspect, handlers.introspect)
     .openapi(routes.jwks, handlers.jwks)
     .openapi(routes.metadata, handlers.metadata)
     .openapi(routes.revocation, handlers.revocation)

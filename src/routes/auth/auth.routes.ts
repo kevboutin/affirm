@@ -85,6 +85,54 @@ export const authorize = createRoute({
     },
 });
 
+export const introspect = createRoute({
+    path: "/introspect",
+    method: "post",
+    tags,
+    request: {
+        body: formContent(z.object({}).passthrough(), "Introspection request"),
+        validator: (value: Record<string, unknown>, c: Context) => {
+            if (!value.token) {
+                return c.json(
+                    {
+                        error: "invalid_request" as const,
+                        message: "Token is missing.",
+                        statusCode: HttpStatusCodes.BAD_REQUEST,
+                    },
+                    HttpStatusCodes.BAD_REQUEST,
+                );
+            }
+            return value;
+        },
+    },
+    responses: {
+        [HttpStatusCodes.OK]: jsonContent(
+            introspectionResponseSchema,
+            "The access token contents",
+        ),
+        [HttpStatusCodes.BAD_REQUEST]: jsonContent(
+            badRequestRevocationSchema,
+            "Token is missing",
+        ),
+        [HttpStatusCodes.UNAUTHORIZED]: jsonContent(
+            unauthorizedSchema,
+            "The request is not authorized",
+        ),
+        [HttpStatusCodes.TOO_MANY_REQUESTS]: jsonContent(
+            tooManyRequestsSchema,
+            "Too many requests",
+        ),
+        [HttpStatusCodes.INTERNAL_SERVER_ERROR]: jsonContent(
+            serverAuthErrorSchema,
+            "There was a server error",
+        ),
+        [HttpStatusCodes.GATEWAY_TIMEOUT]: jsonContent(
+            timeoutErrorSchema,
+            "The request timed out",
+        ),
+    },
+});
+
 export const jwks = createRoute({
     path: "/.well-known/jwks.json",
     method: "get",
@@ -158,6 +206,10 @@ export const revocation = createRoute({
         [HttpStatusCodes.BAD_REQUEST]: jsonContent(
             badRequestRevocationSchema,
             "Token is missing",
+        ),
+        [HttpStatusCodes.UNAUTHORIZED]: jsonContent(
+            unauthorizedSchema,
+            "The request is not authorized",
         ),
         [HttpStatusCodes.TOO_MANY_REQUESTS]: jsonContent(
             tooManyRequestsSchema,
@@ -239,6 +291,7 @@ export const userinfo = createRoute({
 
 export type AuthenticateRoute = typeof authenticate;
 export type AuthorizeRoute = typeof authorize;
+export type IntrospectRoute = typeof introspect;
 export type JWKSRoute = typeof jwks;
 export type MetadataRoute = typeof metadata;
 export type RevocationRoute = typeof revocation;
