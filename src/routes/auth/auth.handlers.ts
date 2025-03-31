@@ -10,6 +10,7 @@ import type {
     AuthorizeRoute,
     JWKSRoute,
     MetadataRoute,
+    RevocationRoute,
     SsoAuthorizeRoute,
     UserinfoRoute,
 } from "./auth.routes.js";
@@ -18,6 +19,7 @@ import { importPKCS8, importSPKI, exportJWK } from "jose";
 import bcrypt from "bcrypt";
 import { authz } from "@/authz";
 import { RedactedUserDocumentWithRoles } from "@/db/models/user";
+import { deleteCookie, getSignedCookie, setSignedCookie } from "hono/cookie";
 
 const db = new DatabaseService({
     dbUri: env!.DB_URL,
@@ -198,6 +200,15 @@ export const authenticate: AppRouteHandler<AuthenticateRoute> = async (c) => {
             env!.TOKEN_ALGORITHM,
             privateKey,
         );
+        await setSignedCookie(c, "access_token", token, env!.COOKIE_SECRET, {
+            domain:
+                env!.NODE_ENV === "production" ? env!.COOKIE_DOMAIN : undefined,
+            expires: new Date(now + env!.TOKEN_EXPIRATION_IN_SECONDS * 1000),
+            httpOnly: true,
+            path: "/",
+            secure: env!.NODE_ENV === "production",
+            sameSite: "strict",
+        });
         return c.json(
             {
                 access_token: token,
@@ -227,35 +238,44 @@ export const authenticate: AppRouteHandler<AuthenticateRoute> = async (c) => {
 };
 
 export const authorize: AppRouteHandler<AuthorizeRoute> = async (c) => {
-    const header = c.req.header("Authorization");
-    if (!header) {
-        c.header(
-            "WWW-Authenticate",
-            `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_request", error_description="Authorization header is missing"`,
-        );
-        return c.json(
-            {
-                error: "invalid_request" as const,
-                message: "Authorization header is missing.",
-                statusCode: HttpStatusCodes.UNAUTHORIZED,
-            },
-            HttpStatusCodes.UNAUTHORIZED,
-        );
-    }
-    const bearerToken = header.split(" ")[1];
-    if (!bearerToken) {
-        c.header(
-            "WWW-Authenticate",
-            `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_request", error_description="Bearer token is missing"`,
-        );
-        return c.json(
-            {
-                error: "invalid_request" as const,
-                message: "Bearer token is missing.",
-                statusCode: HttpStatusCodes.UNAUTHORIZED,
-            },
-            HttpStatusCodes.UNAUTHORIZED,
-        );
+    const access_token = await getSignedCookie(
+        c,
+        "access_token",
+        env!.COOKIE_SECRET,
+    );
+    // The access token cookie is optional.
+    let bearerToken: string | undefined;
+    if (!access_token) {
+        const header = c.req.header("Authorization");
+        if (!header) {
+            c.header(
+                "WWW-Authenticate",
+                `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_request", error_description="Authorization header is missing"`,
+            );
+            return c.json(
+                {
+                    error: "invalid_request" as const,
+                    message: "Authorization header is missing.",
+                    statusCode: HttpStatusCodes.UNAUTHORIZED,
+                },
+                HttpStatusCodes.UNAUTHORIZED,
+            );
+        }
+        bearerToken = header.split(" ")[1];
+        if (!bearerToken) {
+            c.header(
+                "WWW-Authenticate",
+                `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_request", error_description="Bearer token is missing"`,
+            );
+            return c.json(
+                {
+                    error: "invalid_request" as const,
+                    message: "Bearer token is missing.",
+                    statusCode: HttpStatusCodes.UNAUTHORIZED,
+                },
+                HttpStatusCodes.UNAUTHORIZED,
+            );
+        }
     }
     try {
         // Import the public key using jose
@@ -263,10 +283,9 @@ export const authorize: AppRouteHandler<AuthorizeRoute> = async (c) => {
             env!.JWT_PUBLIC_KEY,
             env!.TOKEN_ALGORITHM,
         );
-
         // Verify the JWT token.
         const { payload } = await jwt.verify(
-            bearerToken,
+            access_token || (bearerToken ?? ""),
             publicKey,
             [env!.TOKEN_ALGORITHM],
             env!.TOKEN_ISSUER,
@@ -389,9 +408,31 @@ export const metadata: AppRouteHandler<MetadataRoute> = async (c) => {
             ],
             service_documentation: `${env!.TOKEN_ISSUER}${env!.SERVICE_DOCUMENTATION_ENDPOINT_PATH}`,
             introspection_endpoint: `${env!.TOKEN_ISSUER}${env!.INTROSPECTION_ENDPOINT_PATH}`,
+            revocation_endpoint: `${env!.TOKEN_ISSUER}${env!.REVOCATION_ENDPOINT_PATH}`,
         },
         HttpStatusCodes.OK,
     );
+};
+
+export const revocation: AppRouteHandler<RevocationRoute> = async (c) => {
+    const form = await c.req.parseBody();
+    const token = form["token"] as string;
+    if (!token) {
+        c.header(
+            "WWW-Authenticate",
+            `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_request", error_description="Token is missing"`,
+        );
+        return c.json(
+            {
+                error: "invalid_request" as const,
+                message: "Token is missing.",
+                statusCode: HttpStatusCodes.BAD_REQUEST,
+            },
+            HttpStatusCodes.BAD_REQUEST,
+        );
+    }
+    deleteCookie(c, "access_token");
+    return c.json({}, HttpStatusCodes.OK);
 };
 
 export const ssoauthorize: AppRouteHandler<SsoAuthorizeRoute> = async (c) => {

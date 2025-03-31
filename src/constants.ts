@@ -21,6 +21,12 @@ export const badRequestSchema = createMessageObjectSchema(
     HttpStatusCodes.BAD_REQUEST,
 );
 
+export const badRequestRevocationSchema = createAuthErrorObjectSchema(
+    "invalid_request",
+    HttpStatusPhrases.BAD_REQUEST,
+    HttpStatusCodes.BAD_REQUEST,
+);
+
 export const unsupportedGrantTypeSchema = createAuthErrorObjectSchema(
     "unsupported_grant_type",
     "The provided grant_type is not supported.",

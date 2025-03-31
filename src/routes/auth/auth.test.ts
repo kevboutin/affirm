@@ -96,6 +96,38 @@ describe("auth routes", () => {
 
     afterAll(async () => {});
 
+    it("post /revoke validates the body when revoking a token", async () => {
+        const formData = new URLSearchParams({});
+        const response = await createTestApp(router).request("/revoke", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+        });
+        expect(response.status).toBe(400);
+        if (response.status === 400) {
+            const json = await response.json();
+            expect(json.error).toBe("invalid_request");
+            expect(json.message).toBe("Token is missing.");
+            expect(json.statusCode).toBe(400);
+        }
+    });
+
+    it("post /revoke returns 200 when revoking a token", async () => {
+        const formData = new URLSearchParams({
+            token: "goodtoken",
+        });
+        const response = await createTestApp(router).request("/revoke", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+        });
+        expect(response.status).toBe(200);
+    });
+
     it("post /token validates the body when authenticating", async () => {
         const formData = new URLSearchParams({
             client_id: "507f1f77bcf86cd799439011",

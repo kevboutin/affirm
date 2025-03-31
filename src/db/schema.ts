@@ -54,6 +54,12 @@ export const metadataResponseSchema = z.object({
     introspection_endpoint: z.string(),
 });
 
+// https://www.rfc-editor.org/rfc/rfc7009.html
+export const revocationSchema = z.object({
+    token: z.string(),
+    token_type_hint: z.enum(["access_token", "refresh_token"]).optional(),
+});
+
 // https://www.rfc-editor.org/rfc/rfc6749.html
 export const tokenResponseSchema = z.object({
     access_token: z.string(),

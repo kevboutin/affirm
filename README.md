@@ -56,8 +56,8 @@ USERINFO_ENDPOINT_PATH=/userinfo
 - [x] Add Hono jwk auth middleware https://github.com/honojs/hono/pull/3826 or https://hono.dev/docs/middleware/builtin/jwk
 - [x] Implement SSO auth
 - [x] Implement non-SSO auth (oauth2.1) https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1-12
-- [ ] Use hono/cookie to set the token to an http-only session cookie https://www.youtube.com/watch?v=uI5JgY7QaaQ @ 52:31 setSignedCookie, getSignedCookie, deleteCookie from hono/cookie (http-only secure cookies)
-- [ ] Once cookies are used, we need to provide a logout endpoint (revoke using POST with an empty 200 result status whether it was successful or even if the token provided is not valid) to destroy cookies potentially https://tools.ietf.org/html/rfc7009
+- [x] Use hono/cookie to set the token to an http-only session cookie https://www.youtube.com/watch?v=uI5JgY7QaaQ @ 52:31 setSignedCookie, getSignedCookie, deleteCookie from hono/cookie (http-only secure cookies)
+- [x] Once cookies are used, we need to provide a logout endpoint (revoke using POST with an empty 200 result status whether it was successful or even if the token provided is not valid) to destroy cookies potentially https://tools.ietf.org/html/rfc7009
 
 Add these flags on vitest for logging: --printConsoleTrace=true --silent=false
 
@@ -670,7 +670,7 @@ npm run test
 
 ### Naming Conventions
 
-- **Files**: Use camelCase for filenames (e.g., `userController.mjs`)
+- **Files**: Use camelCase for filenames (e.g., `userController.js`)
 - **Folders**: Use kebab-case for folder names (e.g., `api-routes`)
 - **Classes**: Use PascalCase (e.g., `UserController`)
 - **Types**: Use PascalCase (e.g., `UserResponse`)
@@ -725,9 +725,9 @@ npm run test
 - Write unit tests for all new features
 - Follow AAA pattern (Arrange, Act, Assert)
 - Test files should mirror the file structure of the code
-- Name test files with `.test.mjs` suffix
+- Name test files with `.test.ts` suffix
 - Use meaningful test descriptions
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+This project is licensed under the Apache License - see the [LICENSE](LICENSE) file for details

@@ -5,7 +5,7 @@ import type { ZodSchema } from "./types.js";
  *
  * @param {Object} schema The schema.
  * @param {string} description The description.
- * @returns
+ * @returns {Object} The form content.
  */
 const formContent = <T extends ZodSchema>(schema: T, description: string) => {
     return {

@@ -1,4 +1,4 @@
-import { createRoute } from "@hono/zod-openapi";
+import { createRoute, z } from "@hono/zod-openapi";
 import * as HttpStatusCodes from "../../httpStatusCodes";
 import {
     authenticateSchema,
@@ -15,12 +15,14 @@ import {
     jsonContentRequired,
 } from "../../openapi/helpers/index";
 import {
+    badRequestRevocationSchema,
     notFoundSchema,
     serverAuthErrorSchema,
     timeoutErrorSchema,
     tooManyRequestsSchema,
     unauthorizedSchema,
 } from "../../constants";
+import { Context } from "hono";
 
 const tags = ["auth"];
 
@@ -131,6 +133,47 @@ export const metadata = createRoute({
     },
 });
 
+export const revocation = createRoute({
+    path: "/revoke",
+    method: "post",
+    request: {
+        body: formContent(z.object({}).passthrough(), "Revocation request"),
+        validator: (value: Record<string, unknown>, c: Context) => {
+            if (!value.token) {
+                return c.json(
+                    {
+                        error: "invalid_request" as const,
+                        message: "Token is missing.",
+                        statusCode: HttpStatusCodes.BAD_REQUEST,
+                    },
+                    HttpStatusCodes.BAD_REQUEST,
+                );
+            }
+            return value;
+        },
+    },
+    tags,
+    responses: {
+        [HttpStatusCodes.OK]: jsonContent(z.object({}), "Revocation response"),
+        [HttpStatusCodes.BAD_REQUEST]: jsonContent(
+            badRequestRevocationSchema,
+            "Token is missing",
+        ),
+        [HttpStatusCodes.TOO_MANY_REQUESTS]: jsonContent(
+            tooManyRequestsSchema,
+            "Too many requests",
+        ),
+        [HttpStatusCodes.INTERNAL_SERVER_ERROR]: jsonContent(
+            serverAuthErrorSchema,
+            "There was a server error",
+        ),
+        [HttpStatusCodes.GATEWAY_TIMEOUT]: jsonContent(
+            timeoutErrorSchema,
+            "The request timed out",
+        ),
+    },
+});
+
 export const ssoauthorize = createRoute({
     path: "/sso/authorize",
     method: "post",
@@ -198,5 +241,6 @@ export type AuthenticateRoute = typeof authenticate;
 export type AuthorizeRoute = typeof authorize;
 export type JWKSRoute = typeof jwks;
 export type MetadataRoute = typeof metadata;
+export type RevocationRoute = typeof revocation;
 export type SsoAuthorizeRoute = typeof ssoauthorize;
 export type UserinfoRoute = typeof userinfo;
