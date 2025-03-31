@@ -33,6 +33,8 @@ HOST=localhost
 PORT=3000
 PROTOCOL=http
 AUTHORIZATION_ENDPOINT_PATH=/authorize
+COOKIE_DOMAIN=affirm.com
+COOKIE_SECRET=someSecretV4lu3
 DB_NAME=affirm
 DB_URL=mongodb://127.0.0.1:27017/
 LOG_LEVEL=info
@@ -40,6 +42,7 @@ CORS_ORIGIN=http://example.com
 INTROSPECTION_ENDPOINT_PATH=/authorize
 JWT_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----"
 JWT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----"
+REVOCATION_ENDPOINT_PATH=/revoke
 SERVICE_DOCUMENTATION_ENDPOINT_PATH=/reference
 TOKEN_ALGORITHM=RS256
 TOKEN_AUDIENCE=affirm
@@ -48,16 +51,6 @@ TOKEN_EXPIRATION_IN_SECONDS=3600
 TOKEN_ISSUER=https://auth.affirm.com
 USERINFO_ENDPOINT_PATH=/userinfo
 ```
-
-## TO-DO
-
-- [x] Add roles like user:read, user:modify, user:delete, role:modify, role:read, role:delete, etc. These are permission actions comprised of entityModel:action. https://www.youtube.com/watch?v=6IaEhu8epnA OR https://www.youtube.com/watch?v=wnSArmbI6qw
-- [x] Add new seed script for roles (viewer, editor, admin)
-- [x] Add Hono jwk auth middleware https://github.com/honojs/hono/pull/3826 or https://hono.dev/docs/middleware/builtin/jwk
-- [x] Implement SSO auth
-- [x] Implement non-SSO auth (oauth2.1) https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1-12
-- [x] Use hono/cookie to set the token to an http-only session cookie https://www.youtube.com/watch?v=uI5JgY7QaaQ @ 52:31 setSignedCookie, getSignedCookie, deleteCookie from hono/cookie (http-only secure cookies)
-- [x] Once cookies are used, we need to provide a logout endpoint (revoke using POST with an empty 200 result status whether it was successful or even if the token provided is not valid) to destroy cookies potentially https://tools.ietf.org/html/rfc7009
 
 Add these flags on vitest for logging: --printConsoleTrace=true --silent=false
 
