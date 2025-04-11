@@ -201,9 +201,10 @@ export const authenticate: AppRouteHandler<AuthenticateRoute> = async (c) => {
             env!.TOKEN_ALGORITHM,
             privateKey,
         );
+
+        // Set the signed cookie with the JWT token.
         await setSignedCookie(c, "access_token", token, env!.COOKIE_SECRET, {
-            domain:
-                env!.NODE_ENV === "production" ? env!.COOKIE_DOMAIN : undefined,
+            domain: env!.COOKIE_DOMAIN,
             expires: new Date(
                 now * 1000 + env!.TOKEN_EXPIRATION_IN_SECONDS * 1000,
             ),
@@ -212,6 +213,9 @@ export const authenticate: AppRouteHandler<AuthenticateRoute> = async (c) => {
             secure: env!.NODE_ENV === "production",
             sameSite: env!.NODE_ENV === "production" ? "strict" : "lax",
         });
+        c.var.logger.info(
+            `authenticate: Set signed cookie with domain: ${env!.COOKIE_DOMAIN} and with secret: ${env!.COOKIE_SECRET.substring(0, 4)}...`,
+        );
         return c.json(
             {
                 access_token: token,
@@ -241,14 +245,24 @@ export const authenticate: AppRouteHandler<AuthenticateRoute> = async (c) => {
 };
 
 export const authorize: AppRouteHandler<AuthorizeRoute> = async (c) => {
-    const access_token = await getSignedCookie(
-        c,
-        "access_token",
-        env!.COOKIE_SECRET,
+    c.var.logger.info(
+        `authorize: Cookie reading attempt - domain: ${env!.COOKIE_DOMAIN}, path: ${c.req.path}`,
     );
-    // The access token cookie is optional.
-    let bearerToken: string | undefined;
+
+    // Try to get the signed cookie value.
+    let access_token = await getSignedCookie(
+        c,
+        env!.COOKIE_SECRET,
+        "access_token",
+    );
+    c.var.logger.info(
+        `authorize: Retrieved access_token from cookie: ${access_token ? "present" : "missing"}`,
+    );
+
     if (!access_token) {
+        c.var.logger.info(
+            `authorize: did not find access token cookie. Checking authorization header.`,
+        );
         const header = c.req.header("Authorization");
         if (!header) {
             c.header(
@@ -264,7 +278,7 @@ export const authorize: AppRouteHandler<AuthorizeRoute> = async (c) => {
                 HttpStatusCodes.UNAUTHORIZED,
             );
         }
-        bearerToken = header.split(" ")[1];
+        const bearerToken = header.split(" ")[1];
         if (!bearerToken) {
             c.header(
                 "WWW-Authenticate",
@@ -279,6 +293,8 @@ export const authorize: AppRouteHandler<AuthorizeRoute> = async (c) => {
                 HttpStatusCodes.UNAUTHORIZED,
             );
         }
+        // Use the bearer token if cookie is not present.
+        access_token = bearerToken;
     }
     try {
         // Import the public key using jose
@@ -288,7 +304,7 @@ export const authorize: AppRouteHandler<AuthorizeRoute> = async (c) => {
         );
         // Verify the JWT token.
         const { payload } = await jwt.verify(
-            access_token || (bearerToken ?? ""),
+            access_token,
             publicKey,
             [env!.TOKEN_ALGORITHM],
             env!.TOKEN_ISSUER,
