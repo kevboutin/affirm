@@ -193,8 +193,20 @@ describe("UserRepository", () => {
                 },
             ];
 
-            mockModel.exec.mockResolvedValueOnce(mockUsers);
-            mockModel.exec.mockResolvedValueOnce(2);
+            // Mock the chain of methods
+            const queryChain = {
+                skip: vi.fn().mockReturnThis(),
+                limit: vi.fn().mockReturnThis(),
+                collation: vi.fn().mockReturnThis(),
+                sort: vi.fn().mockReturnThis(),
+                select: vi.fn().mockReturnThis(),
+                lean: vi.fn().mockReturnThis(),
+                exec: vi.fn().mockResolvedValue(mockUsers),
+            };
+            mockModel.find.mockReturnValue(queryChain);
+            mockModel.countDocuments.mockReturnValue({
+                exec: vi.fn().mockResolvedValue(2),
+            });
 
             const result = await userRepository.findAndCountAll({
                 filter,
@@ -209,6 +221,8 @@ describe("UserRepository", () => {
             });
             expect(mockModel.find).toHaveBeenCalled();
             expect(mockModel.countDocuments).toHaveBeenCalled();
+            expect(queryChain.select).toHaveBeenCalledWith("-password");
+            expect(queryChain.lean).toHaveBeenCalled();
         });
     });
 

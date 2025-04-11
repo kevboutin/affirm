@@ -204,11 +204,13 @@ export const authenticate: AppRouteHandler<AuthenticateRoute> = async (c) => {
         await setSignedCookie(c, "access_token", token, env!.COOKIE_SECRET, {
             domain:
                 env!.NODE_ENV === "production" ? env!.COOKIE_DOMAIN : undefined,
-            expires: new Date(now + env!.TOKEN_EXPIRATION_IN_SECONDS * 1000),
+            expires: new Date(
+                now * 1000 + env!.TOKEN_EXPIRATION_IN_SECONDS * 1000,
+            ),
             httpOnly: true,
             path: "/",
             secure: env!.NODE_ENV === "production",
-            sameSite: "strict",
+            sameSite: env!.NODE_ENV === "production" ? "strict" : "lax",
         });
         return c.json(
             {
@@ -484,7 +486,7 @@ export const metadata: AppRouteHandler<MetadataRoute> = async (c) => {
             issuer: env!.TOKEN_ISSUER,
             authorization_endpoint: `${env!.TOKEN_ISSUER}${env!.AUTHORIZATION_ENDPOINT_PATH}`,
             token_endpoint: `${env!.TOKEN_ISSUER}${env!.TOKEN_ENDPOINT_PATH}`,
-            jwks_uri: `${env!.TOKEN_ISSUER}/well-known/jwks.json`,
+            jwks_uri: `${env!.TOKEN_ISSUER}/.well-known/jwks.json`,
             registration_endpoint: `${env!.TOKEN_ISSUER}${env!.REGISTRATION_ENDPOINT_PATH}`,
             grant_types_supported: ["client_credentials"],
             userinfo_endpoint: `${env!.TOKEN_ISSUER}${env!.USERINFO_ENDPOINT_PATH}`,

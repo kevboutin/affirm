@@ -41,7 +41,31 @@ const isValidObjectId = (id: string) => {
 
 export const list: AppRouteHandler<ListRoute> = async (c) => {
     try {
-        const result = await roleRepository.findAndCountAll({});
+        const params: {
+            limit?: number;
+            offset?: number;
+            orderBy?: string | null;
+            filter?: any;
+        } = {};
+
+        const limit = parseInt(c.req.query("limit") ?? "0");
+        const offset = parseInt(c.req.query("offset") ?? "0");
+        const orderBy = c.req.query("orderBy") ?? null;
+        const filter = {
+            id: c.req.query("id"),
+            name: c.req.query("name"),
+            description: c.req.query("description"),
+        };
+
+        if (limit > 0) params.limit = limit;
+        if (offset > 0) params.offset = offset;
+        if (orderBy) params.orderBy = orderBy;
+        params.filter = filter;
+        c.var.logger.info(
+            `list: Using params=${JSON.stringify(params, null, 2)}`,
+        );
+
+        const result = await roleRepository.findAndCountAll(params);
         const { count, rows } = result;
         c.var.logger.info(`list: Found ${count} role(s).`);
         return c.json({ count, rows }, HttpStatusCodes.OK);

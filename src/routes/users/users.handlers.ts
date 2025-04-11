@@ -14,7 +14,7 @@ import type {
     PatchRoute,
     RemoveRoute,
 } from "./users.routes.js";
-import type { RedactedUserDocument } from "src/db/models/user";
+import type { RedactedUserPlainObject } from "src/db/models/user";
 import bcrypt from "bcrypt";
 
 const db = new DatabaseService({
@@ -43,13 +43,40 @@ const isValidObjectId = (id: string) => {
 
 export const list: AppRouteHandler<ListRoute> = async (c) => {
     try {
-        const result: { count: number; rows: RedactedUserDocument[] } =
-            await Promise.resolve(userRepository.findAndCountAll({}));
+        const params: {
+            limit?: number;
+            offset?: number;
+            orderBy?: string | null;
+            filter?: any;
+        } = {};
+
+        const limit = parseInt(c.req.query("limit") ?? "0");
+        const offset = parseInt(c.req.query("offset") ?? "0");
+        const orderBy = c.req.query("orderBy") ?? null;
+        const filter = {
+            id: c.req.query("id"),
+            username: c.req.query("username"),
+            email: c.req.query("email"),
+        };
+
+        if (limit > 0) params.limit = limit;
+        if (offset > 0) params.offset = offset;
+        if (orderBy) params.orderBy = orderBy;
+        params.filter = filter;
+        c.var.logger.info(
+            `list: Using params=${JSON.stringify(params, null, 2)}`,
+        );
+
+        const result: { count: number; rows: RedactedUserPlainObject[] } =
+            await Promise.resolve(userRepository.findAndCountAll(params));
         const { count, rows } = result;
         c.var.logger.info(`list: Found ${count} users.`);
         return c.json({ count, rows }, HttpStatusCodes.OK);
     } catch (error) {
-        c.var.logger.error(`list: Unable to query successfully.`, error);
+        c.var.logger.error(
+            `list: Unable to query successfully. ${JSON.stringify(error, null, 2)}`,
+        );
+        console.error(`list: Unable to query successfully.`, error);
         return c.json(
             {
                 message: HttpStatusPhrases.INTERNAL_SERVER_ERROR,

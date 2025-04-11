@@ -10,6 +10,7 @@ import type {
 import type {
     RedactedUserDocument,
     RedactedUserDocumentWithRoles,
+    RedactedUserPlainObject,
     UserDocument,
     UserDocumentWithRoles,
 } from "../models/user";
@@ -220,16 +221,13 @@ class UserRepository {
                 .limit(query.limit as any)
                 .collation({ locale: "en" })
                 .sort(query.sort as any)
-                .exec(),
+                .select("-password")
+                .lean()
+                .exec() as unknown as RedactedUserPlainObject[],
             this.model.countDocuments(query.criteria).exec(),
         ]);
 
-        const redactedRows = rows.map((row) => ({
-            ...row,
-            password: undefined,
-        })) as unknown as RedactedUserDocument[];
-
-        return { count, rows: redactedRows };
+        return { count, rows };
     }
 
     /**

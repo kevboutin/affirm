@@ -57,6 +57,24 @@ export interface RedactedUserDocument extends Document {
     updatedAt?: Date;
 }
 
+export interface RedactedUserPlainObject {
+    _id: Types.ObjectId;
+    username: string;
+    email: string;
+    phone?: string | null;
+    locale?: string | null;
+    timezone?: string | null;
+    roles?: Array<Types.ObjectId> | null;
+    verifiedEmail: boolean;
+    verifiedPhone: boolean;
+    authType: string;
+    idpClient?: string | null;
+    idpMetadata?: string | null;
+    idpSub?: string | null;
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
 export interface RedactedUserDocumentWithRoles extends Document {
     _id: Types.ObjectId;
     username: string;

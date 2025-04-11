@@ -61,7 +61,6 @@ The following commands should suffice.
 ```shell
 docker pull node:lts-alpine
 docker build -t affirm .
-#docker run -p 3000:3000 affirm
 docker compose up
 ```
 

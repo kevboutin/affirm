@@ -1,6 +1,6 @@
 import type { AuditLogDocument } from "../models/auditLog";
 import type { RoleDocument } from "../models/role";
-import type { RedactedUserDocument } from "../models/user";
+import type { RedactedUserPlainObject } from "../models/user";
 
 export interface AutocompleteResult {
     _id: string;
@@ -35,7 +35,7 @@ export interface FindAndCountAllRolesResult {
 
 export interface FindAndCountAllUsersResult {
     count: number;
-    rows: Array<RedactedUserDocument>;
+    rows: Array<RedactedUserPlainObject>;
 }
 
 export interface LogParams {
