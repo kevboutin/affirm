@@ -15,6 +15,7 @@ import defaultHook from "./openapi/defaultHook";
 import type { AppBindings, AppOpenAPI } from "./types";
 import type { Context } from "hono";
 import { HonoJsonWebKey } from "hono/utils/jwt/jws";
+import { csrf } from "hono/csrf";
 
 const keyMap: Map<string, any> = new Map<string, any>();
 
@@ -110,6 +111,7 @@ export default function createApp() {
         const ms = Date.now() - start;
         c.header("Response-Time", `${ms}ms`);
     });
+    app.use(csrf());
     app.use(pinoLogger());
     app.onError(onError);
     app.notFound(notFound);

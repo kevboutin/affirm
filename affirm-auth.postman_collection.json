@@ -1,0 +1,3552 @@
+{
+    "info": {
+        "_postman_id": "c273ce5b-14c7-4771-a305-37b2633a0205",
+        "name": "Affirm API documentation",
+        "description": "# 📄 Get started here\n\nThis template contains a boilerplate for documentation that you can quickly customize and reuse.\n\n## 🔖 How to use this template\n\n- Replace the content given brackets (()) with your API's details.\n    \n- Tips are formatted in `codespan` - feel free to read and remove them.\n    \n\n---\n\n`Start with a brief overview of what your API offers.`\n\nThe affirm provides many API products, tools, and resources that enable you to provide authentication and authorization to any application.\n\n`You can also list the APIs you offer, link to the relevant pages, or do both in this section.`\n\n## **Getting started guide**\n\n`List the steps or points required to start using your APIs. Make sure to cover everything required to reach success with your API as quickly as possible.`\n\nTo start using the affirm API, you need to -\n\n`The points given below are from The Postman API's documentation. You can reference it to write your own getting started guide.`\n\n- You must use valid credentials to send requests to the majority of these API endpoints.\n    \n- The API has [rate and usage limits](https://learning.postman.com/docs/developer/postman-api/postman-api-rate-limits/).\n    \n- The API only responds to HTTPS-secured communications. Any requests sent via HTTP return an HTTP 301 redirect to the corresponding HTTPS resources.\n    \n- The API returns request responses in JSON format. When an API request returns an error, it is sent in the JSON response as an error key.\n    \n\n## Authentication\n\n`Add details on the authorization keys/tokens required, steps that cover how to get them, and the relevant error codes.`\n\nThe affirm API uses the client_credentials grant for authentication.\n\n`The details given below are from the Postman API's documentation. You can reference it to write your own authentication section.`\n\nYou must use an access token in the Authorization HTTP header for the majority of the API endpoints.\n\n### Authentication error response\n\nIf credentials are missing, malformed, or not valid, you will receive an HTTP 401 Unauthorized response code.\n\n## Rate and usage limits\n\n`Use this section to cover your APIs' terms of use. Include API limits, constraints, and relevant error codes, so consumers understand the permitted API usage and practices.`\n\n`The example given below is from The Postman API's documentation. Use it as a reference to write your APIs' terms of use.`\n\nAPI access rate limits apply at a per-API key basis in unit time. The limit is 100 requests per 900 seconds. Also, depending on your plan, you may have usage limits. If you exceed either limit, your request will return an HTTP 429 Too Many Requests status code.\n\nEach API response returns the following set of headers to help you identify your use status:\n\n| Header | Description |\n| --- | --- |\n| `RateLimit-Limit` | The maximum number of requests that the consumer is permitted to make per minute. |\n| `RateLimit-Remaining` | The number of requests remaining in the current rate limit window. |\n| `RateLimit-Reset` | The time at which the current rate limit window resets in UTC epoch seconds. |\n\n### 503 response\n\nAn HTTP `503` response from our servers indicates there is an unexpected spike in API access traffic. The server is usually operational within the next five minutes. If the outage persists or you receive any other form of an HTTP `5XX` error, [contact support](https://support.postman.com/hc/en-us/requests/new/).\n\n### **Need some help?**\n\n`Add links that customers can refer to whenever they need help.`\n\nIn case you have questions, go through our tutorials ((link to your video or help documentation here)). Or visit our FAQ page ((link to the relevant page)).\n\nOr you can check out our community forum, there’s a good chance our community has an answer for you. Visit our developer forum ((link to developer forum)) to review topics, ask questions, and learn from others.\n\n`You can also document or add links to libraries, code examples, and other resources needed to make a request.`",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "451346"
+    },
+    "item": [
+        {
+            "name": "users",
+            "item": [
+                {
+                    "name": "list users",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NDk5NjEsImlhdCI6MTc0MzY0NjM2MSwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDYzNjEsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwidGltZXpvbmUiOiJBbWVyaWNhL05ld19Zb3JrIiwidXNlcm5hbWUiOiJrZXZpbiJ9.nLgdsMRhJkDYPw3skJZHmAiILul5vBjmqSr2kPpc-ak__X8LAIc_Z8KilfTt1Yuv26ucswI5X8_e2qL9TKfBtnYfwwvcwRCrYK1aYxPjudKxfIihjlaD8RhOW1BBNIuGSYr5I1dDHUjA14GZ2H8cnQZhbaMEL6V1otutAEYq8zqAIRw8L58X4BKuhMF800WP6xBPiJyJa-Q7xJ4J7vh9GUuSSyE0km85fLioAxUiqsnrs7VzkkiaUSaB6VKNIoNIrjZQOPNxa3NICJVDIxnhYR31Lr2xx1GIBi8OjweOZcawXhJ0nV8CuY-LUEEn0XUGRDrLF0sxBwrQLJfCZPN5pg",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:3000/users?limit=20&orderBy=username",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "3000",
+                            "path": ["users"],
+                            "query": [
+                                {
+                                    "key": "limit",
+                                    "value": "20"
+                                },
+                                {
+                                    "key": "offset",
+                                    "value": "0",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "username",
+                                    "value": "kevin",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "orderBy",
+                                    "value": "username"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "OK",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NDk5NjEsImlhdCI6MTc0MzY0NjM2MSwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDYzNjEsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwidGltZXpvbmUiOiJBbWVyaWNhL05ld19Zb3JrIiwidXNlcm5hbWUiOiJrZXZpbiJ9.nLgdsMRhJkDYPw3skJZHmAiILul5vBjmqSr2kPpc-ak__X8LAIc_Z8KilfTt1Yuv26ucswI5X8_e2qL9TKfBtnYfwwvcwRCrYK1aYxPjudKxfIihjlaD8RhOW1BBNIuGSYr5I1dDHUjA14GZ2H8cnQZhbaMEL6V1otutAEYq8zqAIRw8L58X4BKuhMF800WP6xBPiJyJa-Q7xJ4J7vh9GUuSSyE0km85fLioAxUiqsnrs7VzkkiaUSaB6VKNIoNIrjZQOPNxa3NICJVDIxnhYR31Lr2xx1GIBi8OjweOZcawXhJ0nV8CuY-LUEEn0XUGRDrLF0sxBwrQLJfCZPN5pg",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:3000/users",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "3000",
+                                    "path": ["users"]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "content-encoding",
+                                    "value": "gzip"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "cross-origin-opener-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "cross-origin-resource-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "origin-agent-cluster",
+                                    "value": "?1"
+                                },
+                                {
+                                    "key": "ratelimit-limit",
+                                    "value": "100"
+                                },
+                                {
+                                    "key": "ratelimit-policy",
+                                    "value": "100;w=900"
+                                },
+                                {
+                                    "key": "ratelimit-remaining",
+                                    "value": "99"
+                                },
+                                {
+                                    "key": "ratelimit-reset",
+                                    "value": "900"
+                                },
+                                {
+                                    "key": "referrer-policy",
+                                    "value": "no-referrer"
+                                },
+                                {
+                                    "key": "response-time",
+                                    "value": "9ms"
+                                },
+                                {
+                                    "key": "strict-transport-security",
+                                    "value": "max-age=15552000; includeSubDomains"
+                                },
+                                {
+                                    "key": "x-content-type-options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "x-dns-prefetch-control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "x-download-options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "x-frame-options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "x-permitted-cross-domain-policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "x-xss-protection",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Thu, 03 Apr 2025 02:23:28 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=5"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"count\": 1,\n    \"rows\": [\n        {\n            \"_id\": \"67d3cc714ce136a7831483c7\",\n            \"email\": \"kevboutin@gmail.com\",\n            \"username\": \"kevin\",\n            \"roles\": [],\n            \"locale\": \"en_us\",\n            \"timezone\": \"America/New_York\",\n            \"verifiedEmail\": true,\n            \"createdAt\": \"2025-03-14T06:28:01.223Z\",\n            \"updatedAt\": \"2025-03-14T06:28:01.223Z\",\n            \"__v\": 0,\n            \"verifiedPhone\": false,\n            \"authType\": \"oauth\"\n        }\n    ]\n}"
+                        },
+                        {
+                            "name": "Unauthorized",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost:3000/users",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "3000",
+                                    "path": ["users"]
+                                }
+                            },
+                            "status": "Unauthorized",
+                            "code": 401,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "content-encoding",
+                                    "value": "gzip"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "cross-origin-opener-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "cross-origin-resource-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "origin-agent-cluster",
+                                    "value": "?1"
+                                },
+                                {
+                                    "key": "referrer-policy",
+                                    "value": "no-referrer"
+                                },
+                                {
+                                    "key": "strict-transport-security",
+                                    "value": "max-age=15552000; includeSubDomains"
+                                },
+                                {
+                                    "key": "x-content-type-options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "x-dns-prefetch-control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "x-download-options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "x-frame-options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "x-permitted-cross-domain-policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "x-xss-protection",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Wed, 02 Apr 2025 22:20:03 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=5"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"message\": \"no authorization included in request\",\n    \"statusCode\": 401\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "get user",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NDk5NjEsImlhdCI6MTc0MzY0NjM2MSwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDYzNjEsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwidGltZXpvbmUiOiJBbWVyaWNhL05ld19Zb3JrIiwidXNlcm5hbWUiOiJrZXZpbiJ9.nLgdsMRhJkDYPw3skJZHmAiILul5vBjmqSr2kPpc-ak__X8LAIc_Z8KilfTt1Yuv26ucswI5X8_e2qL9TKfBtnYfwwvcwRCrYK1aYxPjudKxfIihjlaD8RhOW1BBNIuGSYr5I1dDHUjA14GZ2H8cnQZhbaMEL6V1otutAEYq8zqAIRw8L58X4BKuhMF800WP6xBPiJyJa-Q7xJ4J7vh9GUuSSyE0km85fLioAxUiqsnrs7VzkkiaUSaB6VKNIoNIrjZQOPNxa3NICJVDIxnhYR31Lr2xx1GIBi8OjweOZcawXhJ0nV8CuY-LUEEn0XUGRDrLF0sxBwrQLJfCZPN5pg",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:3000/users/67d3cc714ce136a7831483c7",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "3000",
+                            "path": ["users", "67d3cc714ce136a7831483c7"],
+                            "query": [
+                                {
+                                    "key": "offset",
+                                    "value": "0",
+                                    "disabled": true
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "OK",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NDk5NjEsImlhdCI6MTc0MzY0NjM2MSwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDYzNjEsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwidGltZXpvbmUiOiJBbWVyaWNhL05ld19Zb3JrIiwidXNlcm5hbWUiOiJrZXZpbiJ9.nLgdsMRhJkDYPw3skJZHmAiILul5vBjmqSr2kPpc-ak__X8LAIc_Z8KilfTt1Yuv26ucswI5X8_e2qL9TKfBtnYfwwvcwRCrYK1aYxPjudKxfIihjlaD8RhOW1BBNIuGSYr5I1dDHUjA14GZ2H8cnQZhbaMEL6V1otutAEYq8zqAIRw8L58X4BKuhMF800WP6xBPiJyJa-Q7xJ4J7vh9GUuSSyE0km85fLioAxUiqsnrs7VzkkiaUSaB6VKNIoNIrjZQOPNxa3NICJVDIxnhYR31Lr2xx1GIBi8OjweOZcawXhJ0nV8CuY-LUEEn0XUGRDrLF0sxBwrQLJfCZPN5pg",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:3000/users/67d3cc714ce136a7831483c7",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "3000",
+                                    "path": [
+                                        "users",
+                                        "67d3cc714ce136a7831483c7"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "offset",
+                                            "value": "0",
+                                            "disabled": true
+                                        }
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "content-encoding",
+                                    "value": "gzip"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "cross-origin-opener-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "cross-origin-resource-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "origin-agent-cluster",
+                                    "value": "?1"
+                                },
+                                {
+                                    "key": "ratelimit-limit",
+                                    "value": "100"
+                                },
+                                {
+                                    "key": "ratelimit-policy",
+                                    "value": "100;w=900"
+                                },
+                                {
+                                    "key": "ratelimit-remaining",
+                                    "value": "95"
+                                },
+                                {
+                                    "key": "ratelimit-reset",
+                                    "value": "748"
+                                },
+                                {
+                                    "key": "referrer-policy",
+                                    "value": "no-referrer"
+                                },
+                                {
+                                    "key": "response-time",
+                                    "value": "5ms"
+                                },
+                                {
+                                    "key": "strict-transport-security",
+                                    "value": "max-age=15552000; includeSubDomains"
+                                },
+                                {
+                                    "key": "x-content-type-options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "x-dns-prefetch-control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "x-download-options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "x-frame-options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "x-permitted-cross-domain-policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "x-xss-protection",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Thu, 03 Apr 2025 03:10:22 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=5"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"_id\": \"67d3cc714ce136a7831483c7\",\n    \"email\": \"kevboutin@gmail.com\",\n    \"username\": \"kevin\",\n    \"roles\": [],\n    \"locale\": \"en_us\",\n    \"timezone\": \"America/New_York\",\n    \"verifiedEmail\": true,\n    \"createdAt\": \"2025-03-14T06:28:01.223Z\",\n    \"updatedAt\": \"2025-03-14T06:28:01.223Z\",\n    \"__v\": 0,\n    \"verifiedPhone\": false,\n    \"authType\": \"oauth\"\n}"
+                        },
+                        {
+                            "name": "Not found",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NDk5NjEsImlhdCI6MTc0MzY0NjM2MSwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDYzNjEsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwidGltZXpvbmUiOiJBbWVyaWNhL05ld19Zb3JrIiwidXNlcm5hbWUiOiJrZXZpbiJ9.nLgdsMRhJkDYPw3skJZHmAiILul5vBjmqSr2kPpc-ak__X8LAIc_Z8KilfTt1Yuv26ucswI5X8_e2qL9TKfBtnYfwwvcwRCrYK1aYxPjudKxfIihjlaD8RhOW1BBNIuGSYr5I1dDHUjA14GZ2H8cnQZhbaMEL6V1otutAEYq8zqAIRw8L58X4BKuhMF800WP6xBPiJyJa-Q7xJ4J7vh9GUuSSyE0km85fLioAxUiqsnrs7VzkkiaUSaB6VKNIoNIrjZQOPNxa3NICJVDIxnhYR31Lr2xx1GIBi8OjweOZcawXhJ0nV8CuY-LUEEn0XUGRDrLF0sxBwrQLJfCZPN5pg",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:3000/users/67edfae1e276c1f2d9897198",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "3000",
+                                    "path": [
+                                        "users",
+                                        "67edfae1e276c1f2d9897198"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "offset",
+                                            "value": "0",
+                                            "disabled": true
+                                        }
+                                    ]
+                                }
+                            },
+                            "status": "Not Found",
+                            "code": 404,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "content-encoding",
+                                    "value": "gzip"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "cross-origin-opener-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "cross-origin-resource-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "origin-agent-cluster",
+                                    "value": "?1"
+                                },
+                                {
+                                    "key": "ratelimit-limit",
+                                    "value": "100"
+                                },
+                                {
+                                    "key": "ratelimit-policy",
+                                    "value": "100;w=900"
+                                },
+                                {
+                                    "key": "ratelimit-remaining",
+                                    "value": "96"
+                                },
+                                {
+                                    "key": "ratelimit-reset",
+                                    "value": "809"
+                                },
+                                {
+                                    "key": "referrer-policy",
+                                    "value": "no-referrer"
+                                },
+                                {
+                                    "key": "response-time",
+                                    "value": "4ms"
+                                },
+                                {
+                                    "key": "strict-transport-security",
+                                    "value": "max-age=15552000; includeSubDomains"
+                                },
+                                {
+                                    "key": "x-content-type-options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "x-dns-prefetch-control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "x-download-options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "x-frame-options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "x-permitted-cross-domain-policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "x-xss-protection",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Thu, 03 Apr 2025 03:09:21 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=5"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"message\": \"Not Found\",\n    \"statusCode\": 404\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "create user",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NTA3OTQsImlhdCI6MTc0MzY0NzE5NCwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDcxOTQsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwicm9sZXMiOltdLCJ0aW1lem9uZSI6IkFtZXJpY2EvTmV3X1lvcmsiLCJ1c2VybmFtZSI6ImtldmluIn0.AuJSD9n74SKlVQ0UYAfUCnVOl4ApyaJlfkemOidcCnq00EBsEtUGvn2gDYzjoM1fUzXhqa7X1muPxVFiA6AaXAwmBH5wVZPgHI_Ry1MRNHlDJNk1klrMOpmxruJ6zXN3liL-EA1J85ee9P0rxHy6mlDjjX5-_vF9zKxciLKRRAnWG7zqTwUjFmWnfpIy8Tj3MnBnXNYVAuRohvHWQTcExUDsH773Zyds_hELYydfQWa0rYX7wROlqbBxWPnWTlbPgLEH5id5RaUYTEiGWN8IPGS91qVnrbofDu0vWnVELiPE70g3NJbXbjsj5r7SXssq7LxFBAYof4XyPDgbQ4IqPw",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"username\": \"delete\",\n    \"email\": \"delete@gmail.com\",\n    \"password\": \"testME!!!\",\n    \"locale\": \"en_us\",\n    \"timezone\": \"America/New_York\",\n    \"authType\" : \"oauth\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "http://localhost:3000/users",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "3000",
+                            "path": ["users"]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Created",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NTA3OTQsImlhdCI6MTc0MzY0NzE5NCwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDcxOTQsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwicm9sZXMiOltdLCJ0aW1lem9uZSI6IkFtZXJpY2EvTmV3X1lvcmsiLCJ1c2VybmFtZSI6ImtldmluIn0.AuJSD9n74SKlVQ0UYAfUCnVOl4ApyaJlfkemOidcCnq00EBsEtUGvn2gDYzjoM1fUzXhqa7X1muPxVFiA6AaXAwmBH5wVZPgHI_Ry1MRNHlDJNk1klrMOpmxruJ6zXN3liL-EA1J85ee9P0rxHy6mlDjjX5-_vF9zKxciLKRRAnWG7zqTwUjFmWnfpIy8Tj3MnBnXNYVAuRohvHWQTcExUDsH773Zyds_hELYydfQWa0rYX7wROlqbBxWPnWTlbPgLEH5id5RaUYTEiGWN8IPGS91qVnrbofDu0vWnVELiPE70g3NJbXbjsj5r7SXssq7LxFBAYof4XyPDgbQ4IqPw",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"username\": \"delete\",\n    \"email\": \"delete@gmail.com\",\n    \"password\": \"testME!!!\",\n    \"locale\": \"en_us\",\n    \"timezone\": \"America/New_York\",\n    \"authType\" : \"oauth\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://localhost:3000/users",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "3000",
+                                    "path": ["users"]
+                                }
+                            },
+                            "status": "Created",
+                            "code": 201,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "content-encoding",
+                                    "value": "gzip"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "cross-origin-opener-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "cross-origin-resource-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "origin-agent-cluster",
+                                    "value": "?1"
+                                },
+                                {
+                                    "key": "ratelimit-limit",
+                                    "value": "100"
+                                },
+                                {
+                                    "key": "ratelimit-policy",
+                                    "value": "100;w=900"
+                                },
+                                {
+                                    "key": "ratelimit-remaining",
+                                    "value": "91"
+                                },
+                                {
+                                    "key": "ratelimit-reset",
+                                    "value": "150"
+                                },
+                                {
+                                    "key": "referrer-policy",
+                                    "value": "no-referrer"
+                                },
+                                {
+                                    "key": "response-time",
+                                    "value": "83ms"
+                                },
+                                {
+                                    "key": "strict-transport-security",
+                                    "value": "max-age=15552000; includeSubDomains"
+                                },
+                                {
+                                    "key": "x-content-type-options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "x-dns-prefetch-control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "x-download-options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "x-frame-options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "x-permitted-cross-domain-policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "x-xss-protection",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Thu, 03 Apr 2025 03:05:05 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=5"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"_id\": \"67edfae1e276c1f2d9897198\",\n    \"username\": \"delete\",\n    \"email\": \"delete@gmail.com\",\n    \"authType\": \"oauth\",\n    \"verifiedEmail\": false,\n    \"verifiedPhone\": false,\n    \"roles\": [],\n    \"locale\": \"en_us\",\n    \"timezone\": \"America/New_York\"\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "update user",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NTA3OTQsImlhdCI6MTc0MzY0NzE5NCwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDcxOTQsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwicm9sZXMiOltdLCJ0aW1lem9uZSI6IkFtZXJpY2EvTmV3X1lvcmsiLCJ1c2VybmFtZSI6ImtldmluIn0.AuJSD9n74SKlVQ0UYAfUCnVOl4ApyaJlfkemOidcCnq00EBsEtUGvn2gDYzjoM1fUzXhqa7X1muPxVFiA6AaXAwmBH5wVZPgHI_Ry1MRNHlDJNk1klrMOpmxruJ6zXN3liL-EA1J85ee9P0rxHy6mlDjjX5-_vF9zKxciLKRRAnWG7zqTwUjFmWnfpIy8Tj3MnBnXNYVAuRohvHWQTcExUDsH773Zyds_hELYydfQWa0rYX7wROlqbBxWPnWTlbPgLEH5id5RaUYTEiGWN8IPGS91qVnrbofDu0vWnVELiPE70g3NJbXbjsj5r7SXssq7LxFBAYof4XyPDgbQ4IqPw",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"deleteme@gmail.com\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "http://localhost:3000/users/67edfae1e276c1f2d9897198",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "3000",
+                            "path": ["users", "67edfae1e276c1f2d9897198"]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "OK",
+                            "originalRequest": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NTA3OTQsImlhdCI6MTc0MzY0NzE5NCwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDcxOTQsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwicm9sZXMiOltdLCJ0aW1lem9uZSI6IkFtZXJpY2EvTmV3X1lvcmsiLCJ1c2VybmFtZSI6ImtldmluIn0.AuJSD9n74SKlVQ0UYAfUCnVOl4ApyaJlfkemOidcCnq00EBsEtUGvn2gDYzjoM1fUzXhqa7X1muPxVFiA6AaXAwmBH5wVZPgHI_Ry1MRNHlDJNk1klrMOpmxruJ6zXN3liL-EA1J85ee9P0rxHy6mlDjjX5-_vF9zKxciLKRRAnWG7zqTwUjFmWnfpIy8Tj3MnBnXNYVAuRohvHWQTcExUDsH773Zyds_hELYydfQWa0rYX7wROlqbBxWPnWTlbPgLEH5id5RaUYTEiGWN8IPGS91qVnrbofDu0vWnVELiPE70g3NJbXbjsj5r7SXssq7LxFBAYof4XyPDgbQ4IqPw",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"email\": \"deleteme@gmail.com\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://localhost:3000/users/67edfae1e276c1f2d9897198",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "3000",
+                                    "path": [
+                                        "users",
+                                        "67edfae1e276c1f2d9897198"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "content-encoding",
+                                    "value": "gzip"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "cross-origin-opener-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "cross-origin-resource-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "origin-agent-cluster",
+                                    "value": "?1"
+                                },
+                                {
+                                    "key": "ratelimit-limit",
+                                    "value": "100"
+                                },
+                                {
+                                    "key": "ratelimit-policy",
+                                    "value": "100;w=900"
+                                },
+                                {
+                                    "key": "ratelimit-remaining",
+                                    "value": "90"
+                                },
+                                {
+                                    "key": "ratelimit-reset",
+                                    "value": "87"
+                                },
+                                {
+                                    "key": "referrer-policy",
+                                    "value": "no-referrer"
+                                },
+                                {
+                                    "key": "response-time",
+                                    "value": "23ms"
+                                },
+                                {
+                                    "key": "strict-transport-security",
+                                    "value": "max-age=15552000; includeSubDomains"
+                                },
+                                {
+                                    "key": "x-content-type-options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "x-dns-prefetch-control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "x-download-options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "x-frame-options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "x-permitted-cross-domain-policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "x-xss-protection",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Thu, 03 Apr 2025 03:06:08 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=5"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"_id\": \"67edfae1e276c1f2d9897198\",\n    \"authType\": \"oauth\",\n    \"email\": \"deleteme@gmail.com\",\n    \"locale\": \"en_us\",\n    \"roles\": [],\n    \"timezone\": \"America/New_York\",\n    \"username\": \"delete\",\n    \"verifiedEmail\": false,\n    \"verifiedPhone\": false,\n    \"createdAt\": \"2025-04-03T03:05:05.059Z\",\n    \"updatedAt\": \"2025-04-03T03:06:08.031Z\",\n    \"__v\": 0\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "delete user",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NTA3OTQsImlhdCI6MTc0MzY0NzE5NCwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDcxOTQsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwicm9sZXMiOltdLCJ0aW1lem9uZSI6IkFtZXJpY2EvTmV3X1lvcmsiLCJ1c2VybmFtZSI6ImtldmluIn0.AuJSD9n74SKlVQ0UYAfUCnVOl4ApyaJlfkemOidcCnq00EBsEtUGvn2gDYzjoM1fUzXhqa7X1muPxVFiA6AaXAwmBH5wVZPgHI_Ry1MRNHlDJNk1klrMOpmxruJ6zXN3liL-EA1J85ee9P0rxHy6mlDjjX5-_vF9zKxciLKRRAnWG7zqTwUjFmWnfpIy8Tj3MnBnXNYVAuRohvHWQTcExUDsH773Zyds_hELYydfQWa0rYX7wROlqbBxWPnWTlbPgLEH5id5RaUYTEiGWN8IPGS91qVnrbofDu0vWnVELiPE70g3NJbXbjsj5r7SXssq7LxFBAYof4XyPDgbQ4IqPw",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:3000/users/67edfae1e276c1f2d9897198",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "3000",
+                            "path": ["users", "67edfae1e276c1f2d9897198"]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "No content",
+                            "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NTA3OTQsImlhdCI6MTc0MzY0NzE5NCwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDcxOTQsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwicm9sZXMiOltdLCJ0aW1lem9uZSI6IkFtZXJpY2EvTmV3X1lvcmsiLCJ1c2VybmFtZSI6ImtldmluIn0.AuJSD9n74SKlVQ0UYAfUCnVOl4ApyaJlfkemOidcCnq00EBsEtUGvn2gDYzjoM1fUzXhqa7X1muPxVFiA6AaXAwmBH5wVZPgHI_Ry1MRNHlDJNk1klrMOpmxruJ6zXN3liL-EA1J85ee9P0rxHy6mlDjjX5-_vF9zKxciLKRRAnWG7zqTwUjFmWnfpIy8Tj3MnBnXNYVAuRohvHWQTcExUDsH773Zyds_hELYydfQWa0rYX7wROlqbBxWPnWTlbPgLEH5id5RaUYTEiGWN8IPGS91qVnrbofDu0vWnVELiPE70g3NJbXbjsj5r7SXssq7LxFBAYof4XyPDgbQ4IqPw",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:3000/users/67edfae1e276c1f2d9897198",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "3000",
+                                    "path": [
+                                        "users",
+                                        "67edfae1e276c1f2d9897198"
+                                    ]
+                                }
+                            },
+                            "status": "No Content",
+                            "code": 204,
+                            "_postman_previewlanguage": "plain",
+                            "header": [
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "text/plain;charset=UTF-8"
+                                },
+                                {
+                                    "key": "cross-origin-opener-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "cross-origin-resource-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "origin-agent-cluster",
+                                    "value": "?1"
+                                },
+                                {
+                                    "key": "ratelimit-limit",
+                                    "value": "100"
+                                },
+                                {
+                                    "key": "ratelimit-policy",
+                                    "value": "100;w=900"
+                                },
+                                {
+                                    "key": "ratelimit-remaining",
+                                    "value": "97"
+                                },
+                                {
+                                    "key": "ratelimit-reset",
+                                    "value": "856"
+                                },
+                                {
+                                    "key": "referrer-policy",
+                                    "value": "no-referrer"
+                                },
+                                {
+                                    "key": "response-time",
+                                    "value": "11ms"
+                                },
+                                {
+                                    "key": "strict-transport-security",
+                                    "value": "max-age=15552000; includeSubDomains"
+                                },
+                                {
+                                    "key": "x-content-type-options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "x-dns-prefetch-control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "x-download-options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "x-frame-options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "x-permitted-cross-domain-policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "x-xss-protection",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Thu, 03 Apr 2025 03:08:33 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=5"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": null
+                        },
+                        {
+                            "name": "Not found",
+                            "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NTA3OTQsImlhdCI6MTc0MzY0NzE5NCwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDcxOTQsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwicm9sZXMiOltdLCJ0aW1lem9uZSI6IkFtZXJpY2EvTmV3X1lvcmsiLCJ1c2VybmFtZSI6ImtldmluIn0.AuJSD9n74SKlVQ0UYAfUCnVOl4ApyaJlfkemOidcCnq00EBsEtUGvn2gDYzjoM1fUzXhqa7X1muPxVFiA6AaXAwmBH5wVZPgHI_Ry1MRNHlDJNk1klrMOpmxruJ6zXN3liL-EA1J85ee9P0rxHy6mlDjjX5-_vF9zKxciLKRRAnWG7zqTwUjFmWnfpIy8Tj3MnBnXNYVAuRohvHWQTcExUDsH773Zyds_hELYydfQWa0rYX7wROlqbBxWPnWTlbPgLEH5id5RaUYTEiGWN8IPGS91qVnrbofDu0vWnVELiPE70g3NJbXbjsj5r7SXssq7LxFBAYof4XyPDgbQ4IqPw",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:3000/roles/67edfae1e276c1f2d9897198",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "3000",
+                                    "path": [
+                                        "roles",
+                                        "67edfae1e276c1f2d9897198"
+                                    ]
+                                }
+                            },
+                            "status": "Not Found",
+                            "code": 404,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "content-encoding",
+                                    "value": "gzip"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "cross-origin-opener-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "cross-origin-resource-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "origin-agent-cluster",
+                                    "value": "?1"
+                                },
+                                {
+                                    "key": "ratelimit-limit",
+                                    "value": "100"
+                                },
+                                {
+                                    "key": "ratelimit-policy",
+                                    "value": "100;w=900"
+                                },
+                                {
+                                    "key": "ratelimit-remaining",
+                                    "value": "89"
+                                },
+                                {
+                                    "key": "ratelimit-reset",
+                                    "value": "33"
+                                },
+                                {
+                                    "key": "referrer-policy",
+                                    "value": "no-referrer"
+                                },
+                                {
+                                    "key": "response-time",
+                                    "value": "5ms"
+                                },
+                                {
+                                    "key": "strict-transport-security",
+                                    "value": "max-age=15552000; includeSubDomains"
+                                },
+                                {
+                                    "key": "x-content-type-options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "x-dns-prefetch-control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "x-download-options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "x-frame-options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "x-permitted-cross-domain-policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "x-xss-protection",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Thu, 03 Apr 2025 03:07:02 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=5"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"message\": \"Not Found\",\n    \"statusCode\": 404\n}"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "roles",
+            "item": [
+                {
+                    "name": "list roles",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NTA3OTQsImlhdCI6MTc0MzY0NzE5NCwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDcxOTQsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwicm9sZXMiOltdLCJ0aW1lem9uZSI6IkFtZXJpY2EvTmV3X1lvcmsiLCJ1c2VybmFtZSI6ImtldmluIn0.AuJSD9n74SKlVQ0UYAfUCnVOl4ApyaJlfkemOidcCnq00EBsEtUGvn2gDYzjoM1fUzXhqa7X1muPxVFiA6AaXAwmBH5wVZPgHI_Ry1MRNHlDJNk1klrMOpmxruJ6zXN3liL-EA1J85ee9P0rxHy6mlDjjX5-_vF9zKxciLKRRAnWG7zqTwUjFmWnfpIy8Tj3MnBnXNYVAuRohvHWQTcExUDsH773Zyds_hELYydfQWa0rYX7wROlqbBxWPnWTlbPgLEH5id5RaUYTEiGWN8IPGS91qVnrbofDu0vWnVELiPE70g3NJbXbjsj5r7SXssq7LxFBAYof4XyPDgbQ4IqPw",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:3000/roles?offset=0&limit=20&orderBy=name",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "3000",
+                            "path": ["roles"],
+                            "query": [
+                                {
+                                    "key": "offset",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "20"
+                                },
+                                {
+                                    "key": "name",
+                                    "value": "viewer",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "orderBy",
+                                    "value": "name"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "OK",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NTA3OTQsImlhdCI6MTc0MzY0NzE5NCwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDcxOTQsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwicm9sZXMiOltdLCJ0aW1lem9uZSI6IkFtZXJpY2EvTmV3X1lvcmsiLCJ1c2VybmFtZSI6ImtldmluIn0.AuJSD9n74SKlVQ0UYAfUCnVOl4ApyaJlfkemOidcCnq00EBsEtUGvn2gDYzjoM1fUzXhqa7X1muPxVFiA6AaXAwmBH5wVZPgHI_Ry1MRNHlDJNk1klrMOpmxruJ6zXN3liL-EA1J85ee9P0rxHy6mlDjjX5-_vF9zKxciLKRRAnWG7zqTwUjFmWnfpIy8Tj3MnBnXNYVAuRohvHWQTcExUDsH773Zyds_hELYydfQWa0rYX7wROlqbBxWPnWTlbPgLEH5id5RaUYTEiGWN8IPGS91qVnrbofDu0vWnVELiPE70g3NJbXbjsj5r7SXssq7LxFBAYof4XyPDgbQ4IqPw",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:3000/roles",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "3000",
+                                    "path": ["roles"]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "content-encoding",
+                                    "value": "gzip"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "cross-origin-opener-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "cross-origin-resource-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "origin-agent-cluster",
+                                    "value": "?1"
+                                },
+                                {
+                                    "key": "ratelimit-limit",
+                                    "value": "100"
+                                },
+                                {
+                                    "key": "ratelimit-policy",
+                                    "value": "100;w=900"
+                                },
+                                {
+                                    "key": "ratelimit-remaining",
+                                    "value": "98"
+                                },
+                                {
+                                    "key": "ratelimit-reset",
+                                    "value": "699"
+                                },
+                                {
+                                    "key": "referrer-policy",
+                                    "value": "no-referrer"
+                                },
+                                {
+                                    "key": "response-time",
+                                    "value": "12ms"
+                                },
+                                {
+                                    "key": "strict-transport-security",
+                                    "value": "max-age=15552000; includeSubDomains"
+                                },
+                                {
+                                    "key": "x-content-type-options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "x-dns-prefetch-control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "x-download-options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "x-frame-options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "x-permitted-cross-domain-policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "x-xss-protection",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Thu, 03 Apr 2025 02:26:49 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=5"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"count\": 3,\n    \"rows\": [\n        {\n            \"_id\": \"67d638ae32d7d781f656afcf\",\n            \"name\": \"viewer\",\n            \"description\": \"Viewer\",\n            \"__v\": 0,\n            \"createdAt\": \"2025-03-16T02:34:22.924Z\",\n            \"updatedAt\": \"2025-03-16T02:34:22.924Z\"\n        },\n        {\n            \"_id\": \"67d638ae32d7d781f656afce\",\n            \"name\": \"editor\",\n            \"description\": \"Editor\",\n            \"__v\": 0,\n            \"createdAt\": \"2025-03-16T02:34:22.924Z\",\n            \"updatedAt\": \"2025-03-16T02:34:22.924Z\"\n        },\n        {\n            \"_id\": \"67d638ae32d7d781f656afcd\",\n            \"name\": \"admin\",\n            \"description\": \"Administrator\",\n            \"__v\": 0,\n            \"createdAt\": \"2025-03-16T02:34:22.924Z\",\n            \"updatedAt\": \"2025-03-16T02:34:22.924Z\"\n        }\n    ]\n}"
+                        },
+                        {
+                            "name": "Unauthorized",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2MzYwNDEsImlhdCI6MTc0MzYzMjQ0MSwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2MzI0NDEsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwidGltZXpvbmUiOiJBbWVyaWNhL05ld19Zb3JrIiwidXNlcm5hbWUiOiJrZXZpbiJ9.RjPHFqhU8y3HnOjXVS4s6b8CoiJnA9SOZ7s5dWkwrIy7eyjcQN5nxBQ1NDY-KFEYVgkVN6WI6sYM_0bLvNfivMnTLFDRYDudT2UpjZ_8SIfZAlVrLTZWWxbrbjCoH6O6bNdIxlPfDgqWL0oE5dBSa_98vRloyYC-YqU3NxdVFusxUY6pcA_tJGcw4Dnf9LCuf4yV5NdB7JFZimbe9qefng1BSHqKLqUjvNR8Gqfujh-t8djeeKc0_e77D2-SSWzHL2OEEIQNhtgp-IGUJpNa6NHBes7hIU8pJJztQj8KTq4nlUuaKBJt6dxWs_f53R4zqRIZg0UCAo1FnsPmBFhsoA",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:3000/roles",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "3000",
+                                    "path": ["roles"]
+                                }
+                            },
+                            "status": "Unauthorized",
+                            "code": 401,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "content-encoding",
+                                    "value": "gzip"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "cross-origin-opener-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "cross-origin-resource-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "origin-agent-cluster",
+                                    "value": "?1"
+                                },
+                                {
+                                    "key": "referrer-policy",
+                                    "value": "no-referrer"
+                                },
+                                {
+                                    "key": "strict-transport-security",
+                                    "value": "max-age=15552000; includeSubDomains"
+                                },
+                                {
+                                    "key": "x-content-type-options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "x-dns-prefetch-control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "x-download-options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "x-frame-options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "x-permitted-cross-domain-policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "x-xss-protection",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Thu, 03 Apr 2025 02:25:25 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=5"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"message\": \"Unauthorized\",\n    \"statusCode\": 401\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "get role",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NTA3OTQsImlhdCI6MTc0MzY0NzE5NCwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDcxOTQsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwicm9sZXMiOltdLCJ0aW1lem9uZSI6IkFtZXJpY2EvTmV3X1lvcmsiLCJ1c2VybmFtZSI6ImtldmluIn0.AuJSD9n74SKlVQ0UYAfUCnVOl4ApyaJlfkemOidcCnq00EBsEtUGvn2gDYzjoM1fUzXhqa7X1muPxVFiA6AaXAwmBH5wVZPgHI_Ry1MRNHlDJNk1klrMOpmxruJ6zXN3liL-EA1J85ee9P0rxHy6mlDjjX5-_vF9zKxciLKRRAnWG7zqTwUjFmWnfpIy8Tj3MnBnXNYVAuRohvHWQTcExUDsH773Zyds_hELYydfQWa0rYX7wROlqbBxWPnWTlbPgLEH5id5RaUYTEiGWN8IPGS91qVnrbofDu0vWnVELiPE70g3NJbXbjsj5r7SXssq7LxFBAYof4XyPDgbQ4IqPw",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:3000/roles/67d638ae32d7d781f656afcf",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "3000",
+                            "path": ["roles", "67d638ae32d7d781f656afcf"]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "OK",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NTA3OTQsImlhdCI6MTc0MzY0NzE5NCwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDcxOTQsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwicm9sZXMiOltdLCJ0aW1lem9uZSI6IkFtZXJpY2EvTmV3X1lvcmsiLCJ1c2VybmFtZSI6ImtldmluIn0.AuJSD9n74SKlVQ0UYAfUCnVOl4ApyaJlfkemOidcCnq00EBsEtUGvn2gDYzjoM1fUzXhqa7X1muPxVFiA6AaXAwmBH5wVZPgHI_Ry1MRNHlDJNk1klrMOpmxruJ6zXN3liL-EA1J85ee9P0rxHy6mlDjjX5-_vF9zKxciLKRRAnWG7zqTwUjFmWnfpIy8Tj3MnBnXNYVAuRohvHWQTcExUDsH773Zyds_hELYydfQWa0rYX7wROlqbBxWPnWTlbPgLEH5id5RaUYTEiGWN8IPGS91qVnrbofDu0vWnVELiPE70g3NJbXbjsj5r7SXssq7LxFBAYof4XyPDgbQ4IqPw",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:3000/roles/67d638ae32d7d781f656afcf",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "3000",
+                                    "path": [
+                                        "roles",
+                                        "67d638ae32d7d781f656afcf"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "content-encoding",
+                                    "value": "gzip"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "cross-origin-opener-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "cross-origin-resource-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "origin-agent-cluster",
+                                    "value": "?1"
+                                },
+                                {
+                                    "key": "ratelimit-limit",
+                                    "value": "100"
+                                },
+                                {
+                                    "key": "ratelimit-policy",
+                                    "value": "100;w=900"
+                                },
+                                {
+                                    "key": "ratelimit-remaining",
+                                    "value": "97"
+                                },
+                                {
+                                    "key": "ratelimit-reset",
+                                    "value": "682"
+                                },
+                                {
+                                    "key": "referrer-policy",
+                                    "value": "no-referrer"
+                                },
+                                {
+                                    "key": "response-time",
+                                    "value": "9ms"
+                                },
+                                {
+                                    "key": "strict-transport-security",
+                                    "value": "max-age=15552000; includeSubDomains"
+                                },
+                                {
+                                    "key": "x-content-type-options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "x-dns-prefetch-control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "x-download-options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "x-frame-options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "x-permitted-cross-domain-policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "x-xss-protection",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Thu, 03 Apr 2025 02:56:12 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=5"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"_id\": \"67d638ae32d7d781f656afcf\",\n    \"name\": \"viewer\",\n    \"description\": \"Viewer\",\n    \"__v\": 0,\n    \"createdAt\": \"2025-03-16T02:34:22.924Z\",\n    \"updatedAt\": \"2025-03-16T02:34:22.924Z\"\n}"
+                        },
+                        {
+                            "name": "Unauthorized",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2MzYwNDEsImlhdCI6MTc0MzYzMjQ0MSwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2MzI0NDEsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwidGltZXpvbmUiOiJBbWVyaWNhL05ld19Zb3JrIiwidXNlcm5hbWUiOiJrZXZpbiJ9.RjPHFqhU8y3HnOjXVS4s6b8CoiJnA9SOZ7s5dWkwrIy7eyjcQN5nxBQ1NDY-KFEYVgkVN6WI6sYM_0bLvNfivMnTLFDRYDudT2UpjZ_8SIfZAlVrLTZWWxbrbjCoH6O6bNdIxlPfDgqWL0oE5dBSa_98vRloyYC-YqU3NxdVFusxUY6pcA_tJGcw4Dnf9LCuf4yV5NdB7JFZimbe9qefng1BSHqKLqUjvNR8Gqfujh-t8djeeKc0_e77D2-SSWzHL2OEEIQNhtgp-IGUJpNa6NHBes7hIU8pJJztQj8KTq4nlUuaKBJt6dxWs_f53R4zqRIZg0UCAo1FnsPmBFhsoA",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://localhost:3000/roles",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "3000",
+                                    "path": ["roles"]
+                                }
+                            },
+                            "status": "Unauthorized",
+                            "code": 401,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "content-encoding",
+                                    "value": "gzip"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "cross-origin-opener-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "cross-origin-resource-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "origin-agent-cluster",
+                                    "value": "?1"
+                                },
+                                {
+                                    "key": "referrer-policy",
+                                    "value": "no-referrer"
+                                },
+                                {
+                                    "key": "strict-transport-security",
+                                    "value": "max-age=15552000; includeSubDomains"
+                                },
+                                {
+                                    "key": "x-content-type-options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "x-dns-prefetch-control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "x-download-options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "x-frame-options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "x-permitted-cross-domain-policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "x-xss-protection",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Thu, 03 Apr 2025 02:25:25 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=5"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"message\": \"Unauthorized\",\n    \"statusCode\": 401\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "create role",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NTA3OTQsImlhdCI6MTc0MzY0NzE5NCwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDcxOTQsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwicm9sZXMiOltdLCJ0aW1lem9uZSI6IkFtZXJpY2EvTmV3X1lvcmsiLCJ1c2VybmFtZSI6ImtldmluIn0.AuJSD9n74SKlVQ0UYAfUCnVOl4ApyaJlfkemOidcCnq00EBsEtUGvn2gDYzjoM1fUzXhqa7X1muPxVFiA6AaXAwmBH5wVZPgHI_Ry1MRNHlDJNk1klrMOpmxruJ6zXN3liL-EA1J85ee9P0rxHy6mlDjjX5-_vF9zKxciLKRRAnWG7zqTwUjFmWnfpIy8Tj3MnBnXNYVAuRohvHWQTcExUDsH773Zyds_hELYydfQWa0rYX7wROlqbBxWPnWTlbPgLEH5id5RaUYTEiGWN8IPGS91qVnrbofDu0vWnVELiPE70g3NJbXbjsj5r7SXssq7LxFBAYof4XyPDgbQ4IqPw",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"delete\",\n    \"description\": \"Delete\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "http://localhost:3000/roles",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "3000",
+                            "path": ["roles"]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Created",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NTA3OTQsImlhdCI6MTc0MzY0NzE5NCwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDcxOTQsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwicm9sZXMiOltdLCJ0aW1lem9uZSI6IkFtZXJpY2EvTmV3X1lvcmsiLCJ1c2VybmFtZSI6ImtldmluIn0.AuJSD9n74SKlVQ0UYAfUCnVOl4ApyaJlfkemOidcCnq00EBsEtUGvn2gDYzjoM1fUzXhqa7X1muPxVFiA6AaXAwmBH5wVZPgHI_Ry1MRNHlDJNk1klrMOpmxruJ6zXN3liL-EA1J85ee9P0rxHy6mlDjjX5-_vF9zKxciLKRRAnWG7zqTwUjFmWnfpIy8Tj3MnBnXNYVAuRohvHWQTcExUDsH773Zyds_hELYydfQWa0rYX7wROlqbBxWPnWTlbPgLEH5id5RaUYTEiGWN8IPGS91qVnrbofDu0vWnVELiPE70g3NJbXbjsj5r7SXssq7LxFBAYof4XyPDgbQ4IqPw",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"delete\",\n    \"description\": \"Delete\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://localhost:3000/roles",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "3000",
+                                    "path": ["roles"]
+                                }
+                            },
+                            "status": "Created",
+                            "code": 201,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "content-encoding",
+                                    "value": "gzip"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "cross-origin-opener-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "cross-origin-resource-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "origin-agent-cluster",
+                                    "value": "?1"
+                                },
+                                {
+                                    "key": "ratelimit-limit",
+                                    "value": "100"
+                                },
+                                {
+                                    "key": "ratelimit-policy",
+                                    "value": "100;w=900"
+                                },
+                                {
+                                    "key": "ratelimit-remaining",
+                                    "value": "96"
+                                },
+                                {
+                                    "key": "ratelimit-reset",
+                                    "value": "557"
+                                },
+                                {
+                                    "key": "referrer-policy",
+                                    "value": "no-referrer"
+                                },
+                                {
+                                    "key": "response-time",
+                                    "value": "23ms"
+                                },
+                                {
+                                    "key": "strict-transport-security",
+                                    "value": "max-age=15552000; includeSubDomains"
+                                },
+                                {
+                                    "key": "x-content-type-options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "x-dns-prefetch-control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "x-download-options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "x-frame-options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "x-permitted-cross-domain-policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "x-xss-protection",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Thu, 03 Apr 2025 02:58:17 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=5"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"name\": \"delete\",\n    \"description\": \"Delete\",\n    \"_id\": \"67edf949e276c1f2d9897184\",\n    \"createdAt\": \"2025-04-03T02:58:17.853Z\",\n    \"updatedAt\": \"2025-04-03T02:58:17.853Z\",\n    \"__v\": 0\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "update role",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NTA3OTQsImlhdCI6MTc0MzY0NzE5NCwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDcxOTQsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwicm9sZXMiOltdLCJ0aW1lem9uZSI6IkFtZXJpY2EvTmV3X1lvcmsiLCJ1c2VybmFtZSI6ImtldmluIn0.AuJSD9n74SKlVQ0UYAfUCnVOl4ApyaJlfkemOidcCnq00EBsEtUGvn2gDYzjoM1fUzXhqa7X1muPxVFiA6AaXAwmBH5wVZPgHI_Ry1MRNHlDJNk1klrMOpmxruJ6zXN3liL-EA1J85ee9P0rxHy6mlDjjX5-_vF9zKxciLKRRAnWG7zqTwUjFmWnfpIy8Tj3MnBnXNYVAuRohvHWQTcExUDsH773Zyds_hELYydfQWa0rYX7wROlqbBxWPnWTlbPgLEH5id5RaUYTEiGWN8IPGS91qVnrbofDu0vWnVELiPE70g3NJbXbjsj5r7SXssq7LxFBAYof4XyPDgbQ4IqPw",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"deleteme\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "http://localhost:3000/roles/67edf9a7e276c1f2d989718c",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "3000",
+                            "path": ["roles", "67edf9a7e276c1f2d989718c"]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "OK",
+                            "originalRequest": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NTA3OTQsImlhdCI6MTc0MzY0NzE5NCwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDcxOTQsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwicm9sZXMiOltdLCJ0aW1lem9uZSI6IkFtZXJpY2EvTmV3X1lvcmsiLCJ1c2VybmFtZSI6ImtldmluIn0.AuJSD9n74SKlVQ0UYAfUCnVOl4ApyaJlfkemOidcCnq00EBsEtUGvn2gDYzjoM1fUzXhqa7X1muPxVFiA6AaXAwmBH5wVZPgHI_Ry1MRNHlDJNk1klrMOpmxruJ6zXN3liL-EA1J85ee9P0rxHy6mlDjjX5-_vF9zKxciLKRRAnWG7zqTwUjFmWnfpIy8Tj3MnBnXNYVAuRohvHWQTcExUDsH773Zyds_hELYydfQWa0rYX7wROlqbBxWPnWTlbPgLEH5id5RaUYTEiGWN8IPGS91qVnrbofDu0vWnVELiPE70g3NJbXbjsj5r7SXssq7LxFBAYof4XyPDgbQ4IqPw",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"deleteme\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://localhost:3000/roles/67edf9a7e276c1f2d989718c",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "3000",
+                                    "path": [
+                                        "roles",
+                                        "67edf9a7e276c1f2d989718c"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "content-encoding",
+                                    "value": "gzip"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "cross-origin-opener-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "cross-origin-resource-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "origin-agent-cluster",
+                                    "value": "?1"
+                                },
+                                {
+                                    "key": "ratelimit-limit",
+                                    "value": "100"
+                                },
+                                {
+                                    "key": "ratelimit-policy",
+                                    "value": "100;w=900"
+                                },
+                                {
+                                    "key": "ratelimit-remaining",
+                                    "value": "93"
+                                },
+                                {
+                                    "key": "ratelimit-reset",
+                                    "value": "419"
+                                },
+                                {
+                                    "key": "referrer-policy",
+                                    "value": "no-referrer"
+                                },
+                                {
+                                    "key": "response-time",
+                                    "value": "16ms"
+                                },
+                                {
+                                    "key": "strict-transport-security",
+                                    "value": "max-age=15552000; includeSubDomains"
+                                },
+                                {
+                                    "key": "x-content-type-options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "x-dns-prefetch-control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "x-download-options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "x-frame-options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "x-permitted-cross-domain-policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "x-xss-protection",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Thu, 03 Apr 2025 03:00:36 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=5"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"_id\": \"67edf9a7e276c1f2d989718c\",\n    \"name\": \"deleteme\",\n    \"description\": \"Delete\",\n    \"createdAt\": \"2025-04-03T02:59:51.843Z\",\n    \"updatedAt\": \"2025-04-03T03:00:36.367Z\",\n    \"__v\": 0\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "delete role",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NTA3OTQsImlhdCI6MTc0MzY0NzE5NCwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDcxOTQsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwicm9sZXMiOltdLCJ0aW1lem9uZSI6IkFtZXJpY2EvTmV3X1lvcmsiLCJ1c2VybmFtZSI6ImtldmluIn0.AuJSD9n74SKlVQ0UYAfUCnVOl4ApyaJlfkemOidcCnq00EBsEtUGvn2gDYzjoM1fUzXhqa7X1muPxVFiA6AaXAwmBH5wVZPgHI_Ry1MRNHlDJNk1klrMOpmxruJ6zXN3liL-EA1J85ee9P0rxHy6mlDjjX5-_vF9zKxciLKRRAnWG7zqTwUjFmWnfpIy8Tj3MnBnXNYVAuRohvHWQTcExUDsH773Zyds_hELYydfQWa0rYX7wROlqbBxWPnWTlbPgLEH5id5RaUYTEiGWN8IPGS91qVnrbofDu0vWnVELiPE70g3NJbXbjsj5r7SXssq7LxFBAYof4XyPDgbQ4IqPw",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:3000/roles/67edf9a7e276c1f2d989718c",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "3000",
+                            "path": ["roles", "67edf9a7e276c1f2d989718c"]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "No content",
+                            "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM2NTA3OTQsImlhdCI6MTc0MzY0NzE5NCwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM2NDcxOTQsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwicm9sZXMiOltdLCJ0aW1lem9uZSI6IkFtZXJpY2EvTmV3X1lvcmsiLCJ1c2VybmFtZSI6ImtldmluIn0.AuJSD9n74SKlVQ0UYAfUCnVOl4ApyaJlfkemOidcCnq00EBsEtUGvn2gDYzjoM1fUzXhqa7X1muPxVFiA6AaXAwmBH5wVZPgHI_Ry1MRNHlDJNk1klrMOpmxruJ6zXN3liL-EA1J85ee9P0rxHy6mlDjjX5-_vF9zKxciLKRRAnWG7zqTwUjFmWnfpIy8Tj3MnBnXNYVAuRohvHWQTcExUDsH773Zyds_hELYydfQWa0rYX7wROlqbBxWPnWTlbPgLEH5id5RaUYTEiGWN8IPGS91qVnrbofDu0vWnVELiPE70g3NJbXbjsj5r7SXssq7LxFBAYof4XyPDgbQ4IqPw",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"delete\",\n    \"description\": \"Delete\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://localhost:3000/roles/67edf949e276c1f2d9897184",
+                                    "protocol": "http",
+                                    "host": ["localhost"],
+                                    "port": "3000",
+                                    "path": [
+                                        "roles",
+                                        "67edf949e276c1f2d9897184"
+                                    ]
+                                }
+                            },
+                            "status": "No Content",
+                            "code": 204,
+                            "_postman_previewlanguage": "plain",
+                            "header": [
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "text/plain;charset=UTF-8"
+                                },
+                                {
+                                    "key": "cross-origin-opener-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "cross-origin-resource-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "origin-agent-cluster",
+                                    "value": "?1"
+                                },
+                                {
+                                    "key": "ratelimit-limit",
+                                    "value": "100"
+                                },
+                                {
+                                    "key": "ratelimit-policy",
+                                    "value": "100;w=900"
+                                },
+                                {
+                                    "key": "ratelimit-remaining",
+                                    "value": "95"
+                                },
+                                {
+                                    "key": "ratelimit-reset",
+                                    "value": "494"
+                                },
+                                {
+                                    "key": "referrer-policy",
+                                    "value": "no-referrer"
+                                },
+                                {
+                                    "key": "response-time",
+                                    "value": "15ms"
+                                },
+                                {
+                                    "key": "strict-transport-security",
+                                    "value": "max-age=15552000; includeSubDomains"
+                                },
+                                {
+                                    "key": "x-content-type-options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "x-dns-prefetch-control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "x-download-options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "x-frame-options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "x-permitted-cross-domain-policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "x-xss-protection",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Thu, 03 Apr 2025 02:59:20 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=5"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "authenticate",
+            "request": {
+                "auth": {
+                    "type": "basic",
+                    "basic": [
+                        {
+                            "key": "password",
+                            "value": "testPassword!",
+                            "type": "string"
+                        },
+                        {
+                            "key": "username",
+                            "value": "67d3cc714ce136a7831483c7",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "client_id",
+                            "value": "67d3cc714ce136a7831483c7",
+                            "type": "text"
+                        },
+                        {
+                            "key": "client_secret",
+                            "value": "testPassword!",
+                            "type": "text"
+                        },
+                        {
+                            "key": "grant_type",
+                            "value": "client_credentials",
+                            "type": "text"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "http://localhost:3000/token",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "3000",
+                    "path": ["token"]
+                }
+            },
+            "response": [
+                {
+                    "name": "OK",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": [
+                                {
+                                    "key": "client_id",
+                                    "value": "67d3cc714ce136a7831483c7",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "client_secret",
+                                    "value": "testPassword!",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "grant_type",
+                                    "value": "client_credentials",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "http://localhost:3000/token",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "3000",
+                            "path": ["token"]
+                        }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "access-control-allow-origin",
+                            "value": "*"
+                        },
+                        {
+                            "key": "content-encoding",
+                            "value": "gzip"
+                        },
+                        {
+                            "key": "content-type",
+                            "value": "application/json"
+                        },
+                        {
+                            "key": "cross-origin-opener-policy",
+                            "value": "same-origin"
+                        },
+                        {
+                            "key": "cross-origin-resource-policy",
+                            "value": "same-origin"
+                        },
+                        {
+                            "key": "origin-agent-cluster",
+                            "value": "?1"
+                        },
+                        {
+                            "key": "ratelimit-limit",
+                            "value": "100"
+                        },
+                        {
+                            "key": "ratelimit-policy",
+                            "value": "100;w=900"
+                        },
+                        {
+                            "key": "ratelimit-remaining",
+                            "value": "99"
+                        },
+                        {
+                            "key": "ratelimit-reset",
+                            "value": "900"
+                        },
+                        {
+                            "key": "referrer-policy",
+                            "value": "no-referrer"
+                        },
+                        {
+                            "key": "response-time",
+                            "value": "88ms"
+                        },
+                        {
+                            "key": "strict-transport-security",
+                            "value": "max-age=15552000; includeSubDomains"
+                        },
+                        {
+                            "key": "x-content-type-options",
+                            "value": "nosniff"
+                        },
+                        {
+                            "key": "x-dns-prefetch-control",
+                            "value": "off"
+                        },
+                        {
+                            "key": "x-download-options",
+                            "value": "noopen"
+                        },
+                        {
+                            "key": "x-frame-options",
+                            "value": "SAMEORIGIN"
+                        },
+                        {
+                            "key": "x-permitted-cross-domain-policies",
+                            "value": "none"
+                        },
+                        {
+                            "key": "x-xss-protection",
+                            "value": "0"
+                        },
+                        {
+                            "key": "set-cookie",
+                            "value": "access_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDQzNDQ3NDgsImlhdCI6MTc0NDM0MTE0OCwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDQzNDExNDgsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwicm9sZXMiOltdLCJ0aW1lem9uZSI6IkFtZXJpY2EvTmV3X1lvcmsiLCJ1c2VybmFtZSI6ImtldmluIn0.jjJ8R1aDhfMgO2-lKNDdYwG5YxgjrNt7NvK5gJUJoI4Q1kBIDUY_ywQjndx9LVlpMG6M5PHAuKisBeg3zmp9lbp5tnRCyPXVTvfJo5M2ZwduFcyTYFZdu1Oxpq303kDgY5Cq8CqBaqU9ykVGoWefEgiXfmgHkcUXt7u7Y1N4wObaEZ-b-_id0XtXS5tr_FeaPmOPV2JdymN41jvIxvA6CBvL7z2rPTNyClWVbAEZ30RaX1hjqPyM3Ag2FRz4ZQsyfjMxkQpjA0ZFKdxHZMHoaGHpLA5c1dSICh0nmBXqCeJxkrQrOhSWVnHBuDUGWLl4OHKevHWXP0Z1fBskR_rhEw.h5pLmtQA0pbx3uPZzQ6NKqiH6R1Ksd533aO3Rcbqrqw%3D; Path=/; Expires=Fri, 11 Apr 2025 04:12:28 GMT; HttpOnly; SameSite=Lax"
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Fri, 11 Apr 2025 03:12:28 GMT"
+                        },
+                        {
+                            "key": "Connection",
+                            "value": "keep-alive"
+                        },
+                        {
+                            "key": "Keep-Alive",
+                            "value": "timeout=5"
+                        },
+                        {
+                            "key": "Transfer-Encoding",
+                            "value": "chunked"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"access_token\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDQzNDQ3NDgsImlhdCI6MTc0NDM0MTE0OCwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDQzNDExNDgsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwicm9sZXMiOltdLCJ0aW1lem9uZSI6IkFtZXJpY2EvTmV3X1lvcmsiLCJ1c2VybmFtZSI6ImtldmluIn0.jjJ8R1aDhfMgO2-lKNDdYwG5YxgjrNt7NvK5gJUJoI4Q1kBIDUY_ywQjndx9LVlpMG6M5PHAuKisBeg3zmp9lbp5tnRCyPXVTvfJo5M2ZwduFcyTYFZdu1Oxpq303kDgY5Cq8CqBaqU9ykVGoWefEgiXfmgHkcUXt7u7Y1N4wObaEZ-b-_id0XtXS5tr_FeaPmOPV2JdymN41jvIxvA6CBvL7z2rPTNyClWVbAEZ30RaX1hjqPyM3Ag2FRz4ZQsyfjMxkQpjA0ZFKdxHZMHoaGHpLA5c1dSICh0nmBXqCeJxkrQrOhSWVnHBuDUGWLl4OHKevHWXP0Z1fBskR_rhEw\",\n    \"expires_in\": 3600,\n    \"token_type\": \"Bearer\"\n}"
+                },
+                {
+                    "name": "Unauthorized",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": [
+                                {
+                                    "key": "client_id",
+                                    "value": "67d3cc714ce136a7831483c7",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "client_secret",
+                                    "value": "testPassword!",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "grant_type",
+                                    "value": "client_credentials",
+                                    "type": "text",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "grant_type",
+                                    "value": "password",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "http://localhost:3000/token",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "3000",
+                            "path": ["token"]
+                        }
+                    },
+                    "status": "Unauthorized",
+                    "code": 401,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "access-control-allow-origin",
+                            "value": "*"
+                        },
+                        {
+                            "key": "content-encoding",
+                            "value": "gzip"
+                        },
+                        {
+                            "key": "content-type",
+                            "value": "application/json"
+                        },
+                        {
+                            "key": "cross-origin-opener-policy",
+                            "value": "same-origin"
+                        },
+                        {
+                            "key": "cross-origin-resource-policy",
+                            "value": "same-origin"
+                        },
+                        {
+                            "key": "origin-agent-cluster",
+                            "value": "?1"
+                        },
+                        {
+                            "key": "ratelimit-limit",
+                            "value": "100"
+                        },
+                        {
+                            "key": "ratelimit-policy",
+                            "value": "100;w=900"
+                        },
+                        {
+                            "key": "ratelimit-remaining",
+                            "value": "98"
+                        },
+                        {
+                            "key": "ratelimit-reset",
+                            "value": "838"
+                        },
+                        {
+                            "key": "referrer-policy",
+                            "value": "no-referrer"
+                        },
+                        {
+                            "key": "response-time",
+                            "value": "5ms"
+                        },
+                        {
+                            "key": "strict-transport-security",
+                            "value": "max-age=15552000; includeSubDomains"
+                        },
+                        {
+                            "key": "www-authenticate",
+                            "value": "Bearer realm=\"https://auth.affirm.com\", error=\"unsupported_grant_type\", error_description=\"The provided grant_type is not supported\""
+                        },
+                        {
+                            "key": "x-content-type-options",
+                            "value": "nosniff"
+                        },
+                        {
+                            "key": "x-dns-prefetch-control",
+                            "value": "off"
+                        },
+                        {
+                            "key": "x-download-options",
+                            "value": "noopen"
+                        },
+                        {
+                            "key": "x-frame-options",
+                            "value": "SAMEORIGIN"
+                        },
+                        {
+                            "key": "x-permitted-cross-domain-policies",
+                            "value": "none"
+                        },
+                        {
+                            "key": "x-xss-protection",
+                            "value": "0"
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Tue, 01 Apr 2025 03:58:35 GMT"
+                        },
+                        {
+                            "key": "Connection",
+                            "value": "keep-alive"
+                        },
+                        {
+                            "key": "Keep-Alive",
+                            "value": "timeout=5"
+                        },
+                        {
+                            "key": "Transfer-Encoding",
+                            "value": "chunked"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"error\": \"unsupported_grant_type\",\n    \"message\": \"The provided grant_type is not supported.\",\n    \"statusCode\": 401\n}"
+                }
+            ]
+        },
+        {
+            "name": "authorize",
+            "request": {
+                "auth": {
+                    "type": "noauth"
+                },
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM0ODM3MjUsImlhdCI6MTc0MzQ4MDEyNSwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM0ODAxMjUsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwidGltZXpvbmUiOiJBbWVyaWNhL05ld19Zb3JrIiwidXNlcm5hbWUiOiJrZXZpbiJ9.bg4GDL4r_UA3wdp7Rv6PBx5Lt9uEZlHiDIilYvbxtNqx-0QXNBGQEpW1ygpNetni0nvpeW4L9peW9psROZiUVUMR_ilnsMuq82UKIAjRspDUUW6mhfxM_fK1nquFtjf4xC7LoYLcmM1mX8SEa24w7I2Y4g9-Sb2W-cWQgVkO7Fte4Oe5W5vmIWCL_Kc_u1rXWiE9us1d99lLm4kPqUybieIwmT9Gn8uUwfgVQqzS4a_MJZ6StCCdRWut1RqQBbGUPiXYDbZ48NAMVjQge_QmUqb6fIwBi-1RQljexb0Tsbm3OclYTuPxdyDBVv5yXUdQk8BD4pfd7uMZWY-xkKXCqQ",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "http://localhost:3000/authorize",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "3000",
+                    "path": ["authorize"]
+                }
+            },
+            "response": [
+                {
+                    "name": "OK",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM0ODM3MjUsImlhdCI6MTc0MzQ4MDEyNSwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM0ODAxMjUsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwidGltZXpvbmUiOiJBbWVyaWNhL05ld19Zb3JrIiwidXNlcm5hbWUiOiJrZXZpbiJ9.bg4GDL4r_UA3wdp7Rv6PBx5Lt9uEZlHiDIilYvbxtNqx-0QXNBGQEpW1ygpNetni0nvpeW4L9peW9psROZiUVUMR_ilnsMuq82UKIAjRspDUUW6mhfxM_fK1nquFtjf4xC7LoYLcmM1mX8SEa24w7I2Y4g9-Sb2W-cWQgVkO7Fte4Oe5W5vmIWCL_Kc_u1rXWiE9us1d99lLm4kPqUybieIwmT9Gn8uUwfgVQqzS4a_MJZ6StCCdRWut1RqQBbGUPiXYDbZ48NAMVjQge_QmUqb6fIwBi-1RQljexb0Tsbm3OclYTuPxdyDBVv5yXUdQk8BD4pfd7uMZWY-xkKXCqQ",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:3000/authorize",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "3000",
+                            "path": ["authorize"]
+                        }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "access-control-allow-origin",
+                            "value": "*"
+                        },
+                        {
+                            "key": "content-encoding",
+                            "value": "gzip"
+                        },
+                        {
+                            "key": "content-type",
+                            "value": "application/json"
+                        },
+                        {
+                            "key": "cross-origin-opener-policy",
+                            "value": "same-origin"
+                        },
+                        {
+                            "key": "cross-origin-resource-policy",
+                            "value": "same-origin"
+                        },
+                        {
+                            "key": "origin-agent-cluster",
+                            "value": "?1"
+                        },
+                        {
+                            "key": "ratelimit-limit",
+                            "value": "100"
+                        },
+                        {
+                            "key": "ratelimit-policy",
+                            "value": "100;w=900"
+                        },
+                        {
+                            "key": "ratelimit-remaining",
+                            "value": "98"
+                        },
+                        {
+                            "key": "ratelimit-reset",
+                            "value": "857"
+                        },
+                        {
+                            "key": "referrer-policy",
+                            "value": "no-referrer"
+                        },
+                        {
+                            "key": "response-time",
+                            "value": "3ms"
+                        },
+                        {
+                            "key": "strict-transport-security",
+                            "value": "max-age=15552000; includeSubDomains"
+                        },
+                        {
+                            "key": "x-content-type-options",
+                            "value": "nosniff"
+                        },
+                        {
+                            "key": "x-dns-prefetch-control",
+                            "value": "off"
+                        },
+                        {
+                            "key": "x-download-options",
+                            "value": "noopen"
+                        },
+                        {
+                            "key": "x-frame-options",
+                            "value": "SAMEORIGIN"
+                        },
+                        {
+                            "key": "x-permitted-cross-domain-policies",
+                            "value": "none"
+                        },
+                        {
+                            "key": "x-xss-protection",
+                            "value": "0"
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Tue, 01 Apr 2025 04:16:39 GMT"
+                        },
+                        {
+                            "key": "Connection",
+                            "value": "keep-alive"
+                        },
+                        {
+                            "key": "Keep-Alive",
+                            "value": "timeout=5"
+                        },
+                        {
+                            "key": "Transfer-Encoding",
+                            "value": "chunked"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"active\": true,\n    \"aud\": \"affirm\",\n    \"email\": \"kevboutin@gmail.com\",\n    \"exp\": 1743483725,\n    \"iat\": 1743480125,\n    \"iss\": \"https://auth.affirm.com\",\n    \"nbf\": 1743480125,\n    \"sub\": \"67d3cc714ce136a7831483c7\",\n    \"token_type\": \"Bearer\",\n    \"username\": \"kevin\"\n}"
+                },
+                {
+                    "name": "Unauthorized",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDI1OTc5MTYsImlhdCI6MTc0MjU5NDMxNiwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDI1OTQzMTYsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwidGltZXpvbmUiOiJBbWVyaWNhL05ld19Zb3JrIiwidXNlcm5hbWUiOiJrZXZpbiJ9.jCwMKH8AM73zhMpwS2wvkBNcnPT4uyqaJijAw-dXjmKGUIVGkEFM0y9OdQ_prA8yAK_B2wdiF8ctjdrDOsCE83LFEtJiErsHNwkmoWiH7Bbn2pAe0zw0o8kw9Do5fLBMU_dOUkr4WnzcnJ3Dk60rqnOAt9RafIe6gYgXZ-WBfM5w3BvWbNlCr6RBFRgemza6-GwBwDXZOJfjJ716UTBukeZI0lE0uSf1olSpeYY9Azwp50YOll8pax-sFzaWQ3EfBLxg2A_R74i-EZzdy4hqDPnwa52E-DPzk4kPpNEBGryVByeDmY7kTqP9URXvwYJ-h7SA4GACwj5pLmA2BbwYhA",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:3000/authorize",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "3000",
+                            "path": ["authorize"]
+                        }
+                    },
+                    "status": "Unauthorized",
+                    "code": 401,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "access-control-allow-origin",
+                            "value": "*"
+                        },
+                        {
+                            "key": "content-encoding",
+                            "value": "gzip"
+                        },
+                        {
+                            "key": "content-type",
+                            "value": "application/json"
+                        },
+                        {
+                            "key": "cross-origin-opener-policy",
+                            "value": "same-origin"
+                        },
+                        {
+                            "key": "cross-origin-resource-policy",
+                            "value": "same-origin"
+                        },
+                        {
+                            "key": "origin-agent-cluster",
+                            "value": "?1"
+                        },
+                        {
+                            "key": "ratelimit-limit",
+                            "value": "100"
+                        },
+                        {
+                            "key": "ratelimit-policy",
+                            "value": "100;w=900"
+                        },
+                        {
+                            "key": "ratelimit-remaining",
+                            "value": "99"
+                        },
+                        {
+                            "key": "ratelimit-reset",
+                            "value": "900"
+                        },
+                        {
+                            "key": "referrer-policy",
+                            "value": "no-referrer"
+                        },
+                        {
+                            "key": "response-time",
+                            "value": "6ms"
+                        },
+                        {
+                            "key": "strict-transport-security",
+                            "value": "max-age=15552000; includeSubDomains"
+                        },
+                        {
+                            "key": "www-authenticate",
+                            "value": "Bearer realm=\"https://auth.affirm.com\", error=\"invalid_request\""
+                        },
+                        {
+                            "key": "x-content-type-options",
+                            "value": "nosniff"
+                        },
+                        {
+                            "key": "x-dns-prefetch-control",
+                            "value": "off"
+                        },
+                        {
+                            "key": "x-download-options",
+                            "value": "noopen"
+                        },
+                        {
+                            "key": "x-frame-options",
+                            "value": "SAMEORIGIN"
+                        },
+                        {
+                            "key": "x-permitted-cross-domain-policies",
+                            "value": "none"
+                        },
+                        {
+                            "key": "x-xss-protection",
+                            "value": "0"
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Tue, 01 Apr 2025 04:15:56 GMT"
+                        },
+                        {
+                            "key": "Connection",
+                            "value": "keep-alive"
+                        },
+                        {
+                            "key": "Keep-Alive",
+                            "value": "timeout=5"
+                        },
+                        {
+                            "key": "Transfer-Encoding",
+                            "value": "chunked"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"error\": \"invalid_request\",\n    \"message\": \"Unauthorized\",\n    \"statusCode\": 401\n}"
+                }
+            ]
+        },
+        {
+            "name": "introspection",
+            "request": {
+                "auth": {
+                    "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "token",
+                            "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM0ODM3MjUsImlhdCI6MTc0MzQ4MDEyNSwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM0ODAxMjUsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwidGltZXpvbmUiOiJBbWVyaWNhL05ld19Zb3JrIiwidXNlcm5hbWUiOiJrZXZpbiJ9.bg4GDL4r_UA3wdp7Rv6PBx5Lt9uEZlHiDIilYvbxtNqx-0QXNBGQEpW1ygpNetni0nvpeW4L9peW9psROZiUVUMR_ilnsMuq82UKIAjRspDUUW6mhfxM_fK1nquFtjf4xC7LoYLcmM1mX8SEa24w7I2Y4g9-Sb2W-cWQgVkO7Fte4Oe5W5vmIWCL_Kc_u1rXWiE9us1d99lLm4kPqUybieIwmT9Gn8uUwfgVQqzS4a_MJZ6StCCdRWut1RqQBbGUPiXYDbZ48NAMVjQge_QmUqb6fIwBi-1RQljexb0Tsbm3OclYTuPxdyDBVv5yXUdQk8BD4pfd7uMZWY-xkKXCqQ",
+                            "type": "text"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "http://localhost:3000/introspect",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "3000",
+                    "path": ["introspect"]
+                }
+            },
+            "response": [
+                {
+                    "name": "OK",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": [
+                                {
+                                    "key": "token",
+                                    "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM0ODM3MjUsImlhdCI6MTc0MzQ4MDEyNSwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM0ODAxMjUsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwidGltZXpvbmUiOiJBbWVyaWNhL05ld19Zb3JrIiwidXNlcm5hbWUiOiJrZXZpbiJ9.bg4GDL4r_UA3wdp7Rv6PBx5Lt9uEZlHiDIilYvbxtNqx-0QXNBGQEpW1ygpNetni0nvpeW4L9peW9psROZiUVUMR_ilnsMuq82UKIAjRspDUUW6mhfxM_fK1nquFtjf4xC7LoYLcmM1mX8SEa24w7I2Y4g9-Sb2W-cWQgVkO7Fte4Oe5W5vmIWCL_Kc_u1rXWiE9us1d99lLm4kPqUybieIwmT9Gn8uUwfgVQqzS4a_MJZ6StCCdRWut1RqQBbGUPiXYDbZ48NAMVjQge_QmUqb6fIwBi-1RQljexb0Tsbm3OclYTuPxdyDBVv5yXUdQk8BD4pfd7uMZWY-xkKXCqQ",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "http://localhost:3000/introspect",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "3000",
+                            "path": ["introspect"]
+                        }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "access-control-allow-origin",
+                            "value": "*"
+                        },
+                        {
+                            "key": "content-encoding",
+                            "value": "gzip"
+                        },
+                        {
+                            "key": "content-type",
+                            "value": "application/json"
+                        },
+                        {
+                            "key": "cross-origin-opener-policy",
+                            "value": "same-origin"
+                        },
+                        {
+                            "key": "cross-origin-resource-policy",
+                            "value": "same-origin"
+                        },
+                        {
+                            "key": "origin-agent-cluster",
+                            "value": "?1"
+                        },
+                        {
+                            "key": "ratelimit-limit",
+                            "value": "100"
+                        },
+                        {
+                            "key": "ratelimit-policy",
+                            "value": "100;w=900"
+                        },
+                        {
+                            "key": "ratelimit-remaining",
+                            "value": "99"
+                        },
+                        {
+                            "key": "ratelimit-reset",
+                            "value": "900"
+                        },
+                        {
+                            "key": "referrer-policy",
+                            "value": "no-referrer"
+                        },
+                        {
+                            "key": "response-time",
+                            "value": "18ms"
+                        },
+                        {
+                            "key": "strict-transport-security",
+                            "value": "max-age=15552000; includeSubDomains"
+                        },
+                        {
+                            "key": "x-content-type-options",
+                            "value": "nosniff"
+                        },
+                        {
+                            "key": "x-dns-prefetch-control",
+                            "value": "off"
+                        },
+                        {
+                            "key": "x-download-options",
+                            "value": "noopen"
+                        },
+                        {
+                            "key": "x-frame-options",
+                            "value": "SAMEORIGIN"
+                        },
+                        {
+                            "key": "x-permitted-cross-domain-policies",
+                            "value": "none"
+                        },
+                        {
+                            "key": "x-xss-protection",
+                            "value": "0"
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Tue, 01 Apr 2025 04:27:27 GMT"
+                        },
+                        {
+                            "key": "Connection",
+                            "value": "keep-alive"
+                        },
+                        {
+                            "key": "Keep-Alive",
+                            "value": "timeout=5"
+                        },
+                        {
+                            "key": "Transfer-Encoding",
+                            "value": "chunked"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"active\": true,\n    \"aud\": \"affirm\",\n    \"email\": \"kevboutin@gmail.com\",\n    \"exp\": 1743483725,\n    \"iat\": 1743480125,\n    \"iss\": \"https://auth.affirm.com\",\n    \"nbf\": 1743480125,\n    \"sub\": \"67d3cc714ce136a7831483c7\",\n    \"token_type\": \"Bearer\",\n    \"username\": \"kevin\"\n}"
+                }
+            ]
+        },
+        {
+            "name": "jwks",
+            "request": {
+                "auth": {
+                    "type": "noauth"
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:3000/.well-known/jwks.json",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "3000",
+                    "path": [".well-known", "jwks.json"]
+                }
+            },
+            "response": [
+                {
+                    "name": "OK",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/.well-known/jwks.json",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "3000",
+                            "path": [".well-known", "jwks.json"]
+                        }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "access-control-allow-origin",
+                            "value": "*"
+                        },
+                        {
+                            "key": "content-encoding",
+                            "value": "gzip"
+                        },
+                        {
+                            "key": "content-type",
+                            "value": "application/json"
+                        },
+                        {
+                            "key": "cross-origin-opener-policy",
+                            "value": "same-origin"
+                        },
+                        {
+                            "key": "cross-origin-resource-policy",
+                            "value": "same-origin"
+                        },
+                        {
+                            "key": "origin-agent-cluster",
+                            "value": "?1"
+                        },
+                        {
+                            "key": "ratelimit-limit",
+                            "value": "100"
+                        },
+                        {
+                            "key": "ratelimit-policy",
+                            "value": "100;w=900"
+                        },
+                        {
+                            "key": "ratelimit-remaining",
+                            "value": "90"
+                        },
+                        {
+                            "key": "ratelimit-reset",
+                            "value": "8"
+                        },
+                        {
+                            "key": "referrer-policy",
+                            "value": "no-referrer"
+                        },
+                        {
+                            "key": "response-time",
+                            "value": "3ms"
+                        },
+                        {
+                            "key": "strict-transport-security",
+                            "value": "max-age=15552000; includeSubDomains"
+                        },
+                        {
+                            "key": "x-content-type-options",
+                            "value": "nosniff"
+                        },
+                        {
+                            "key": "x-dns-prefetch-control",
+                            "value": "off"
+                        },
+                        {
+                            "key": "x-download-options",
+                            "value": "noopen"
+                        },
+                        {
+                            "key": "x-frame-options",
+                            "value": "SAMEORIGIN"
+                        },
+                        {
+                            "key": "x-permitted-cross-domain-policies",
+                            "value": "none"
+                        },
+                        {
+                            "key": "x-xss-protection",
+                            "value": "0"
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Tue, 01 Apr 2025 04:12:25 GMT"
+                        },
+                        {
+                            "key": "Connection",
+                            "value": "keep-alive"
+                        },
+                        {
+                            "key": "Keep-Alive",
+                            "value": "timeout=5"
+                        },
+                        {
+                            "key": "Transfer-Encoding",
+                            "value": "chunked"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"keys\": [\n        {\n            \"kty\": \"RSA\",\n            \"kid\": \"sst\",\n            \"alg\": \"RS256\",\n            \"n\": \"pCSThI2MM057doS2s1QOV07mERn2_Ww-rAP3mPQ84jB8930xI5xyhCbFygTdhCzRPyShyaK65pfUoShrUoymoBlIjw3DYp1o_1H9oYnjsWq39nS1OzBQZcQRpP4FzwBAvH-atpRRx9KPV2JzWk0Auoma_4uDqo4j9f_3zZIoZtncmRKMcnDD767rliN-u-5wC-oN2HFiKI4fZN0r_EgqkTsrfY4jqvIerqnLS09i98kIJg2HLMJY2xNGLUYkHnDPmnEVYEtsULy7z377KAftMDM5ZzjvuN2RUX0i8tF0n271BAn-F5PxgJ4_pnldOuKUpNYaANkDJNFYQSFkc750bQ\",\n            \"e\": \"AQAB\"\n        }\n    ]\n}"
+                }
+            ]
+        },
+        {
+            "name": "metadata",
+            "request": {
+                "auth": {
+                    "type": "noauth"
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:3000/.well-known/oauth-authorization-server",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "3000",
+                    "path": [".well-known", "oauth-authorization-server"]
+                }
+            },
+            "response": [
+                {
+                    "name": "OK",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/.well-known/oauth-authorization-server",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "3000",
+                            "path": [
+                                ".well-known",
+                                "oauth-authorization-server"
+                            ]
+                        }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "access-control-allow-origin",
+                            "value": "*"
+                        },
+                        {
+                            "key": "content-encoding",
+                            "value": "gzip"
+                        },
+                        {
+                            "key": "content-type",
+                            "value": "application/json"
+                        },
+                        {
+                            "key": "cross-origin-opener-policy",
+                            "value": "same-origin"
+                        },
+                        {
+                            "key": "cross-origin-resource-policy",
+                            "value": "same-origin"
+                        },
+                        {
+                            "key": "origin-agent-cluster",
+                            "value": "?1"
+                        },
+                        {
+                            "key": "ratelimit-limit",
+                            "value": "100"
+                        },
+                        {
+                            "key": "ratelimit-policy",
+                            "value": "100;w=900"
+                        },
+                        {
+                            "key": "ratelimit-remaining",
+                            "value": "97"
+                        },
+                        {
+                            "key": "ratelimit-reset",
+                            "value": "684"
+                        },
+                        {
+                            "key": "referrer-policy",
+                            "value": "no-referrer"
+                        },
+                        {
+                            "key": "response-time",
+                            "value": "1ms"
+                        },
+                        {
+                            "key": "strict-transport-security",
+                            "value": "max-age=15552000; includeSubDomains"
+                        },
+                        {
+                            "key": "x-content-type-options",
+                            "value": "nosniff"
+                        },
+                        {
+                            "key": "x-dns-prefetch-control",
+                            "value": "off"
+                        },
+                        {
+                            "key": "x-download-options",
+                            "value": "noopen"
+                        },
+                        {
+                            "key": "x-frame-options",
+                            "value": "SAMEORIGIN"
+                        },
+                        {
+                            "key": "x-permitted-cross-domain-policies",
+                            "value": "none"
+                        },
+                        {
+                            "key": "x-xss-protection",
+                            "value": "0"
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Tue, 01 Apr 2025 04:19:33 GMT"
+                        },
+                        {
+                            "key": "Connection",
+                            "value": "keep-alive"
+                        },
+                        {
+                            "key": "Keep-Alive",
+                            "value": "timeout=5"
+                        },
+                        {
+                            "key": "Transfer-Encoding",
+                            "value": "chunked"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"issuer\": \"https://auth.affirm.com\",\n    \"authorization_endpoint\": \"https://auth.affirm.com/authorize\",\n    \"token_endpoint\": \"https://auth.affirm.com/token\",\n    \"jwks_uri\": \"https://auth.affirm.com/well-known/jwks.json\",\n    \"registration_endpoint\": \"https://auth.affirm.com/user\",\n    \"grant_types_supported\": [\n        \"client_credentials\"\n    ],\n    \"userinfo_endpoint\": \"https://auth.affirm.com/userinfo\",\n    \"token_endpoint_auth_methods_supported\": [\n        \"client_secret_basic\",\n        \"client_secret_post\"\n    ],\n    \"token_endpoint_auth_signing_alg_values_supported\": [\n        \"HS256\",\n        \"RS256\"\n    ],\n    \"service_documentation\": \"https://auth.affirm.com/reference\",\n    \"introspection_endpoint\": \"https://auth.affirm.com/introspect\",\n    \"revocation_endpoint\": \"https://auth.affirm.com/revoke\"\n}"
+                }
+            ]
+        },
+        {
+            "name": "revocation",
+            "request": {
+                "auth": {
+                    "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "token",
+                            "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM0ODM3MjUsImlhdCI6MTc0MzQ4MDEyNSwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM0ODAxMjUsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwidGltZXpvbmUiOiJBbWVyaWNhL05ld19Zb3JrIiwidXNlcm5hbWUiOiJrZXZpbiJ9.bg4GDL4r_UA3wdp7Rv6PBx5Lt9uEZlHiDIilYvbxtNqx-0QXNBGQEpW1ygpNetni0nvpeW4L9peW9psROZiUVUMR_ilnsMuq82UKIAjRspDUUW6mhfxM_fK1nquFtjf4xC7LoYLcmM1mX8SEa24w7I2Y4g9-Sb2W-cWQgVkO7Fte4Oe5W5vmIWCL_Kc_u1rXWiE9us1d99lLm4kPqUybieIwmT9Gn8uUwfgVQqzS4a_MJZ6StCCdRWut1RqQBbGUPiXYDbZ48NAMVjQge_QmUqb6fIwBi-1RQljexb0Tsbm3OclYTuPxdyDBVv5yXUdQk8BD4pfd7uMZWY-xkKXCqQ",
+                            "type": "text"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "http://localhost:3000/revoke",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "3000",
+                    "path": ["revoke"]
+                }
+            },
+            "response": [
+                {
+                    "name": "OK",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": [
+                                {
+                                    "key": "token",
+                                    "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM0ODM3MjUsImlhdCI6MTc0MzQ4MDEyNSwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM0ODAxMjUsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwidGltZXpvbmUiOiJBbWVyaWNhL05ld19Zb3JrIiwidXNlcm5hbWUiOiJrZXZpbiJ9.bg4GDL4r_UA3wdp7Rv6PBx5Lt9uEZlHiDIilYvbxtNqx-0QXNBGQEpW1ygpNetni0nvpeW4L9peW9psROZiUVUMR_ilnsMuq82UKIAjRspDUUW6mhfxM_fK1nquFtjf4xC7LoYLcmM1mX8SEa24w7I2Y4g9-Sb2W-cWQgVkO7Fte4Oe5W5vmIWCL_Kc_u1rXWiE9us1d99lLm4kPqUybieIwmT9Gn8uUwfgVQqzS4a_MJZ6StCCdRWut1RqQBbGUPiXYDbZ48NAMVjQge_QmUqb6fIwBi-1RQljexb0Tsbm3OclYTuPxdyDBVv5yXUdQk8BD4pfd7uMZWY-xkKXCqQ",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "http://localhost:3000/revoke",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "3000",
+                            "path": ["revoke"]
+                        }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "access-control-allow-origin",
+                            "value": "*"
+                        },
+                        {
+                            "key": "content-encoding",
+                            "value": "gzip"
+                        },
+                        {
+                            "key": "content-type",
+                            "value": "application/json"
+                        },
+                        {
+                            "key": "cross-origin-opener-policy",
+                            "value": "same-origin"
+                        },
+                        {
+                            "key": "cross-origin-resource-policy",
+                            "value": "same-origin"
+                        },
+                        {
+                            "key": "origin-agent-cluster",
+                            "value": "?1"
+                        },
+                        {
+                            "key": "ratelimit-limit",
+                            "value": "100"
+                        },
+                        {
+                            "key": "ratelimit-policy",
+                            "value": "100;w=900"
+                        },
+                        {
+                            "key": "ratelimit-remaining",
+                            "value": "95"
+                        },
+                        {
+                            "key": "ratelimit-reset",
+                            "value": "449"
+                        },
+                        {
+                            "key": "referrer-policy",
+                            "value": "no-referrer"
+                        },
+                        {
+                            "key": "response-time",
+                            "value": "6ms"
+                        },
+                        {
+                            "key": "strict-transport-security",
+                            "value": "max-age=15552000; includeSubDomains"
+                        },
+                        {
+                            "key": "x-content-type-options",
+                            "value": "nosniff"
+                        },
+                        {
+                            "key": "x-dns-prefetch-control",
+                            "value": "off"
+                        },
+                        {
+                            "key": "x-download-options",
+                            "value": "noopen"
+                        },
+                        {
+                            "key": "x-frame-options",
+                            "value": "SAMEORIGIN"
+                        },
+                        {
+                            "key": "x-permitted-cross-domain-policies",
+                            "value": "none"
+                        },
+                        {
+                            "key": "x-xss-protection",
+                            "value": "0"
+                        },
+                        {
+                            "key": "set-cookie",
+                            "value": "access_token=; Max-Age=0; Path=/"
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Tue, 01 Apr 2025 04:34:58 GMT"
+                        },
+                        {
+                            "key": "Connection",
+                            "value": "keep-alive"
+                        },
+                        {
+                            "key": "Keep-Alive",
+                            "value": "timeout=5"
+                        },
+                        {
+                            "key": "Transfer-Encoding",
+                            "value": "chunked"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "{}"
+                }
+            ]
+        },
+        {
+            "name": "userinfo",
+            "request": {
+                "auth": {
+                    "type": "noauth"
+                },
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM0ODM3MjUsImlhdCI6MTc0MzQ4MDEyNSwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM0ODAxMjUsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwidGltZXpvbmUiOiJBbWVyaWNhL05ld19Zb3JrIiwidXNlcm5hbWUiOiJrZXZpbiJ9.bg4GDL4r_UA3wdp7Rv6PBx5Lt9uEZlHiDIilYvbxtNqx-0QXNBGQEpW1ygpNetni0nvpeW4L9peW9psROZiUVUMR_ilnsMuq82UKIAjRspDUUW6mhfxM_fK1nquFtjf4xC7LoYLcmM1mX8SEa24w7I2Y4g9-Sb2W-cWQgVkO7Fte4Oe5W5vmIWCL_Kc_u1rXWiE9us1d99lLm4kPqUybieIwmT9Gn8uUwfgVQqzS4a_MJZ6StCCdRWut1RqQBbGUPiXYDbZ48NAMVjQge_QmUqb6fIwBi-1RQljexb0Tsbm3OclYTuPxdyDBVv5yXUdQk8BD4pfd7uMZWY-xkKXCqQ",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "http://localhost:3000/userinfo",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "3000",
+                    "path": ["userinfo"]
+                }
+            },
+            "response": [
+                {
+                    "name": "OK",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM0ODM3MjUsImlhdCI6MTc0MzQ4MDEyNSwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM0ODAxMjUsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwidGltZXpvbmUiOiJBbWVyaWNhL05ld19Zb3JrIiwidXNlcm5hbWUiOiJrZXZpbiJ9.bg4GDL4r_UA3wdp7Rv6PBx5Lt9uEZlHiDIilYvbxtNqx-0QXNBGQEpW1ygpNetni0nvpeW4L9peW9psROZiUVUMR_ilnsMuq82UKIAjRspDUUW6mhfxM_fK1nquFtjf4xC7LoYLcmM1mX8SEa24w7I2Y4g9-Sb2W-cWQgVkO7Fte4Oe5W5vmIWCL_Kc_u1rXWiE9us1d99lLm4kPqUybieIwmT9Gn8uUwfgVQqzS4a_MJZ6StCCdRWut1RqQBbGUPiXYDbZ48NAMVjQge_QmUqb6fIwBi-1RQljexb0Tsbm3OclYTuPxdyDBVv5yXUdQk8BD4pfd7uMZWY-xkKXCqQ",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:3000/userinfo",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "3000",
+                            "path": ["userinfo"]
+                        }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "access-control-allow-origin",
+                            "value": "*"
+                        },
+                        {
+                            "key": "content-encoding",
+                            "value": "gzip"
+                        },
+                        {
+                            "key": "content-type",
+                            "value": "application/json"
+                        },
+                        {
+                            "key": "cross-origin-opener-policy",
+                            "value": "same-origin"
+                        },
+                        {
+                            "key": "cross-origin-resource-policy",
+                            "value": "same-origin"
+                        },
+                        {
+                            "key": "origin-agent-cluster",
+                            "value": "?1"
+                        },
+                        {
+                            "key": "ratelimit-limit",
+                            "value": "100"
+                        },
+                        {
+                            "key": "ratelimit-policy",
+                            "value": "100;w=900"
+                        },
+                        {
+                            "key": "ratelimit-remaining",
+                            "value": "99"
+                        },
+                        {
+                            "key": "ratelimit-reset",
+                            "value": "900"
+                        },
+                        {
+                            "key": "referrer-policy",
+                            "value": "no-referrer"
+                        },
+                        {
+                            "key": "response-time",
+                            "value": "12ms"
+                        },
+                        {
+                            "key": "strict-transport-security",
+                            "value": "max-age=15552000; includeSubDomains"
+                        },
+                        {
+                            "key": "x-content-type-options",
+                            "value": "nosniff"
+                        },
+                        {
+                            "key": "x-dns-prefetch-control",
+                            "value": "off"
+                        },
+                        {
+                            "key": "x-download-options",
+                            "value": "noopen"
+                        },
+                        {
+                            "key": "x-frame-options",
+                            "value": "SAMEORIGIN"
+                        },
+                        {
+                            "key": "x-permitted-cross-domain-policies",
+                            "value": "none"
+                        },
+                        {
+                            "key": "x-xss-protection",
+                            "value": "0"
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Tue, 01 Apr 2025 04:31:06 GMT"
+                        },
+                        {
+                            "key": "Connection",
+                            "value": "keep-alive"
+                        },
+                        {
+                            "key": "Keep-Alive",
+                            "value": "timeout=5"
+                        },
+                        {
+                            "key": "Transfer-Encoding",
+                            "value": "chunked"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"_id\": \"67d3cc714ce136a7831483c7\",\n    \"email\": \"kevboutin@gmail.com\",\n    \"username\": \"kevin\",\n    \"locale\": \"en_us\",\n    \"timezone\": \"America/New_York\",\n    \"verifiedEmail\": true,\n    \"createdAt\": \"2025-03-14T06:28:01.223Z\",\n    \"updatedAt\": \"2025-03-14T06:28:01.223Z\",\n    \"__v\": 0,\n    \"verifiedPhone\": false,\n    \"authType\": \"oauth\"\n}"
+                },
+                {
+                    "name": "Unauthorized",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM0ODM3MjUsImlhdCI6MTc0MzQ4MDEyNSwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM0ODAxMjUsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwidGltZXpvbmUiOiJBbWVyaWNhL05ld19Zb3JrIiwidXNlcm5hbWUiOiJrZXZpbiJ9.bg4GDL4r_UA3wdp7Rv6PBx5Lt9uEZlHiDIilYvbxtNqx-0QXNBGQEpW1ygpNetni0nvpeW4L9peW9psROZiUVUMR_ilnsMuq82UKIAjRspDUUW6mhfxM_fK1nquFtjf4xC7LoYLcmM1mX8SEa24w7I2Y4g9-Sb2W-cWQgVkO7Fte4Oe5W5vmIWCL_Kc_u1rXWiE9us1d99lLm4kPqUybieIwmT9Gn8uUwfgVQqzS4a_MJZ6StCCdRWut1RqQBbGUPiXYDbZ48NAMVjQge_QmUqb6fIwBi-1RQljexb0Tsbm3OclYTuPxdyDBVv5yXUdQk8BD4pfd7uMZWY-xkKXCqQ",
+                                "type": "text",
+                                "disabled": true
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InNzdCJ9.eyJhdWQiOiJhZmZpcm0iLCJleHAiOjE3NDM0ODM3MjUsImlhdCI6MTc0MzQ4MDEyNSwiaXNzIjoiaHR0cHM6Ly9hdXRoLmFmZmlybS5jb20iLCJuYmYiOjE3NDM0ODAxMjUsInN1YiI6IjY3ZDNjYzcxNGNlMTM2YTc4MzE0ODNjNyIsImVtYWlsIjoia2V2Ym91dGluQGdtYWlsLmNvbSIsImxvY2FsZSI6ImVuX3VzIiwidGltZXpvbmUiOiJBbWVyaWNhL05ld19Zb3JrIiwidXNlcm5hbWUiOiJrZXZpbiJ9.bg4GDL4r_UA3wdp7Rv6PBx5Lt9uEZlHiDIilYvbxtNqx-0QXNBGQEpW1ygpNetni0nvpeW4L9peW9psROZiUVUMR_ilnsMuq82UKIAjRspDUUW6mhfxM_fK1nquFtjf4xC7LoYLcmM1mX8SEa24w7I2Y4g9-Sb2W-cWQgVkO7Fte4Oe5W5vmIWCL_Kc_u1rXWiE9us1d99lLm4kPqUybieIwmT9Gn8uUwfgVQqzS4a_MJZ6StCCdRWut1RqQBbGUPiXYDbZ48NAMVjQge_QmUqb6fIwBi-1RQljexb0Tsbm3OclYTuPxdyDBVv5yXUdQk8BD4pfd7uMZWY-xkKXCtS",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:3000/userinfo",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "3000",
+                            "path": ["userinfo"]
+                        }
+                    },
+                    "status": "Unauthorized",
+                    "code": 401,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "content-encoding",
+                            "value": "gzip"
+                        },
+                        {
+                            "key": "content-type",
+                            "value": "application/json"
+                        },
+                        {
+                            "key": "cross-origin-opener-policy",
+                            "value": "same-origin"
+                        },
+                        {
+                            "key": "cross-origin-resource-policy",
+                            "value": "same-origin"
+                        },
+                        {
+                            "key": "origin-agent-cluster",
+                            "value": "?1"
+                        },
+                        {
+                            "key": "referrer-policy",
+                            "value": "no-referrer"
+                        },
+                        {
+                            "key": "strict-transport-security",
+                            "value": "max-age=15552000; includeSubDomains"
+                        },
+                        {
+                            "key": "x-content-type-options",
+                            "value": "nosniff"
+                        },
+                        {
+                            "key": "x-dns-prefetch-control",
+                            "value": "off"
+                        },
+                        {
+                            "key": "x-download-options",
+                            "value": "noopen"
+                        },
+                        {
+                            "key": "x-frame-options",
+                            "value": "SAMEORIGIN"
+                        },
+                        {
+                            "key": "x-permitted-cross-domain-policies",
+                            "value": "none"
+                        },
+                        {
+                            "key": "x-xss-protection",
+                            "value": "0"
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Tue, 01 Apr 2025 04:32:12 GMT"
+                        },
+                        {
+                            "key": "Connection",
+                            "value": "keep-alive"
+                        },
+                        {
+                            "key": "Keep-Alive",
+                            "value": "timeout=5"
+                        },
+                        {
+                            "key": "Transfer-Encoding",
+                            "value": "chunked"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"Unauthorized\",\n    \"statusCode\": 401\n}"
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "apikey",
+        "apikey": [
+            {
+                "key": "key",
+                "value": "X-API-Key",
+                "type": "string"
+            },
+            {
+                "key": "value",
+                "value": "{{token}}",
+                "type": "string"
+            }
+        ]
+    },
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [""]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "exec": [""]
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "https://farming-simulator.pstmn.io"
+        }
+    ]
+}
