@@ -111,7 +111,10 @@ export default function createApp() {
         const ms = Date.now() - start;
         c.header("Response-Time", `${ms}ms`);
     });
-    app.use(csrf());
+    // Only apply CSRF middleware if not in test environment
+    if (env!.NODE_ENV !== "test") {
+        app.use(csrf());
+    }
     app.use(pinoLogger());
     app.onError(onError);
     app.notFound(notFound);
