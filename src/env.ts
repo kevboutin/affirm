@@ -24,7 +24,7 @@ const EnvSchema = z
         COOKIE_DOMAIN: z.string(),
         COOKIE_SECRET: z.string(),
         CORS_ORIGIN: z.string().optional(),
-        DB_URL: z.string().url(),
+        DB_URL: z.url(),
         DB_AUTH_TOKEN: z.string().optional(),
         DB_BUFFER_COMMANDS: z.boolean().optional(),
         DB_CONNECT_TIMEOUT: z.coerce.number().optional(),
@@ -59,29 +59,32 @@ const EnvSchema = z
     .superRefine((input, ctx) => {
         if (input.NODE_ENV === "production" && !input.CORS_ORIGIN) {
             ctx.addIssue({
-                code: z.ZodIssueCode.invalid_type,
+                code: "invalid_type",
                 expected: "string",
                 received: "undefined",
                 path: ["CORS_ORIGIN"],
                 message: "Must be set when NODE_ENV is 'production'",
+                input: input.CORS_ORIGIN,
             });
         }
         if (input.NODE_ENV === "production" && !input.DB_URL) {
             ctx.addIssue({
-                code: z.ZodIssueCode.invalid_type,
+                code: "invalid_type",
                 expected: "string",
                 received: "undefined",
                 path: ["DB_URL"],
                 message: "Must be set when NODE_ENV is 'production'",
+                input: input.DB_URL,
             });
         }
         if (input.NODE_ENV === "production" && !input.DB_NAME) {
             ctx.addIssue({
-                code: z.ZodIssueCode.invalid_type,
+                code: "invalid_type",
                 expected: "string",
                 received: "undefined",
                 path: ["DB_NAME"],
                 message: "Must be set when NODE_ENV is 'production'",
+                input: input.DB_NAME,
             });
         }
     });

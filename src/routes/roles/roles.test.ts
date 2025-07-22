@@ -8,9 +8,9 @@ import {
     expectTypeOf,
     it,
 } from "vitest";
-import { ZodIssueCode } from "zod";
 import env from "../../env";
 import { ZOD_ERROR_CODES, ZOD_ERROR_MESSAGES } from "../../constants";
+import { ZodError } from "zod";
 import createApp from "../../createApp";
 import router from "./roles.index";
 
@@ -34,10 +34,10 @@ describe("roles routes", () => {
         expect(response.status).toBe(422);
         if (response.status === 422) {
             const json = await response.json();
-            expect(json?.error?.issues[0]?.path[0]).toBe("name");
-            expect(json?.error?.issues[0]?.message).toBe(
-                ZOD_ERROR_MESSAGES.REQUIRED,
-            );
+            const error = json?.error as ZodError;
+            const issues = JSON.parse(error.message);
+            expect(issues[0]?.path[0]).toBe("name");
+            expect(issues[0]?.message).toBe(ZOD_ERROR_MESSAGES.REQUIRED);
         }
     });
 
@@ -121,8 +121,10 @@ describe("roles routes", () => {
         expect(response.status).toBe(422);
         if (response.status === 422) {
             const json = await response.json();
-            expect(json.error.issues[0].path[0]).toBe("name");
-            expect(json.error.issues[0].code).toBe(ZodIssueCode.too_small);
+            const error = json?.error as ZodError;
+            const issues = JSON.parse(error.message);
+            expect(issues[0]?.path[0]).toBe("name");
+            expect(issues[0]?.message).toBe(ZOD_ERROR_MESSAGES.TOO_SMALL);
         }
     });
 

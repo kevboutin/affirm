@@ -6,10 +6,12 @@ import {
 } from "./openapi/schemas/index";
 
 export const ZOD_ERROR_MESSAGES = {
-    REQUIRED: "Required",
+    REQUIRED: "Invalid input: expected string, received undefined",
     EXPECTED_ID: "Expected a properly formatted identifier",
     EXPECTED_NUMBER: "Expected number, received NaN",
     NO_UPDATES: "No updates provided",
+    TOO_SMALL: "Name must be at least 2 characters in length",
+    EMAIL_INVALID: "Email is not valid.",
 };
 
 export const ZOD_ERROR_CODES = {

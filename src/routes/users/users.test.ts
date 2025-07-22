@@ -8,11 +8,11 @@ import {
     expectTypeOf,
     it,
 } from "vitest";
-import { ZodIssueCode } from "zod";
 import env from "../../env";
 import { ZOD_ERROR_CODES, ZOD_ERROR_MESSAGES } from "../../constants";
 import createApp from "../../createApp";
 import router from "./users.index";
+import { ZodError } from "zod";
 
 if (env!.NODE_ENV !== "test") {
     throw new Error("NODE_ENV must be 'test'");
@@ -34,10 +34,10 @@ describe("users routes", () => {
         expect(response.status).toBe(422);
         if (response.status === 422) {
             const json = await response.json();
-            expect(json?.error.issues[0].path[0]).toBe("username");
-            expect(json?.error.issues[0].message).toBe(
-                ZOD_ERROR_MESSAGES.REQUIRED,
-            );
+            const error = json?.error as ZodError;
+            const issues = JSON.parse(error.message);
+            expect(issues[0]?.path[0]).toBe("username");
+            expect(issues[0]?.message).toBe(ZOD_ERROR_MESSAGES.REQUIRED);
         }
     });
 
@@ -125,8 +125,10 @@ describe("users routes", () => {
         expect(response.status).toBe(422);
         if (response.status === 422) {
             const json = await response.json();
-            expect(json.error.issues[0].path[0]).toBe("email");
-            expect(json.error.issues[0].code).toBe(ZodIssueCode.invalid_string);
+            const error = json?.error as ZodError;
+            const issues = JSON.parse(error.message);
+            expect(issues[0]?.path[0]).toBe("email");
+            expect(issues[0]?.message).toBe(ZOD_ERROR_MESSAGES.EMAIL_INVALID);
         }
     });
 
