@@ -1,8 +1,8 @@
 import { UserManager, WebStorageStateStore } from 'oidc-client-ts';
 
 const authConfig = {
-    authority: 'https://atypon.scienceconnect.io',
-    client_id: 'your-client-id', // Replace with your actual client ID
+    authority: 'https://dev-cb8ia1vk3gldjhq0.us.auth0.com',
+    client_id: 'hhhsi3DkucpNwa3a02XaiVvyzxyH8n8F', // Replace with your actual client ID
     redirect_uri: `${window.location.origin}/callback`,
     post_logout_redirect_uri: `${window.location.origin}`,
     response_type: 'code',
