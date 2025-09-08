@@ -51,7 +51,7 @@
         "@scalar/core": "^0.3.14",
         "@scalar/hono-api-reference": "^0.9.16",
         "bcrypt": "^6.0.0",
-        "dotenv": "^17.2.1",
+        "dotenv": "^17.2.2",
         "dotenv-expand": "^12.0.3",
         "hono": "^4.9.6",
         "hono-pino": "^0.10.2",
