@@ -46,7 +46,7 @@
         "typescript"
     ],
     "dependencies": {
-        "@hono/node-server": "^1.19.1",
+        "@hono/node-server": "^1.19.2",
         "@hono/zod-openapi": "^1.1.0",
         "@scalar/core": "^0.3.16",
         "@scalar/hono-api-reference": "^0.9.16",
