@@ -64,7 +64,7 @@
         "zod": "^4.1.11"
     },
     "devDependencies": {
-        "@commitlint/cli": "^19.8.1",
+        "@commitlint/cli": "^20.1.0",
         "@commitlint/config-conventional": "^20.0.0",
         "@types/bcrypt": "^6.0.0",
         "@types/node": "^22.15.17",
