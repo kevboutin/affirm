@@ -20,6 +20,7 @@ import { importPKCS8, importSPKI, exportJWK } from "jose";
 import bcrypt from "bcrypt";
 import { authz } from "@/authz";
 import { RedactedUserDocumentWithRoles } from "@/db/models/user";
+import type { RoleDocument } from "@/db/models/role";
 import { deleteCookie, getSignedCookie, setSignedCookie } from "hono/cookie";
 
 const db = new DatabaseService({
@@ -36,7 +37,15 @@ const db = new DatabaseService({
     },
 });
 const _ = await db.createConnection();
-const userRepository = new UserRepository(User as any);
+// Support both class constructors and factory function mocks for UserRepository
+const userRepository = (() => {
+    const UR: any = UserRepository as any;
+    try {
+        return new UR(User as any);
+    } catch (_err) {
+        return UR(User as any);
+    }
+})();
 
 const validatePassword = async (
     password: string,
@@ -60,6 +69,24 @@ const getProviderUserinfo = async (
     }
     return { userId, providerUserinfo };
 };
+
+const normalizeAudience = (aud: unknown): string[] | undefined => {
+    if (Array.isArray(aud)) {
+        return aud as string[];
+    }
+    if (typeof aud === "string") {
+        return [aud];
+    }
+    return undefined;
+};
+
+const normalizeString = (value: unknown): string | undefined =>
+    typeof value === "string" ? value : undefined;
+
+const normalizeStringArray = (value: unknown): string[] | undefined =>
+    Array.isArray(value)
+        ? (value.filter((v) => typeof v === "string") as string[])
+        : undefined;
 
 const createUserUpdates = (
     providerUserinfo: any,
@@ -100,8 +127,8 @@ export const authenticate: AppRouteHandler<AuthenticateRoute> = async (c) => {
     }
     if (grantType !== "client_credentials") {
         c.var.logger.info(
+            { grantType },
             `authenticate: Grant type is not supported.`,
-            grantType,
         );
         c.header(
             "WWW-Authenticate",
@@ -194,7 +221,9 @@ export const authenticate: AppRouteHandler<AuthenticateRoute> = async (c) => {
                 sub: result._id.toString(),
                 email: result.email,
                 locale: result?.locale,
-                roles: result?.roles?.map((role) => role._id.toString()),
+                roles: result?.roles?.map((role: RoleDocument) =>
+                    role._id.toString(),
+                ),
                 timezone: result?.timezone,
                 username: result.username,
             },
@@ -313,16 +342,16 @@ export const authorize: AppRouteHandler<AuthorizeRoute> = async (c) => {
         c.var.logger.info(`authorize: Verified JWT token.`);
         const response = {
             active: true,
-            aud: payload.aud,
-            email: payload.email,
+            aud: normalizeAudience((payload as any).aud),
+            email: normalizeString((payload as any).email),
             exp: payload.exp,
             iat: payload.iat,
             iss: payload.iss,
             nbf: payload.nbf,
-            roles: payload.roles,
+            roles: normalizeStringArray((payload as any).roles),
             sub: payload.sub,
             token_type: "Bearer",
-            username: payload.username,
+            username: normalizeString((payload as any).username),
         };
         return c.json(response, HttpStatusCodes.OK);
     } catch (error) {
@@ -402,16 +431,16 @@ export const introspect: AppRouteHandler<IntrospectRoute> = async (c) => {
         c.var.logger.info(`authorize: Verified JWT token.`);
         const response = {
             active: true,
-            aud: payload.aud,
-            email: payload.email,
+            aud: normalizeAudience((payload as any).aud),
+            email: normalizeString((payload as any).email),
             exp: payload.exp,
             iat: payload.iat,
             iss: payload.iss,
             nbf: payload.nbf,
-            roles: payload.roles,
+            roles: normalizeStringArray((payload as any).roles),
             sub: payload.sub,
             token_type: "Bearer",
-            username: payload.username,
+            username: normalizeString((payload as any).username),
         };
         return c.json(response, HttpStatusCodes.OK);
     } catch (error) {
@@ -480,7 +509,7 @@ export const jwks: AppRouteHandler<JWKSRoute> = async (c) => {
             HttpStatusCodes.OK,
         );
     } catch (error) {
-        c.var.logger.error(`jwks: Unable to export JWK.`, error);
+        c.var.logger.error({ err: error }, `jwks: Unable to export JWK.`);
         c.header(
             "WWW-Authenticate",
             `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_request"`,
@@ -556,7 +585,10 @@ export const revocation: AppRouteHandler<RevocationRoute> = async (c) => {
         deleteCookie(c, "access_token");
         return c.json({}, HttpStatusCodes.OK);
     } catch (error) {
-        c.var.logger.error(`revocation: Unable to verify JWT token.`, error);
+        c.var.logger.error(
+            { err: error },
+            `revocation: Unable to verify JWT token.`,
+        );
         return c.json(
             {
                 error: "invalid_request" as const,
@@ -599,7 +631,7 @@ export const ssoauthorize: AppRouteHandler<SsoAuthorizeRoute> = async (c) => {
             HttpStatusCodes.UNAUTHORIZED,
         );
     }
-    const metadataUrl = c.req.valid("json") as unknown as string;
+    const { metadataUrl } = c.req.valid("json") as { metadataUrl: string };
     let updatedUser: RedactedUserDocumentWithRoles | null = null;
     let subject: string;
     try {
@@ -663,7 +695,9 @@ export const ssoauthorize: AppRouteHandler<SsoAuthorizeRoute> = async (c) => {
                 sub: subject,
                 email: updatedUser?.email,
                 locale: updatedUser?.locale,
-                roles: updatedUser?.roles?.map((role) => role._id.toString()),
+                roles: updatedUser?.roles?.map((role: RoleDocument) =>
+                    role._id.toString(),
+                ),
                 timezone: updatedUser?.timezone,
                 username: updatedUser?.username,
             },
@@ -720,7 +754,10 @@ export const userinfo: AppRouteHandler<UserinfoRoute> = async (c) => {
         };
         return c.json(redactedUser, HttpStatusCodes.OK);
     } catch (error) {
-        c.var.logger.error(`userinfo: Unable to query successfully.`, error);
+        c.var.logger.error(
+            { err: error },
+            `userinfo: Unable to query successfully.`,
+        );
         c.header(
             "WWW-Authenticate",
             `Bearer realm="${env!.TOKEN_ISSUER}", error="invalid_request"`,

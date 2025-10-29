@@ -11,14 +11,14 @@ import {
 import env from "../../env";
 import { ZOD_ERROR_CODES, ZOD_ERROR_MESSAGES } from "../../constants";
 import { ZodError } from "zod";
-import createApp from "../../createApp";
+import { createTestApp } from "../../createApp";
 import router from "./roles.index";
 
 if (env!.NODE_ENV !== "test") {
     throw new Error("NODE_ENV must be 'test'");
 }
 
-const client = testClient(createApp().route("/", router));
+const client = testClient<typeof router>(createTestApp(router));
 
 describe("roles routes", () => {
     beforeAll(async () => {});

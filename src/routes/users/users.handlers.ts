@@ -97,7 +97,7 @@ export const create: AppRouteHandler<CreateRoute> = async (c) => {
                 .filter((id) => isValidObjectId(id as unknown as string))
                 .map(
                     (id) => new Types.ObjectId(id as unknown as string),
-                ) as unknown as Types.DocumentArray<Types.ObjectId>;
+                ) as unknown as any;
         }
         if (user.password) {
             const saltRounds = 10;
@@ -172,7 +172,10 @@ export const getOne: AppRouteHandler<GetOneRoute> = async (c) => {
         };
         return c.json(redactedUser, HttpStatusCodes.OK);
     } catch (error) {
-        c.var.logger.error(`getOne: Unable to query successfully.`, error);
+        c.var.logger.error(
+            { err: error },
+            `getOne: Unable to query successfully.`,
+        );
         return c.json(
             {
                 message: HttpStatusPhrases.INTERNAL_SERVER_ERROR,
@@ -243,7 +246,10 @@ export const patch: AppRouteHandler<PatchRoute> = async (c) => {
         };
         return c.json(redactedUser, HttpStatusCodes.OK);
     } catch (error) {
-        c.var.logger.error(`patch: Unable to update successfully.`, error);
+        c.var.logger.error(
+            { err: error },
+            `patch: Unable to update successfully.`,
+        );
         return c.json(
             {
                 message: HttpStatusPhrases.INTERNAL_SERVER_ERROR,
@@ -288,7 +294,10 @@ export const remove: AppRouteHandler<RemoveRoute> = async (c) => {
         c.var.logger.info(`remove: Removed user with identifier=${id}.`);
         return c.body(null, HttpStatusCodes.NO_CONTENT);
     } catch (error) {
-        c.var.logger.error(`remove: Unable to remove successfully.`, error);
+        c.var.logger.error(
+            { err: error },
+            `remove: Unable to remove successfully.`,
+        );
         return c.json(
             {
                 message: HttpStatusPhrases.INTERNAL_SERVER_ERROR,

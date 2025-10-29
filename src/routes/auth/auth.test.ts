@@ -406,8 +406,12 @@ describe("auth routes", () => {
     });
 
     it("post /sso/authorize successfully authorizes with valid token", async () => {
+        // Ensure provider metadata and userinfo are mocked for this specific test
+        vi.spyOn(authz, "getProviderMetadata").mockResolvedValueOnce({
+            userinfo_endpoint: "https://example.com/userinfo",
+        } as any);
         // Override the default mock for this specific test
-        vi.mocked(authz.getProviderUserinfo).mockResolvedValueOnce({
+        vi.spyOn(authz, "getProviderUserinfo").mockResolvedValueOnce({
             sub: "existing-user", // Use "existing-user" which we know exists in our mock repository
             email: "test@example.com",
             username: "testuser",

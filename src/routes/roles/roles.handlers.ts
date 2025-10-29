@@ -39,6 +39,18 @@ const isValidObjectId = (id: string) => {
     return false;
 };
 
+const serializeRole = (role: any) => ({
+    _id: role._id?.toString(),
+    name: role.name as string,
+    description: (role.description ?? undefined) as string | undefined,
+    createdAt: role.createdAt
+        ? new Date(role.createdAt).toISOString()
+        : undefined,
+    updatedAt: role.updatedAt
+        ? new Date(role.updatedAt).toISOString()
+        : undefined,
+});
+
 export const list: AppRouteHandler<ListRoute> = async (c) => {
     try {
         const params: {
@@ -68,7 +80,10 @@ export const list: AppRouteHandler<ListRoute> = async (c) => {
         const result = await roleRepository.findAndCountAll(params);
         const { count, rows } = result;
         c.var.logger.info(`list: Found ${count} role(s).`);
-        return c.json({ count, rows }, HttpStatusCodes.OK);
+        return c.json(
+            { count, rows: rows.map((r: any) => serializeRole(r)) },
+            HttpStatusCodes.OK,
+        );
     } catch (error) {
         console.error(`list: Unable to query successfully.`, error);
         return c.json(
@@ -90,7 +105,14 @@ export const create: AppRouteHandler<CreateRoute> = async (c) => {
             email: "dummy@gmail.com",
         });
         c.var.logger.info(`create: Created role with name=${role.name}.`);
-        return c.json(inserted, HttpStatusCodes.CREATED);
+        const body = {
+            _id: inserted._id.toString(),
+            name: inserted.name,
+            description: inserted.description ?? undefined,
+            createdAt: inserted.createdAt?.toISOString(),
+            updatedAt: inserted.updatedAt?.toISOString(),
+        };
+        return c.json(body, HttpStatusCodes.CREATED);
     } catch (error) {
         console.error(`create: Unable to create role.`, error);
         return c.json(
@@ -130,9 +152,12 @@ export const getOne: AppRouteHandler<GetOneRoute> = async (c) => {
             );
         }
         c.var.logger.info(`getOne: Found role with identifier=${id}.`);
-        return c.json(role, HttpStatusCodes.OK);
+        return c.json(serializeRole(role), HttpStatusCodes.OK);
     } catch (error) {
-        c.var.logger.error(`getOne: Unable to query successfully.`, error);
+        c.var.logger.error(
+            { err: error },
+            `getOne: Unable to query successfully.`,
+        );
         return c.json(
             {
                 message: HttpStatusPhrases.INTERNAL_SERVER_ERROR,
@@ -194,9 +219,12 @@ export const patch: AppRouteHandler<PatchRoute> = async (c) => {
             );
         }
         c.var.logger.info(`patch: Updated role with identifier=${id}.`);
-        return c.json(role, HttpStatusCodes.OK);
+        return c.json(serializeRole(role), HttpStatusCodes.OK);
     } catch (error) {
-        c.var.logger.error(`patch: Unable to update successfully.`, error);
+        c.var.logger.error(
+            { err: error },
+            `patch: Unable to update successfully.`,
+        );
         return c.json(
             {
                 message: HttpStatusPhrases.INTERNAL_SERVER_ERROR,
@@ -241,7 +269,10 @@ export const remove: AppRouteHandler<RemoveRoute> = async (c) => {
         c.var.logger.info(`remove: Removed role with identifier=${id}.`);
         return c.body(null, HttpStatusCodes.NO_CONTENT);
     } catch (error) {
-        c.var.logger.error(`remove: Unable to remove successfully.`, error);
+        c.var.logger.error(
+            { err: error },
+            `remove: Unable to remove successfully.`,
+        );
         return c.json(
             {
                 message: HttpStatusPhrases.INTERNAL_SERVER_ERROR,
