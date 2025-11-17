@@ -56,7 +56,7 @@
         "hono": "^4.10.4",
         "hono-pino": "^0.10.3",
         "hono-rate-limiter": "^0.4.2",
-        "jose": "^6.1.0",
+        "jose": "^6.1.2",
         "mongodb-memory-server": "^10.3.0",
         "mongoose": "^8.19.3",
         "pino": "^10.1.0",
