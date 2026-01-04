@@ -33,7 +33,7 @@ HOST=localhost
 PORT=3000
 PROTOCOL=http
 AUTHORIZATION_ENDPOINT_PATH=/authorize
-COOKIE_DOMAIN=affirm.com
+COOKIE_DOMAIN=affirmauth.com
 COOKIE_SECRET=someSecretV4lu3
 DB_NAME=affirm
 DB_URL=mongodb://127.0.0.1:27017/
@@ -48,7 +48,7 @@ TOKEN_ALGORITHM=RS256
 TOKEN_AUDIENCE=affirm
 TOKEN_ENDPOINT_PATH=/token
 TOKEN_EXPIRATION_IN_SECONDS=3600
-TOKEN_ISSUER=https://auth.affirm.com
+TOKEN_ISSUER=https://affirmauth.com
 USERINFO_ENDPOINT_PATH=/userinfo
 ```
 

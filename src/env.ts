@@ -53,7 +53,7 @@ const EnvSchema = z
         TOKEN_AUDIENCE: z.string().default("affirm"),
         TOKEN_ENDPOINT_PATH: z.string().default("/token"),
         TOKEN_EXPIRATION_IN_SECONDS: z.coerce.number().default(3600),
-        TOKEN_ISSUER: z.string().default("https://auth.affirm.com"),
+        TOKEN_ISSUER: z.string().default("https://affirmauth.com"),
         USERINFO_ENDPOINT_PATH: z.string().default("/userinfo"),
     })
     .superRefine((input, ctx) => {
