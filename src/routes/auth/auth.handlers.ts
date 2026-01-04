@@ -367,7 +367,8 @@ export const authorize: AppRouteHandler<AuthorizeRoute> = async (c) => {
             (error as any).code === "ERR_JWT_UNSUPPORTED_ALGORITHM" ||
             (error as any).code === "ERR_JWT_INVALID_AUDIENCE" ||
             (error as any).code === "ERR_JWT_INVALID_ISSUER" ||
-            (error as any).code === "ERR_JWS_INVALID"
+            (error as any).code === "ERR_JWS_INVALID" ||
+            (error as any).code === "ERR_JWT_CLAIM_VALIDATION_FAILED"
         ) {
             c.header(
                 "WWW-Authenticate",
@@ -456,7 +457,8 @@ export const introspect: AppRouteHandler<IntrospectRoute> = async (c) => {
             (error as any).code === "ERR_JWT_UNSUPPORTED_ALGORITHM" ||
             (error as any).code === "ERR_JWT_INVALID_AUDIENCE" ||
             (error as any).code === "ERR_JWT_INVALID_ISSUER" ||
-            (error as any).code === "ERR_JWS_INVALID"
+            (error as any).code === "ERR_JWS_INVALID" ||
+            (error as any).code === "ERR_JWT_CLAIM_VALIDATION_FAILED"
         ) {
             c.header(
                 "WWW-Authenticate",
