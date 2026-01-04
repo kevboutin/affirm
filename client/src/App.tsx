@@ -4,6 +4,7 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { Callback } from './components/Callback';
 import { Home } from './components/Home';
 import { Login } from './components/Login';
+import { Logout } from './components/Logout';
 
 function App() {
     return (
@@ -12,6 +13,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Login />} />
                     <Route path="/callback" element={<Callback />} />
+                    <Route path="/logout" element={<Logout />} />
                     <Route
                         path="/home"
                         element={
