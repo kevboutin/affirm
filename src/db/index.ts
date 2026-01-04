@@ -116,9 +116,6 @@ class DatabaseService {
             // Use the MongoDB memory server for testing.
             const mongoServer = await MongoMemoryServer.create();
             this.dbUri = mongoServer.getUri();
-            console.log(
-                `createConnection: Creating test connection with uri=${this.dbUri}`,
-            );
             await mongoose.connect(this.dbUri, this.databaseOpts);
             this.connection = mongoose.connection;
             return this.connection;

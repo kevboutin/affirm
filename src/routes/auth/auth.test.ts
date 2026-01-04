@@ -16,8 +16,8 @@ let expiredToken: string =
 // Mock the UserRepository
 vi.mock("../../db/repositories/userRepository", () => {
     return {
-        default: vi.fn().mockImplementation(() => ({
-            findById: vi.fn().mockImplementation((id: string) => {
+        default: class MockUserRepository {
+            async findById(id: string) {
                 if (id === "507f1f77bcf86cd799439011") {
                     return null; // User not found case
                 }
@@ -31,8 +31,9 @@ vi.mock("../../db/repositories/userRepository", () => {
                     };
                 }
                 return null;
-            }),
-            findByIdpSub: vi.fn().mockImplementation((idpSub: string) => {
+            }
+
+            async findByIdpSub(idpSub: string) {
                 if (idpSub === "nonexistent-user") {
                     return null; // User not found case
                 }
@@ -51,8 +52,9 @@ vi.mock("../../db/repositories/userRepository", () => {
                     };
                 }
                 return null;
-            }),
-            update: vi.fn().mockImplementation((id: string, updates: any) => {
+            }
+
+            async update(id: string, updates: any) {
                 if (
                     id === "existing-user" ||
                     id === "67d3cc714ce136a7831483c7"
@@ -63,8 +65,8 @@ vi.mock("../../db/repositories/userRepository", () => {
                     };
                 }
                 return null;
-            }),
-        })),
+            }
+        },
     };
 });
 
