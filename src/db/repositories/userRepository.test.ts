@@ -8,20 +8,7 @@ import { Types } from "mongoose";
 
 describe("UserRepository", () => {
     let userRepository: UserRepository;
-    let mockModel: Partial<Model<any>> & {
-        createCollection: ReturnType<typeof vi.fn>;
-        create: ReturnType<typeof vi.fn>;
-        find: ReturnType<typeof vi.fn>;
-        skip: ReturnType<typeof vi.fn>;
-        limit: ReturnType<typeof vi.fn>;
-        collation: ReturnType<typeof vi.fn>;
-        sort: ReturnType<typeof vi.fn>;
-        exec: ReturnType<typeof vi.fn>;
-        updateOne: ReturnType<typeof vi.fn>;
-        deleteOne: ReturnType<typeof vi.fn>;
-        countDocuments: ReturnType<typeof vi.fn>;
-        findById: ReturnType<typeof vi.fn>;
-    };
+    let mockModel: any;
     let mockCurrentUser: CurrentUser;
 
     beforeEach(() => {

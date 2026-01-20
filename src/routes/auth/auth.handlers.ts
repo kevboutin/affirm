@@ -42,7 +42,15 @@ const userRepository = (() => {
     const UR: any = UserRepository as any;
     try {
         return new UR(User as any);
-    } catch (_err) {
+    } catch (error_) {
+        // If instantiation fails (e.g., when `UserRepository` is mocked as a factory
+        // function in tests), log the error and fall back to calling it as a function.
+        // This ensures the exception is handled rather than silently swallowed.
+        // eslint-disable-next-line no-console
+        console.error(
+            "Failed to instantiate UserRepository with 'new'; falling back to function call style.",
+            error_,
+        );
         return UR(User as any);
     }
 })();
@@ -85,7 +93,7 @@ const normalizeString = (value: unknown): string | undefined =>
 
 const normalizeStringArray = (value: unknown): string[] | undefined =>
     Array.isArray(value)
-        ? (value.filter((v) => typeof v === "string") as string[])
+        ? value.filter((v): v is string => typeof v === "string")
         : undefined;
 
 const createUserUpdates = (
@@ -651,15 +659,15 @@ export const ssoauthorize: AppRouteHandler<SsoAuthorizeRoute> = async (c) => {
             username: "dummy",
             email: "dummy@gmail.com",
         });
-        if (!updatedUser) {
+        if (updatedUser) {
+            c.var.logger.info(
+                `ssoauthorize: Updated user with identifier=${updatedUser._id}.`,
+            );
+        } else {
             c.var.logger.error(
                 `ssoauthorize: Unable to update user with provider userinfo.`,
             );
             throw new Error("Unable to update user.");
-        } else {
-            c.var.logger.info(
-                `ssoauthorize: Updated user with identifier=${updatedUser._id}.`,
-            );
         }
     } catch (error) {
         c.var.logger.error(

@@ -1,15 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import AuditLogRepository from "./auditLogRepository";
-import type { Model } from "mongoose";
 import type { CurrentUser } from "./types";
 
 describe("AuditLogRepository", () => {
     let repository: AuditLogRepository;
-    let mockModel: Partial<Model<any>> & {
-        create: ReturnType<typeof vi.fn>;
-        find: ReturnType<typeof vi.fn>;
-        countDocuments: ReturnType<typeof vi.fn>;
-    };
+    let mockModel: any;
     let mockCurrentUser: CurrentUser;
 
     beforeEach(() => {
