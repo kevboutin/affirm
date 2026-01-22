@@ -18,6 +18,17 @@ import { HonoJsonWebKey } from "hono/utils/jwt/jws";
 import { csrf } from "hono/csrf";
 
 const keyMap: Map<string, any> = new Map<string, any>();
+// `hono/jwk` requires an explicit allowlist of algorithms.
+// This app’s JWKS endpoint serves asymmetric keys, so only asymmetric algorithms are valid here.
+const jwkAlgs: Array<"RS256"> =
+    env!.TOKEN_ALGORITHM === "RS256"
+        ? ["RS256"]
+        : (() => {
+              throw new Error(
+                  `Unsupported TOKEN_ALGORITHM for JWKS verification: ${env!.TOKEN_ALGORITHM}. ` +
+                      "Use RS256 when enabling JWKS-based verification.",
+              );
+          })();
 
 async function getJwks(): Promise<HonoJsonWebKey[]> {
     const jKey = "jwks";
@@ -57,18 +68,21 @@ export default function createApp() {
         app.use(
             "/roles",
             jwk({
+                alg: jwkAlgs,
                 keys: getJwks,
             }),
         );
         app.use(
             "/roles/*",
             jwk({
+                alg: jwkAlgs,
                 keys: getJwks,
             }),
         );
         app.use(
             "/users/*",
             jwk({
+                alg: jwkAlgs,
                 keys: getJwks,
             }),
         );
@@ -76,6 +90,7 @@ export default function createApp() {
     app.use(
         "/userinfo",
         jwk({
+            alg: jwkAlgs,
             keys: getJwks,
         }),
     );
