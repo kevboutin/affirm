@@ -128,7 +128,15 @@ export default function createApp() {
     });
     // Only apply CSRF middleware if not in test environment
     if (env!.NODE_ENV !== "test") {
-        app.use(csrf());
+        app.use("*", async (c, next) => {
+            const path = c.req.path;
+            // Skip CSRF for OAuth / auth endpoints
+            if (path === "/token" || path === "/introspect" || path === "/revoke" || path === "/sso/authorize") {
+                return await next();
+            }
+            const csrfMiddleware = csrf();
+            return await csrfMiddleware(c, next);
+        });
     }
     app.use(pinoLogger());
     app.onError(onError);
