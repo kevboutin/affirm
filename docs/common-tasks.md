@@ -26,5 +26,4 @@
 
 - Optimize database queries
 - Use appropriate caching strategies where applicable
-- Follow established performance patterns
 - Monitor and optimize critical paths

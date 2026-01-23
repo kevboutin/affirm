@@ -2,7 +2,6 @@
 
 ## Endpoints
 - Use RESTful conventions
-- Follow existing route patterns in `src/routes/`
 - Authentication routes: `src/routes/auth/`
 - User routes: `src/routes/users/`
 - Role routes: `src/routes/roles/`
@@ -21,4 +20,4 @@
 ## Response Format
 - Maintain consistent response formats
 - Use appropriate HTTP methods (GET, POST, PUT, PATCH, DELETE)
-- Follow existing response patterns
+- See existing route handlers for response format examples

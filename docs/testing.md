@@ -11,7 +11,6 @@
 - Tests run with `NODE_ENV=test`
 
 ## Test Patterns
-- Follow existing test patterns in the codebase
 - Write unit tests for all new functionality
 - Maintain existing test coverage levels
 - Use AAA pattern (Arrange, Act, Assert) where applicable

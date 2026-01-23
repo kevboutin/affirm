@@ -6,15 +6,13 @@
 - Models are defined in `src/db/models/`
 
 ## Data Access
-- Follow existing data access patterns
 - Use Mongoose for database operations
 - Maintain proper error handling for database operations
+- See existing repositories in `src/db/repositories/` for examples
 
 ## Migrations
 - Consider migrations when making schema changes
-- Review existing migration patterns if applicable
 
 ## Query Optimization
 - Optimize database queries for performance
 - Use appropriate indexing strategies
-- Follow established query patterns

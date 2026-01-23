@@ -7,7 +7,6 @@
 
 ## Code Formatting
 - Prettier is configured - formatting is handled automatically
-- Follow existing project structure and file organization patterns
 
 ## Project Structure
 - Routes: `src/routes/`

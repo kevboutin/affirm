@@ -13,8 +13,7 @@
 ## Authentication & Authorization
 - Maintain proper token validation for JWT tokens
 - Keep security headers consistent across endpoints
-- Follow established authentication flow patterns
-- Understand the OAuth/OIDC flows implemented in the project
+- Understand the OAuth/OIDC flows implemented in the project (see `src/routes/auth/`)
 
 ## Error Handling
 - Never expose sensitive information in error messages
