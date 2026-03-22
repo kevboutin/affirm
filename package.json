@@ -48,12 +48,12 @@
     "dependencies": {
         "@hono/node-server": "^1.19.11",
         "@hono/zod-openapi": "^1.2.2",
-        "@scalar/core": "^0.4.2",
-        "@scalar/hono-api-reference": "^0.10.2",
+        "@scalar/core": "^0.4.4",
+        "@scalar/hono-api-reference": "^0.10.4",
         "bcrypt": "^6.0.0",
         "dotenv": "^17.3.1",
         "dotenv-expand": "^12.0.3",
-        "hono": "^4.12.7",
+        "hono": "^4.12.8",
         "hono-pino": "^0.10.3",
         "hono-rate-limiter": "^0.5.3",
         "jose": "^6.2.1",
@@ -67,7 +67,7 @@
         "@commitlint/cli": "^20.4.4",
         "@commitlint/config-conventional": "^20.4.4",
         "@types/bcrypt": "^6.0.0",
-        "@types/node": "^25.5.0",
+        "@types/node": "^25.3.3",
         "@vitest/coverage-v8": "^4.1.0",
         "cross-env": "^10.1.0",
         "lint-staged": "^16.3.3",
@@ -75,7 +75,6 @@
         "tsc-alias": "^1.8.16",
         "tsx": "^4.21.0",
         "typescript": "^5.9.3",
-        "vitest": "^4.1.0",
-        "zod": "^4.3.6"
+        "vitest": "^4.1.0"
     }
 }
