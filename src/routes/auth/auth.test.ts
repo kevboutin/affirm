@@ -439,13 +439,9 @@ describe("auth routes", () => {
     });
 
     it("post /sso/authorize returns 500 when provider userinfo fails", async () => {
-        vi.mock("@/authz", () => ({
-            authz: {
-                getProviderMetadata: vi
-                    .fn()
-                    .mockRejectedValue(new Error("Provider error")),
-            },
-        }));
+        vi.spyOn(authz, "getProviderMetadata").mockRejectedValueOnce(
+            new Error("Provider error"),
+        );
 
         const response = await createTestApp(router).request("/sso/authorize", {
             method: "POST",
@@ -467,17 +463,13 @@ describe("auth routes", () => {
     });
 
     it("post /sso/authorize returns 500 when user update fails", async () => {
-        vi.mock("@/authz", () => ({
-            authz: {
-                getProviderMetadata: vi.fn().mockResolvedValue({
-                    userinfo_endpoint: "https://example.com/userinfo",
-                }),
-                getProviderUserinfo: vi.fn().mockResolvedValue({
-                    sub: "nonexistent-user",
-                    email: "test@example.com",
-                }),
-            },
-        }));
+        vi.spyOn(authz, "getProviderMetadata").mockResolvedValueOnce({
+            userinfo_endpoint: "https://example.com/userinfo",
+        } as any);
+        vi.spyOn(authz, "getProviderUserinfo").mockResolvedValueOnce({
+            sub: "nonexistent-user",
+            email: "test@example.com",
+        });
 
         const response = await createTestApp(router).request("/sso/authorize", {
             method: "POST",
