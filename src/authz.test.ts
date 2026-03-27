@@ -89,7 +89,7 @@ describe("authz.getProviderMetadata", () => {
     });
 
     test("should throw ProviderUrlError for empty URL", async () => {
-        await expect(authz.getProviderMetadata("")).rejects.toThrowError(
+        await expect(authz.getProviderMetadata("")).rejects.toThrow(
             ProviderUrlError,
         );
     });
@@ -99,13 +99,13 @@ describe("authz.getProviderMetadata", () => {
             authz.getProviderMetadata(
                 "http://example.com/.well-known/openid-configuration",
             ),
-        ).rejects.toThrowError(ProviderUrlError);
+        ).rejects.toThrow(ProviderUrlError);
     });
 
     test("should throw ProviderUrlError for invalid well-known endpoint", async () => {
         await expect(
             authz.getProviderMetadata("https://example.com/wrong-endpoint"),
-        ).rejects.toThrowError(ProviderUrlError);
+        ).rejects.toThrow(ProviderUrlError);
     });
 
     test("should throw ProviderFetchError for non-200 response", async () => {
@@ -115,7 +115,7 @@ describe("authz.getProviderMetadata", () => {
             statusText: "Not Found",
         } as Response);
 
-        await expect(authz.getProviderMetadata(validUrl)).rejects.toThrowError(
+        await expect(authz.getProviderMetadata(validUrl)).rejects.toThrow(
             ProviderFetchError,
         );
     });
@@ -130,7 +130,7 @@ describe("authz.getProviderMetadata", () => {
             }),
         } as Response);
 
-        await expect(authz.getProviderMetadata(validUrl)).rejects.toThrowError(
+        await expect(authz.getProviderMetadata(validUrl)).rejects.toThrow(
             ProviderMetadataError,
         );
     });
@@ -188,7 +188,7 @@ describe("authz.getProviderUserinfo", () => {
     test("should throw ProviderUrlError for empty URL", async () => {
         await expect(
             authz.getProviderUserinfo("", providerToken),
-        ).rejects.toThrowError(ProviderUrlError);
+        ).rejects.toThrow(ProviderUrlError);
     });
 
     test("should throw ProviderUrlError for non-HTTPS URL", async () => {
@@ -197,7 +197,7 @@ describe("authz.getProviderUserinfo", () => {
                 "http://example.com/userinfo",
                 providerToken,
             ),
-        ).rejects.toThrowError(ProviderUrlError);
+        ).rejects.toThrow(ProviderUrlError);
     });
 
     test("should throw ProviderFetchError for non-200 response", async () => {
@@ -209,7 +209,7 @@ describe("authz.getProviderUserinfo", () => {
 
         await expect(
             authz.getProviderUserinfo(validUrl, providerToken),
-        ).rejects.toThrowError(ProviderFetchError);
+        ).rejects.toThrow(ProviderFetchError);
     });
 
     test("should throw ProviderUserinfoError for missing sub and oid", async () => {
@@ -224,6 +224,6 @@ describe("authz.getProviderUserinfo", () => {
 
         await expect(
             authz.getProviderUserinfo(validUrl, providerToken),
-        ).rejects.toThrowError(ProviderUserinfoError);
+        ).rejects.toThrow(ProviderUserinfoError);
     });
 });

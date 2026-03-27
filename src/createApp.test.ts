@@ -2,7 +2,6 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { testClient } from "hono/testing";
 import { Hono } from "hono";
 import createApp, { createRouter, createTestApp } from "./createApp";
-import env from "./env";
 import { NOT_FOUND } from "./httpStatusCodes";
 
 describe("createApp", () => {
@@ -329,7 +328,6 @@ describe("createApp", () => {
 
             const client = testClient(app) as any;
             const response = await client.test.$get();
-            const json = await response.json();
 
             expect(response.status).toBe(200);
             // Response time should be set by middleware
