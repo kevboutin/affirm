@@ -2,7 +2,8 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { testClient } from "hono/testing";
 import { Hono } from "hono";
 import createApp, { createRouter, createTestApp } from "./createApp";
-import { NOT_FOUND } from "./httpStatusCodes";
+import { NOT_FOUND, TOO_MANY_REQUESTS } from "./httpStatusCodes";
+import { TOO_MANY_REQUESTS as TOO_MANY_REQUESTS_PHRASE } from "./httpStatusPhrases";
 
 describe("createApp", () => {
     let originalEnv: string | undefined;
@@ -195,6 +196,24 @@ describe("createApp", () => {
             const response = await client.test.$get();
             // Rate limiter should be present (headers may be present)
             expect(response).toBeDefined();
+        });
+
+        it("should return 429 from the rate limiter handler after exceeding the limit", async () => {
+            const app = createApp();
+            app.get("/rl", (c) => c.json({ ok: true }));
+
+            const client = testClient(app) as any;
+            for (let i = 0; i < 100; i++) {
+                const res = await client.rl.$get();
+                expect(res.status).toBe(200);
+            }
+            const limited = await client.rl.$get();
+            expect(limited.status).toBe(TOO_MANY_REQUESTS);
+            const json = await limited.json();
+            expect(json).toEqual({
+                message: TOO_MANY_REQUESTS_PHRASE,
+                statusCode: TOO_MANY_REQUESTS,
+            });
         });
     });
 

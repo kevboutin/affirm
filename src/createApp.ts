@@ -109,7 +109,7 @@ export default function createApp() {
                     message: HttpStatusPhrases.TOO_MANY_REQUESTS,
                     statusCode: HttpStatusCodes.TOO_MANY_REQUESTS,
                 };
-                return c.json(responseMessage);
+                return c.json(responseMessage, HttpStatusCodes.TOO_MANY_REQUESTS);
             },
         }),
     );
