@@ -12,16 +12,29 @@ const silentStream = new Writable({
 });
 
 export const pinoLogger = () => {
+    // Some tests mock `env.NODE_ENV` to exercise middleware branches while
+    // the actual test runtime is still NODE_ENV=test. Prefer runtime signals.
+    const isTestRuntime =
+        process.env.NODE_ENV === "test" ||
+        process.env.VITEST === "true" ||
+        process.env.VITEST_WORKER_ID !== undefined ||
+        env!.NODE_ENV === "test";
+
+    let destination: Writable | undefined;
+    if (isTestRuntime) {
+        destination = silentStream;
+    } else if (env!.NODE_ENV === "production") {
+        destination = undefined;
+    } else {
+        destination = pretty();
+    }
+
     return logger({
         pino: pino(
             {
                 level: env!.LOG_LEVEL || "info",
             },
-            env!.NODE_ENV === "test"
-                ? silentStream
-                : env!.NODE_ENV === "production"
-                  ? undefined
-                  : pretty(),
+            destination,
         ),
         http: {
             reqId: () => crypto.randomUUID(),
