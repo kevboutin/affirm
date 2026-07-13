@@ -48,7 +48,7 @@
     "dependencies": {
         "@hono/node-server": "^2.0.8",
         "@hono/zod-openapi": "^1.4.0",
-        "@scalar/core": "^0.5.18",
+        "@scalar/core": "^0.5.23",
         "@scalar/hono-api-reference": "^0.11.8",
         "bcrypt": "^6.0.0",
         "dotenv": "^17.4.2",
