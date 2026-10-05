@@ -67,7 +67,7 @@
         "@commitlint/cli": "^21.2.2",
         "@commitlint/config-conventional": "^21.2.2",
         "@types/bcrypt": "^6.0.0",
-        "@types/node": "^26.6.3",
+        "@types/node": "^26.6.4",
         "@vitest/coverage-v8": "^5.0.2",
         "cross-env": "^10.1.0",
         "lint-staged": "^17.5.1",
