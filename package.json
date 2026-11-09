@@ -65,7 +65,7 @@
     },
     "devDependencies": {
         "@commitlint/cli": "^21.2.2",
-        "@commitlint/config-conventional": "^21.2.2",
+        "@commitlint/config-conventional": "^21.2.4",
         "@types/bcrypt": "^6.0.0",
         "@types/node": "^26.6.5",
         "@vitest/coverage-v8": "^5.0.5",
